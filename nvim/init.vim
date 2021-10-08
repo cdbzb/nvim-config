@@ -73,6 +73,7 @@ require'nvim-treesitter.configs'.setup {
 EOF
 " Start interactive EasyAlign in visual mode (e.g. vipga)
 xmap ga <Plug>(EasyAlign)
+xmap ga <Plug>(EasyAlign)
 
 " Start interactive EasyAlign for a motion/text object (e.g. gaip)
 nmap ga <Plug>(EasyAlign)
@@ -97,14 +98,10 @@ let g:neosnippet#disable_runtime_snippets = {
 """"""
 
 map z1 :set foldlevel=1<CR>
-map z2 :set foldlevel=1<CR>
+map z2 :set foldlevel=2<CR>
 
-" opening temp buffer
-map ,tmp :split tmp/scd.scd<CR>:resize 10<CR>
-""""""
-"CtrlP
-"""""
-nmap zfr :CtrlPMRU<CR>
+" opening temp scd buffer
+map <leader>tmp :split /tmp/scd.scd<CR>:resize 10<CR>
 
 "netrw
 let g:netrw_winsize=25
@@ -112,7 +109,7 @@ let g:netrw_winsize=25
 "bookmarks
 "
 nnoremap <Leader>bk :SimpleBookmarksAdd<CR>
-nnoremap <Leader>BK :SimpleBookmarksList<CR>
+nnoremap <Leader>bK :SimpleBookmarksList<CR>
 
 "terminal
 tnoremap <Esc> <C-\><C-n>
@@ -122,7 +119,7 @@ tnoremap <Esc> <C-\><C-n>
 let g:AutoPairsMapCR=0
 let g:deoplete#enable_smart_case = 1
 
-map ,init :e ~/.config/nvim/init.vim<ENTER>
+map <leader>init :e ~/.config/nvim/init.vim<ENTER>
 
   function UltiSnips_IsExpandable()
     return !(
@@ -180,7 +177,6 @@ set incsearch		" do incremental searching
 " let &guioptions = substitute(&guioptions, "t", "", "g")
 
 " Don't use Ex mode, use Q for formatting
-map Q gq
 
 " CTRL-U in insert mode deletes a lot.  Use CTRL-G u to first break undo,
 " so that you can undo CTRL-U after inserting a line break.
@@ -261,7 +257,7 @@ set autochdir
 """""""""""""""""""""""""""""""
 " my maps!!!!
 """""""""""""""
-let mapleader = ","
+let mapleader = "\<SPACE>"
 
 
 """""""""""
@@ -272,49 +268,28 @@ set title
 let g:scnvim_scdoc = 1
 let g:scnvim_postwin_size = 50
 let g:scnvim_eval_flash_repeats = 0
-nmap ,p :call scnvim#sclang#send("Song.play")<CR>
-nmap zp m`:call SelectPart()<CR>,l,,``
-nmap ,ii yaw:call scnvim#sclang#send("Song.current.<C-r>".play")<CR>
-nmap ,, :call scnvim#sclang#send("Part.play")<CR>
-nmap ,sc :call scnvim#sclang#send("")<left><Left>
-nmap ,st :SCNvimStart<CR>
-nmap ,sp :SCNvimStop<CR>
-nmap zk <ESC>:w<ENTER>:SCNvimRecompile<ENTER>:silent!open -a iTerm<RETURN>
-nmap zx :call scnvim#sclang#send("~myFree.()")<CR>
-nmap <LEADER>. <Plug>(scnvim-send-block)
 "vmap <LEADER>l <Plug>(scnvim-send-selection)
 "let swithchbuf +=useopen
 "map <LEADER>L ``:b clang<ENTER>Gm`P
-nmap <LEADER>l <Plug>(scnvim-send-line)
-vmap <LEADER>l <Plug>(scnvim-send-selection)
 "imap <LEADER>l <ESC>,l
 map  <LEADER>; <ESC>A;<ESC>
 imap  <LEADER>; <ESC>,;
-nmap zz        <Plug>(scnvim-hard-stop)
 "| `<CR>`  | Toggle post window buffer | `<Plug>(scnvim-postwindow-toggle)` | Insert, Normal | 
-nmap <LEADER>c <Plug>(scnvim-postwindow-clear)
 "| `K` | Open documentation | Uses vim `keywordprg` | Normal |
 
 "map ,line :set cursorline!<ENTER>
 "open associated RPP (at top of file)
-map <Leader>rpp m`ggl"zy$:!tmux new -d "open -a REAPER64.app <C-r>z"<CR>``
 
-map ,swap "adabl"bdab"aPF|;"bP
+"for lilypond
+"map ,swap "adabl"bdab"aPF|;"bP
 cmap halve !perl -pe 's/(\d+)/$1*.5/eg'
 cmap double !perl -pe 's/(\d+)/$1*2/eg'
 " map <F5> :w<bar>:!lilypond -o=% % <CR> <ENTER> 
-map <F5> :w<bar>:!tmux new -d "lilypond % %"<CR> <ENTER> 
+"map <F5> :w<bar>:!tmux new -d "lilypond % %"<CR> <ENTER> 
 "map <Leader>. <F5><ENTER>``
-"double angle surround
-map <Leader>>> S>v%S>
-"map <Leader>zxcv :!tmux new -d "open  -a Skim.app <C-R>%<BS><BS><BS>.pdf"<CR>
 "map ,p ,zxcv<ENTER>
 "map ,p :!mupdf $(basename "%" .ly).pdf &
-map <Leader>P <F5><ENTER>``,p
-imap <Leader>q <ESC>m`F<vt>ly``pa
-" map <Leader>p  :! open  %.pdf<CR>
 " map png :w<bar>:!lilypond --png -o % %<CR>
-map mid :!quit 'Quicktime Player 7'<CR>:! open -a 'Quicktime Player 7' %.midi<CR>
 """"""
 "Lilypond stuff
 "map ?? :! open -a Firefox.app http://lilypond.org/doc/v2.12/Documentation/user/lilypond/LilyPond-index<CR>
@@ -322,10 +297,9 @@ map mid :!quit 'Quicktime Player 7'<CR>:! open -a 'Quicktime Player 7' %.midi<CR
 "let @y = '"ayt|/lyricf{l"byt}j0"cyt|f|l"dyt|' "copies the music for merging
 "let @p = 'f|"aP/lyrf}"bPa j0f|"cPf|;"dP' "pastes
 "let @i = '/lyricn/|n0@o' 
-:vnoremap ab :<C-U>call SelectBar()<CR>
-omap ab :normal vab<CR>
-"workaround for macbook using C-f for kwmc
-inoremap <c-x><c-x> <c-x><c-f>
+
+":vnoremap ab :<C-U>call SelectBar()<CR>
+"omap ab :normal vab<CR>
 
 map <Leader>gf Y:!open <C-r>"<BACKSPACE> 
 colorscheme peaksea
@@ -345,18 +319,6 @@ let g:vimwiki_list= [{'path':'~/myhack/Volumes/Zippy/puddle/vimwiki/', 'path_htm
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Parenthesis/bracket expanding
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-vnoremap $) <esc>`>a)<esc>`<i(<esc>
-vnoremap $] <esc>`>a]<esc>`<i[<esc>
-vnoremap $} <esc>`>a}<esc>`<i{<esc>
-vnoremap $$ <esc>`>a"<esc>`<i"<esc>
-vnoremap $q <esc>`>a'<esc>`<i'<esc>
-vnoremap $e <esc>`>a"<esc>`<i"<esc>
-vmap ${ "zdi{<C-R>z}<Esc> 
-vmap $( "zdi(<C-R>z)<Esc> 
-
-vmap $< "zdi<<C-R>z><Esc> 
-vmap $> "zdi<<<C-R>z>><Esc> 
-
 set nobackup
 set noswapfile
 map <D-d> :NERDTreeToggle <CR>
@@ -385,12 +347,6 @@ hi Folded ctermbg=238
 "vnoremap zz zf
 
 set hidden
-     
-
-"""""""""
-" pathogen "
-"""""""""""""
-    "execute pathogen#infect()
 
 set noerrorbells visualbell t_vb=
 autocmd GUIEnter * set visualbell t_vb=
@@ -470,21 +426,40 @@ endfunction
 
 map zge :call CopyLineFromPostWindow()<CR>
 
-nnoremap zdf :silent execute "grep! -r SynthDef.*" . shellescape(expand("<cword>")) . " ~/tank/super/SynthDefLibrary/*"<cr>:copen<cr>
-nnoremap zdc yaw :call scnvim#sclang#send("")<left><Left>SynthDescLib.at(  \\<C-r>"  ).dump<cr>
-nnoremap zdt     :call scnvim#sclang#send("")<left><Left>SynthDefLibrary.tree<cr>
 "map zdf :call LookupDefUnderCursor()<CR>
 " 808
 
 inoremap <silent> <C-e> <c-r>=ExpandOrJump()<CR>
 vnoremap <C-e> <c-r>=UltiSnips#JumpForward()<CR>
 vmap <C-e> <TAB>
-map ztu $F"vF"c
 "fzf
 inoremap <expr> <c-x><c-f> fzf#vim#complete#path('rg --files')
+
 nmap sleep :!pmset sleepnow<CR>
 
+"''''''''''''
 "Which Key
-nmap <leader> :WhichKey ','<CR>
-nmap <localleader> :WhichKey ' '<CR>
-let maplocalleader = '<SPACE>'
+"''''''''''''
+let maplocalleader = ','
+nmap <leader> :<c-U>WhichKey '<Space>'<CR>
+nmap <localleader> :<c-U>WhichKey ','<CR>
+let g:which_key_map={}
+call which_key#register(',', "g:which_key_map")
+let g:which_key_map2={}
+call which_key#register("\<Space>", "g:which_key_map2")
+""""""
+"CtrlP
+"""""
+nmap <leader>ub :CtrlPBuffer<CR>
+nmap <leader>uc :CtrlPCurFile<CR>
+nmap <leader>u/ :CtrlPRoot<CR>
+nmap <leader>u. :CtrlPCurWD<CR>
+nmap <leader>ur :CtrlPMRU<CR>
+let g:which_key_map2.u={
+			\'name': 'find',
+			\'b':    'buffer',
+			\'r':    'recent',
+			\'c':    'current file',
+			\'.':    'working dir',
+			\'/':    'root',
+			\}

@@ -1,5 +1,4 @@
 " MY SUPERCOLLIDER VIMSCRIPTS! "
-
 function! Testy()
 	echom "working!"
 endfunction
@@ -97,13 +96,14 @@ endfunction
 
 function!RecordSection()
 	let line = getline(".")
-	let lyric = matchstr(line,"\".*\",",0,0)
-	let lyric = substitute(lyric,"\",","\"",'g')
+	let lyric = matchstr(line,"\".*\" *,",0,0)
+	let lyric = substitute(lyric,"\" *,","\"",'g')
 	let lyric = "Song.section(" . lyric . ")"
 	let lyric = "~recorder.(Song.currentSong," . lyric . ",1)"
 	call scnvim#sclang#send(lyric)
 	"return lyric
-endfunction
+	"echom lyric
+	endfunction
 
 
 function! SetCursor()
@@ -116,9 +116,11 @@ endfunction
 
 
 function! PlayFromHere()
-	let line = getline(".")
-	let lyric = matchstr(line,"\".*\",",0,0)
-	let lyric = substitute(lyric,"\",","\"",'g')
+	exe "normal $"
+	let line = search("addLine","bnc")
+	let line = getline(line)
+	let lyric = matchstr(line,"\".*\" *,",0,0)
+	let lyric = substitute(lyric,"\" *,","\"",'g')
 	let section= "Song.section(" . lyric . ")"
 	let command="Song.currentSong.cursor_(" . section. ")"
 	call scnvim#sclang#send(command)
@@ -132,33 +134,46 @@ function! NowPlayAgain()
 	call scnvim#sclang#send("Song.currentSong.play")
 endfunction
 
+function! Transpose()
+	execute "s/(\\c)/('c#')/g"
+endfunction
+
+
+"let g:which_key_map={}
+"call which_key#register(',', "g:which_key_map")
 
 nmap <localleader>rec :call RecordSection() 
 nmap <localleader>P :call NowPlayAgain()<CR>
-let which_key_map.P = 'reload and play'
+lua local wk = require("which-key"); wk.register({["<localleader>P"]="reload and play"})
 nmap <localleader>dp yaw :call scnvim#sclang#send("")<left><left>Synth( \\<C-R>" )<CR>
 nmap <localleader>p :call scnvim#sclang#send("Song.play")<CR>
-let which_key_map.p = 'play Song'
+lua local wk = require("which-key"); wk.register({["<localleader>p"]="play Song"})
 nmap <localleader>< m`:call SelectPart()<CR>,l,,``
-let which_key_map['<'] = 'reload part + play'
+lua local wk = require("which-key"); wk.register({["<localleader><"]="reload part and play"})
+nmap <localleader>< m`:call SelectPart()<CR>,l,,``
 nmap <localleader>ii yaw:call scnvim#sclang#send("Song.current.<C-r>".play")<CR>
 nmap <localleader>, :call scnvim#sclang#send("Part.play")<CR>
-let which_key_map[','] = 'play part'
+lua local wk = require("which-key"); wk.register({["<localleader>,"]="play Part"})
+nmap <localleader>< m`:call SelectPart()<CR>,l,,``
 nmap <localleader>sd :call scnvim#sclang#send("")<left><Left>
 nmap <localleader>st :SCNvimStart<CR>
 nmap <localleader>sp :SCNvimStop<CR>
 nmap <localleader>k <ESC>:w<ENTER>:SCNvimRecompile<ENTER>
-let which_key_map.k = 'recompile'
+lua local wk = require("which-key"); wk.register({["<localleader>k"]="recompile"})
+nmap <localleader>< m`:call SelectPart()<CR>,l,,``
 nmap <localleader>x :call scnvim#sclang#send("~myFree.()")<CR>
-let which_key_map.x = 'myFree'
+lua local wk = require("which-key"); wk.register({["zp"]="myFree"})
+nmap <localleader>< m`:call SelectPart()<CR>,l,,``
 nmap zx :call scnvim#sclang#send("~myFree.()")<CR>
 nmap <localleader>z <Plug>(scnvim-hard-stop)
 nmap zz <Plug>(scnvim-hard-stop)
 nmap <localleader>. <Plug>(scnvim-send-block)
-let which_key_map['.'] = 'send block'
+lua local wk = require("which-key"); wk.register({["<localleader>."]="send block"})
+nmap <localleader>< m`:call SelectPart()<CR>,l,,``
 nmap <localleader>l <Plug>(scnvim-send-line)
 vmap <localleader>l <Plug>(scnvim-send-selection)
-let which_key_map['l'] = 'send line/sel'
+lua local wk = require("which-key"); wk.register({["<localleader>l"]="send line/selection"})
+nmap <localleader>< m`:call SelectPart()<CR>,l,,``
 nmap <localleader>sc <Plug>(scnvim-postwindow-clear)
 map <localleader>rpp m`ggl"zy$:!tmux new -d "open -a REAPER64.app <C-r>z"<CR>``
 "map <localleader>P <F5><ENTER>``,p
@@ -166,29 +181,60 @@ nnoremap <localleader>df :silent execute "grep! -r SynthDef.*" . shellescape(exp
 nnoremap <localleader>dc yaw :call scnvim#sclang#send("")<left><Left>SynthDescLib.at(  \\<C-r>"  ).dump<cr>
 nnoremap <localleader>dt     :call scnvim#sclang#send("")<left><Left>SynthDefLibrary.tree<cr>
 map <localleader>u $F"vF"c
-let which_key_map.u = 'edit tune'
+lua local wk = require("which-key"); wk.register({["<localleader>u"]="play this tune"})
+nmap <localleader>< m`:call SelectPart()<CR>,l,,``
 "cursor
 nmap <localleader>cu :call SetCursor()<CR>
 nmap <localleader>ch :call PlayFromHere()<CR>
 nmap <localleader>cH :call PlayFromHere()<CR>,p
 
 "  Menus
-let g:which_key_map.c = {
-			\ 'name': '+cursor',
-			\ 'u' : 'input',
-			\ 'h' : 'set here',
-			\ 'H' : 'set here and play',
-			\ }
-let g:which_key_map.s = {
-			\ 'name': 'sclang',
-			\ 't' : 'start',
-			\ 'p' : 'stop',
-			\ 'd' : 'send',
-			\ 'c' : 'clear',
-			\ }
-let g:which_key_map.d = {
-			\ 'name': '+synthDefs',
-			\ 'c' : 'controls',
-			\ 't' : 'tree',
-			\ 'f' : 'find',
-			\ }
+"let g:which_key_map2={}
+"call which_key#register("\<Space>", "g:which_key_map2")
+"let g:which_key_map2.f={ 'name':'find '}
+"let g:which_key_map2.f.z = {
+"			\'name': 'fuzzy',
+"			\ }
+lua << EOF
+local wk = require("which-key")
+
+wk.register({
+  [ "<leader>fz" ] = {
+	  --name = "fuzzy", -- optional group name
+	  b = 'buffer',
+	  r ='recent',
+	  c = 'current file',
+	  [ "." ] = 'working dir',
+	  [ "/" ] = 'root'
+	  }
+}) 
+wk.register({["<localleader>"] = {
+	d = {
+		name = "synthDefs",
+		c = "controls",
+		t = "tree",
+		f = "find",
+		p = "play"
+		},
+	c = {
+		name = "cursor",
+		u = "input",
+		h = "Here",
+		H = "set Here and Play Song"
+		},
+	s = {
+		name = "sclang",
+		t = "start",
+		p = "stop",
+		c = "clear Post",
+		d = "send to sclang"
+		},
+	i = {
+		name = "ii for part under cursor",
+		i = "play part under cursor"
+		}
+	}
+})
+EOF
+nmap <leader>X ,x,<
+nmap <leader>Z ,x,p

@@ -12,20 +12,21 @@ let g:python3_host_program='/usr/bin/python3'
 call plug#begin()
 " Reaper
 Plug 'madskjeldgaard/reaper-nvim'
+Plug 'tricktux/pomodoro.vim'
 " OSC
 Plug 'davidgranstrom/osc.nvim'
 "Plug 'Shougo/neosnippet.vim'
 Plug 'preservim/nerdtree'
-Plug 'liuchengxu/vim-which-key'
+"Plug 'liuchengxu/vim-which-key'
 
 " On-demand lazy load
-Plug 'liuchengxu/vim-which-key', { 'on': ['WhichKey', 'WhichKey!'] }
+"Plug 'liuchengxu/vim-which-key', { 'on': ['WhichKey', 'WhichKey!'] }
 
 " To register the descriptions when using the on-demand load feature,
 " use the autocmd hook to call which_key#register(), e.g., register for the Space key:
 " autocmd! User vim-which-key call which_key#register('<Space>', 'g:which_key_map')
 "Plug 'ms-jpq/chadtree', {'branch': 'chad', 'do': 'python3 -m chadtree deps'}
-Plug 'maxboisvert/vim-simple-bookmarks'
+"Plug 'maxboisvert/vim-simple-bookmarks'
 Plug 'davidgranstrom/scnvim',{'do':{-> scnvim#install() } }
 Plug 'mhinz/vim-startify'
 Plug 'jiangmiao/auto-pairs'
@@ -36,23 +37,99 @@ Plug 'tpope/vim-surround'
 Plug 'gcmt/taboo.vim'
 Plug 'vim-scripts/utl.vim'
 "Plug 'thaerkh/vim-workspace'
-Plug 'xolox/vim-session'
+"Plug 'xolox/vim-session'
 Plug 'xolox/vim-misc'
 Plug 'ctrlpvim/ctrlp.vim'
 Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
 Plug 'junegunn/fzf.vim'
+"Plug 'vimwiki/vimwiki'
+"Plug 'michal-h21/vim-zettel'
 Plug 'junegunn/vim-easy-align'
+Plug 'folke/which-key.nvim'
+"Plug 'easymotion/vim-easymotion'
+Plug 'ggandor/lightspeed.nvim'
+"Plug 'nvim-neorg/neorg' | Plug 'nvim-lua/plenary.nvim'
+Plug 'https://github.com/alok/notational-fzf-vim'
 
 Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}  " We recommend updating the parsers on update
-if has('nvim')
+Plug 'nvim-treesitter/playground'
+Plug 'nvim-treesitter/nvim-treesitter-textobjects'
+Plug 'nvim-orgmode/orgmode'
+Plug 'dhruvasagar/vim-dotoo'
   Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
   Plug 'tbodt/deoplete-tabnine', { 'do': './install.sh' }
-else
-  Plug 'Shougo/deoplete.nvim'
-  Plug 'roxma/nvim-yarp'
-  Plug 'roxma/vim-hug-neovim-rpc'
-endif
+" Completion engine
+" Plug 'hrsh7th/nvim-cmp'
+
+" Completion source for tags
+Plug 'quangnguyen30192/cmp-nvim-tags'
+" completion source for ultisnips
+"Plug 'quangnguyen30192/cmp-nvim-ultisnips'
 call plug#end() 
+
+lua << EOF
+
+local cmp = require'cmp'
+
+cmp.setup({
+snippet = {
+	expand = function(args)
+	--require('luasnip').lsp_expand(args.body) -- For `luasnip` users.
+	vim.fn["UltiSnips#Anon"](args.body) -- For `ultisnips` users.
+	end,
+	},
+sources = {
+	{ name = 'tags' },
+	--{ name = 'luasnip' }, -- For luasnip users.
+}
+})
+EOF
+
+let mapleader = "\<SPACE>"
+let maplocalleader = ','
+set timeoutlen=500
+
+"NOTE TAKING CRAPPP!!!
+" example
+let g:nv_search_paths = ['/Users/michael/Documents/Notes (The Archive)']
+lua <<EOF
+
+require'nvim-treesitter.configs'.setup {
+  textobjects = {
+    move = {
+      enable = true,
+      set_jumps = true, -- whether to set jumps in the jumplist
+      goto_next_start = {
+        ["]]"] = "@function.outer",
+        ["]m"] = "@class.outer",
+      },
+      goto_next_end = {
+        ["]["] = "@function.outer",
+        ["]M"] = "@class.outer",
+      },
+      goto_previous_start = {
+        ["[["] = "@function.outer",
+        ["[m"] = "@class.outer",
+      },
+      goto_previous_end = {
+        ["[]"] = "@function.outer",
+        ["[M"] = "@class.outer",
+      },
+    },
+  },
+}
+EOF
+nmap s <Plug>Lightspeed_s
+lua << EOF
+  require("which-key").setup {
+    -- your configuration comes here
+    -- or leave it empty to use the default settings
+    -- refer to the configuration section below
+
+ triggers = {"<leader>","<localleader>"} -- or specify a list manually
+  }
+EOF
+
  set rtp+=/usr/local/opt/fzf
 autocmd filetype supercollider lua require'reaper-nvim'.setup()
 lua <<EOF
@@ -71,6 +148,67 @@ require'nvim-treesitter.configs'.setup {
   },
 }
 EOF
+
+"org setup
+set conceallevel=2
+set concealcursor=nc
+lua << EOF
+local parser_config = require "nvim-treesitter.parsers".get_parser_configs()
+parser_config.org = {
+  install_info = {
+    url = 'https://github.com/milisims/tree-sitter-org',
+    revision = 'f110024d539e676f25b72b7c80b0fd43c34264ef',
+    files = {'src/parser.c', 'src/scanner.cc'},
+  },
+  filetype = 'org',
+}
+
+require'nvim-treesitter.configs'.setup {
+  -- If TS highlights are not enabled at all, or disabled via `disable` prop, highlighting will fallback to default Vim syntax highlighting
+  highlight = {
+    enable = true,
+    disable = {'org'}, -- Remove this to use TS highlighter for some of the highlights (Experimental)
+    additional_vim_regex_highlighting = {'org'}, -- Required since TS highlighter doesn't support all syntax features (conceal)
+  },
+  ensure_installed = {'org'}, -- Or run :TSUpdate org
+}
+
+require('orgmode').setup({
+org_agenda_files = {'~/tank/org/*'},
+org_default_notes_file = '~/tank/org/notes.org',
+org_agenda_templates = 
+{ 
+	t = { description = 'Task', template = '* TODO %?\n %u' },
+	l = { description = 'link', template = '%a***************' }
+}
+	
+})
+EOF
+
+" neorg setup
+"lua << EOF
+"    require('neorg').setup {
+"        -- Tell Neorg what modules to load
+"        load = {
+"            ["core.defaults"] = {}, -- Load all the default modules
+"            ["core.norg.concealer"] = {}, -- Allows for use of icons
+"            ["core.norg.dirman"] = { -- Manage your directories with Neorg
+"	    ["core.keybinds"] = { -- Configure core.keybinds
+"	    config = {
+"		    default_keybinds = true, -- Generate the default keybinds
+"		    neorg_leader = "<Leader>o" -- This is the default if unspecified
+"		    }
+"	    },
+"                config = {
+"                    workspaces = {
+"                        my_workspace = "~/neorg"
+"                    }
+"                }
+"            }
+"        },
+"    }
+"EOF
+nmap <leader>w <c-w>
 " Start interactive EasyAlign in visual mode (e.g. vipga)
 xmap ga <Plug>(EasyAlign)
 xmap ga <Plug>(EasyAlign)
@@ -79,6 +217,8 @@ xmap ga <Plug>(EasyAlign)
 nmap ga <Plug>(EasyAlign)
 
 set sessionoptions+=tabpages,globals
+set sessionoptions-=options
+set viewoptions-=options
 set sessionoptions-=help,buffers
 let g:deoplete#enable_at_startup = 1
 
@@ -116,7 +256,10 @@ tnoremap <Esc> <C-\><C-n>
 
 "fold color
 "deoplete + neosnippet + autopairs
-let g:AutoPairsMapCR=0
+let g:AutoPairsMapCR=1
+let g:AutoPairsSpace = 0
+
+inoremap <buffer> <silent> <S-Space> <C-R>=AutoPairsSpace()<CR>
 let g:deoplete#enable_smart_case = 1
 
 map <leader>init :e ~/.config/nvim/init.vim<ENTER>
@@ -133,7 +276,6 @@ map <leader>init :e ~/.config/nvim/init.vim<ENTER>
 autocmd CompleteDone * silent! pclose!
 
 "inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
-"imap <expr><TAB> pumvisible() ? "\<C-n>" : neosnippet#expandable_or_jumpable() ? "\<Plug>(neosnippet_expand_or_jump)" : "\<Tab>"
 
 imap <expr><TAB> pumvisible() ? "\<C-n>" : UltiSnips_IsExpandable() ?  "<C-R>=UltiSnips#ExpandSnippetOrJump()<cr>" : "\<TAB>"
 
@@ -142,8 +284,9 @@ inoremap <expr><CR> pumvisible() ? deoplete#close_popup() : "\<CR>"
 inoremap <expr><S-TAB> pumvisible() ? deoplete#complete() : "\<CR>"
 
 let g:UltiSnips#ExpandTrigger="\<S-Tab>"
+let g:UltiSnips#JumpForward="<c-j>"
 
-imap ,) <esc>ldt)
+"imap ,) <esc>ldt)
 
 "inoremap <expr><Tab> pumvisible() ? "\<C-n>" : "\<Tab>" 
 "highlight Folded ctermbg=Black
@@ -257,7 +400,6 @@ set autochdir
 """""""""""""""""""""""""""""""
 " my maps!!!!
 """""""""""""""
-let mapleader = "\<SPACE>"
 
 
 """""""""""
@@ -273,7 +415,7 @@ let g:scnvim_eval_flash_repeats = 0
 "map <LEADER>L ``:b clang<ENTER>Gm`P
 "imap <LEADER>l <ESC>,l
 map  <LEADER>; <ESC>A;<ESC>
-imap  <LEADER>; <ESC>,;
+"imap  <LEADER>; <ESC>,;
 "| `<CR>`  | Toggle post window buffer | `<Plug>(scnvim-postwindow-toggle)` | Insert, Normal | 
 "| `K` | Open documentation | Uses vim `keywordprg` | Normal |
 
@@ -309,7 +451,9 @@ colorscheme peaksea
 
 
 map <Leader>xx <Plug>VimwikiToggleListItem
-let g:vimwiki_list= [{'path':'~/myhack/Volumes/Zippy/puddle/vimwiki/', 'path_html':'~/myhack/Volumes/Zippy/puddle/vimwiki/export/html/'}]
+"let g:vimwiki_list= [{'path':'~/myhack/Volumes/Zippy/puddle/vimwiki/', 'path_html':'~/myhack/Volumes/Zippy/puddle/vimwiki/export/html/'}]
+   " Settings for Vimwiki
+   let g:vimwiki_list = [{'path':'~/Documents/vimwiki/markdown/','ext':'.md', 'syntax':'markdown'}]
 
 """"""""""""""""""""
 " command mode stuff
@@ -414,7 +558,7 @@ endfunction
 
 
 function! ExpandOrJump ()
-	call UltiSnips#ExpandSnippetOrJump()
+	call UltiSnips#ExpandSnippetOrJump()	
 	return ""
 endfunction
 
@@ -429,37 +573,29 @@ map zge :call CopyLineFromPostWindow()<CR>
 "map zdf :call LookupDefUnderCursor()<CR>
 " 808
 
-inoremap <silent> <C-e> <c-r>=ExpandOrJump()<CR>
+inoremap <silent> <Tab> <c-r>=ExpandOrJump()<CR>
 vnoremap <C-e> <c-r>=UltiSnips#JumpForward()<CR>
-vmap <C-e> <TAB>
+inoremap <C-e> <c-r>=UltiSnips#JumpForward()<CR>
+"vmap <C-e> <TAB>
 "fzf
 inoremap <expr> <c-x><c-f> fzf#vim#complete#path('rg --files')
 
 nmap sleep :!pmset sleepnow<CR>
 
-"''''''''''''
-"Which Key
-"''''''''''''
-let maplocalleader = ','
-nmap <leader> :<c-U>WhichKey '<Space>'<CR>
-nmap <localleader> :<c-U>WhichKey ','<CR>
-let g:which_key_map={}
-call which_key#register(',', "g:which_key_map")
-let g:which_key_map2={}
-call which_key#register("\<Space>", "g:which_key_map2")
 """"""
 "CtrlP
 """""
-nmap <leader>ub :CtrlPBuffer<CR>
-nmap <leader>uc :CtrlPCurFile<CR>
-nmap <leader>u/ :CtrlPRoot<CR>
-nmap <leader>u. :CtrlPCurWD<CR>
-nmap <leader>ur :CtrlPMRU<CR>
-let g:which_key_map2.u={
-			\'name': 'find',
-			\'b':    'buffer',
-			\'r':    'recent',
-			\'c':    'current file',
-			\'.':    'working dir',
-			\'/':    'root',
-			\}
+nmap <leader>fzb :CtrlPBuffer<CR>
+nmap <leader>fzc :CtrlPCurFile<CR>
+nmap <leader>fz/ :CtrlPRoot<CR>
+nmap <leader>fz. :CtrlPCurWD<CR>
+nmap <leader>fzr :CtrlPMRU<CR>
+
+
+lua <<EOF
+function echo_sc_args()
+	local lookup = vim.fn.expand("<cexpr>")
+	require'scnvim'.send_silent("SCNvim.methodArgs(\"" .. lookup .. "\")")
+end
+EOF
+"nmap <C-k> lua echo_sc_args()

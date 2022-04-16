@@ -11,22 +11,35 @@ let g:neosnippet#disable_runtime_snippets={'_':1,}
 let g:python3_host_program='/usr/bin/python3'
 call plug#begin()
 " Reaper
+
+Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
+Plug 'nvim-treesitter/nvim-treesitter-refactor'
+Plug 'nvim-treesitter/playground'
+Plug 'haorenW1025/completion-nvim'
+Plug 'nvim-treesitter/completion-treesitter'
+Plug 'nvim-treesitter/nvim-treesitter-textobjects'
+
 Plug 'madskjeldgaard/reaper-nvim'
-Plug 'tricktux/pomodoro.vim'
+
+
+Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}  " We recommend updating the parsers on update
+Plug 'nvim-treesitter/playground'
+Plug 'nvim-treesitter/nvim-treesitter-textobjects'
+
 " OSC
 Plug 'davidgranstrom/osc.nvim'
-"Plug 'Shougo/neosnippet.vim'
 Plug 'preservim/nerdtree'
-"Plug 'liuchengxu/vim-which-key'
 
-" On-demand lazy load
-"Plug 'liuchengxu/vim-which-key', { 'on': ['WhichKey', 'WhichKey!'] }
+Plug 'quangnguyen30192/cmp-nvim-ultisnips'
 
-" To register the descriptions when using the on-demand load feature,
-" use the autocmd hook to call which_key#register(), e.g., register for the Space key:
-" autocmd! User vim-which-key call which_key#register('<Space>', 'g:which_key_map')
-"Plug 'ms-jpq/chadtree', {'branch': 'chad', 'do': 'python3 -m chadtree deps'}
-"Plug 'maxboisvert/vim-simple-bookmarks'
+Plug 'neovim/nvim-lspconfig'
+Plug 'hrsh7th/cmp-nvim-lsp'
+Plug 'hrsh7th/cmp-buffer'
+Plug 'hrsh7th/cmp-path'
+Plug 'hrsh7th/cmp-cmdline'
+Plug 'hrsh7th/nvim-cmp'
+Plug 'quangnguyen30192/cmp-nvim-tags'
+
 Plug 'davidgranstrom/scnvim',{'do':{-> scnvim#install() } }
 Plug 'mhinz/vim-startify'
 Plug 'jiangmiao/auto-pairs'
@@ -49,51 +62,191 @@ Plug 'folke/which-key.nvim'
 "Plug 'easymotion/vim-easymotion'
 Plug 'ggandor/lightspeed.nvim'
 "Plug 'nvim-neorg/neorg' | Plug 'nvim-lua/plenary.nvim'
-Plug 'https://github.com/alok/notational-fzf-vim'
+"Plug 'https://github.com/alok/notational-fzf-vim'
 
-Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}  " We recommend updating the parsers on update
-Plug 'nvim-treesitter/playground'
-Plug 'nvim-treesitter/nvim-treesitter-textobjects'
-Plug 'nvim-orgmode/orgmode'
-Plug 'dhruvasagar/vim-dotoo'
-  Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
-  Plug 'tbodt/deoplete-tabnine', { 'do': './install.sh' }
-" Completion engine
-" Plug 'hrsh7th/nvim-cmp'
+"Plug 'nvim-orgmode/orgmode'
+"Plug 'dhruvasagar/vim-dotoo'
+" Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
+" Plug 'tbodt/deoplete-tabnine', { 'do': './install.sh' }
 
-" Completion source for tags
-Plug 'quangnguyen30192/cmp-nvim-tags'
-" completion source for ultisnips
-"Plug 'quangnguyen30192/cmp-nvim-ultisnips'
 call plug#end() 
-
-lua << EOF
-
-local cmp = require'cmp'
-
-cmp.setup({
-snippet = {
-	expand = function(args)
-	--require('luasnip').lsp_expand(args.body) -- For `luasnip` users.
-	vim.fn["UltiSnips#Anon"](args.body) -- For `ultisnips` users.
-	end,
-	},
-sources = {
-	{ name = 'tags' },
-	--{ name = 'luasnip' }, -- For luasnip users.
-}
-})
-EOF
-
 let mapleader = "\<SPACE>"
 let maplocalleader = ','
 set timeoutlen=500
+
+set completeopt=menu,menuone,noselect
+lua << EOF
+
+
+require("nvim-treesitter.configs").setup {
+  -- ensure_installed = {"supercollider", "rust", "html", "javascript"},
+  ensure_installed = "supercollider",
+  highlight = {
+    enable = true, additional_vim_regex_highlighting = true,
+    -- disable = { "supercollider"},
+  },
+  incremental_selection = {
+    enable = true,
+    keymaps = {
+      init_selection = "<CR>",
+      scope_incremental = "<CR>",
+      node_incremental = "<TAB>",
+      node_decremental = "<S-TAB>",
+    },
+  },
+  indent = { enable = true },
+  matchup = { enable = true },
+  autopairs = { enable = true },
+  playground = {
+    enable = true,
+    disable = {},
+    updatetime = 25,
+    persist_queries = false,
+    keybindings = {
+      toggle_query_editor = "o",
+      toggle_hl_groups = "i",
+      toggle_injected_languages = "t",
+      toggle_anonymous_nodes = "a",
+      toggle_language_display = "I",
+      focus_language = "f",
+      unfocus_language = "F",
+      update = "R",
+      goto_node = "<cr>",
+      show_help = "?",
+    },
+  },
+  rainbow = {
+    enable = true,
+    extended_mode = true, -- Highlight also non-parentheses delimiters
+    max_file_lines = 1000,
+  },
+  refactor = {
+    smart_rename = { enable = true, keymaps = { smart_rename = "grr" } },
+    highlight_definitions = { enable = true },
+    navigation = {
+      enable = true,
+      keymaps = {
+        goto_definition_lsp_fallback = "gnd",
+        -- use telescope for these lists
+        -- list_definitions = "gnD",
+        -- list_definitions_toc = "gO",
+        -- @TODOUA: figure out if I need both below
+        goto_next_usage = "<a-*>", -- is this redundant?
+        goto_previous_usage = "<a-#>", -- also this one?
+      },
+      disable = { "supercollider"},
+    },
+    -- highlight_current_scope = {enable = true}
+  },
+  textobjects = {
+    lsp_interop = {
+      enable = true,
+      border = "none",
+      peek_definition_code = {
+        ["df"] = "@function.outer",
+        ["dF"] = "@class.outer",
+      },
+    },
+    move = {
+      enable = true,
+      set_jumps = true, -- whether to set jumps in the jumplist
+      goto_next_start = {
+        ["]m"] = "@function.outer",
+        ["]]"] = "@call.outer",
+      },
+      goto_next_end = {
+        ["]M"] = "@function.outer",
+        ["]["] = "@call.outer",
+      },
+      goto_previous_start = {
+        ["[m"] = "@function.outer",
+        ["[["] = "@call.outer",
+      },
+      goto_previous_end = {
+        ["[M"] = "@function.outer",
+        ["[]"] = "@call.outer",
+      },
+    },
+    select = {
+      enable = true,
+      lookahead = true,
+      keymaps = {
+        ["af"] = "@function.outer",
+        ["if"] = "@function.inner",
+        ["ac"] = "@call.outer",
+        ["ic"] = "@call.inner",
+      },
+    },
+    swap = {
+      enable = true,
+      swap_next = {
+        [",a"] = "@parameter.inner",
+      },
+      swap_previous = {
+        [",A"] = "@parameter.inner",
+      },
+    },
+  },
+  }
+
+local cmp = require'cmp'
+
+vim.opt.completeopt = { "menu", "menuone", "noselect" }
+vim.opt.shortmess:append "c"
+
+cmp.setup {
+  snippet = {
+      -- REQUIRED - you must specify a snippet engine
+      expand = function(args)
+        --vim.fn["vsnip#anonymous"](args.body) -- For `vsnip` users.
+        --require('luasnip').lsp_expand(args.body) -- For `luasnip` users.
+        -- require('snippy').expand_snippet(args.body) -- For `snippy` users.
+        vim.fn["UltiSnips#Anon"](args.body) -- For `ultisnips` users.
+      end,
+    },
+	mapping = {
+		['<C-d>'] = cmp.mapping.scroll_docs(-4),
+		['<C-f>'] = cmp.mapping.scroll_docs(4),
+		['<C-Space>'] = cmp.mapping.complete(),
+		['<C-e>'] = cmp.mapping.close(),
+		['<CR>'] = cmp.mapping.confirm({ select = true }),
+	},
+	sources = {
+		{ name = 'path' },
+		{ name = 'nvim_lsp' },
+		{ name = 'tags' },
+		-- { name = 'nvim_lua' },
+		{ name = 'treesitter' },
+		{ name = 'ultisnips' },
+		-- { name = 'spell' },
+		{ name = 'buffer' , keyword_length=5}, -- dont complete until at 5 chars
+	},
+	view = {
+		entries = "native",
+	},
+	experimental = {
+		-- native_menu = true,
+		ghost_text = true
+	}
+}
+
+-- The nvim-cmp almost supports LSP's capabilities so You should advertise it to LSP servers..
+local capabilities = vim.lsp.protocol.make_client_capabilities()
+capabilities = require('cmp_nvim_lsp').update_capabilities(capabilities)
+
+-- The following example advertise capabilities to `clangd`.
+require'lspconfig'.clangd.setup {
+  capabilities = capabilities,
+}
+
+EOF
+
+
 
 "NOTE TAKING CRAPPP!!!
 " example
 let g:nv_search_paths = ['/Users/michael/Documents/Notes (The Archive)']
 lua <<EOF
-
 require'nvim-treesitter.configs'.setup {
   textobjects = {
     move = {
@@ -154,14 +307,14 @@ set conceallevel=2
 set concealcursor=nc
 lua << EOF
 local parser_config = require "nvim-treesitter.parsers".get_parser_configs()
-parser_config.org = {
-  install_info = {
-    url = 'https://github.com/milisims/tree-sitter-org',
-    revision = 'f110024d539e676f25b72b7c80b0fd43c34264ef',
-    files = {'src/parser.c', 'src/scanner.cc'},
-  },
-  filetype = 'org',
-}
+--parser_config.org = {
+--  install_info = {
+--    url = 'https://github.com/milisims/tree-sitter-org',
+--    revision = 'f110024d539e676f25b72b7c80b0fd43c34264ef',
+--    files = {'src/parser.c', 'src/scanner.cc'},
+--  },
+--  filetype = 'org',
+--}
 
 require'nvim-treesitter.configs'.setup {
   -- If TS highlights are not enabled at all, or disabled via `disable` prop, highlighting will fallback to default Vim syntax highlighting
@@ -173,41 +326,18 @@ require'nvim-treesitter.configs'.setup {
   ensure_installed = {'org'}, -- Or run :TSUpdate org
 }
 
-require('orgmode').setup({
-org_agenda_files = {'~/tank/org/*'},
-org_default_notes_file = '~/tank/org/notes.org',
-org_agenda_templates = 
-{ 
-	t = { description = 'Task', template = '* TODO %?\n %u' },
-	l = { description = 'link', template = '%a***************' }
-}
+--require('orgmode').setup({
+--org_agenda_files = {'~/tank/org/*'},
+--org_default_notes_file = '~/tank/org/notes.org',
+--org_agenda_templates = 
+--{ 
+--	t = { description = 'Task', template = '* TODO %?\n %u' },
+--	l = { description = 'link', template = '%a***************' }
+--}
 	
-})
+--})
 EOF
 
-" neorg setup
-"lua << EOF
-"    require('neorg').setup {
-"        -- Tell Neorg what modules to load
-"        load = {
-"            ["core.defaults"] = {}, -- Load all the default modules
-"            ["core.norg.concealer"] = {}, -- Allows for use of icons
-"            ["core.norg.dirman"] = { -- Manage your directories with Neorg
-"	    ["core.keybinds"] = { -- Configure core.keybinds
-"	    config = {
-"		    default_keybinds = true, -- Generate the default keybinds
-"		    neorg_leader = "<Leader>o" -- This is the default if unspecified
-"		    }
-"	    },
-"                config = {
-"                    workspaces = {
-"                        my_workspace = "~/neorg"
-"                    }
-"                }
-"            }
-"        },
-"    }
-"EOF
 nmap <leader>w <c-w>
 " Start interactive EasyAlign in visual mode (e.g. vipga)
 xmap ga <Plug>(EasyAlign)
@@ -598,4 +728,4 @@ function echo_sc_args()
 	require'scnvim'.send_silent("SCNvim.methodArgs(\"" .. lookup .. "\")")
 end
 EOF
-"nmap <C-k> lua echo_sc_args()
+nmap <C-k> lua echo_sc_args()

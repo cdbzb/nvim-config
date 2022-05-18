@@ -62,7 +62,10 @@ function! FoldParts (lnum)
 		return '<4'
 	elseif match(thisline, 'SynthDef') == 0 
 		return '>2'
-"		return 'a1'
+	"elseif match(thisLine, '^\s*\a\+\s*\{') == 0 
+	"	return '>1'
+	"elseif match(thisLine, '^\s+\}$') >= 0 
+	"	return '<1'
 	"elseif match(thisline, ')\.add;') == 1
 	"	return '<2'
 		"return 's1'
@@ -71,10 +74,14 @@ function! FoldParts (lnum)
 	"elseif match(thisline,")$") = 0
 	"	return '<1'
 	else 
-		"return -1
 		return '='
 		endif
 
+endfunction
+function! Testmatch ()
+
+	let thisline=getline(".")
+	echo match(thisline, '^\s*\a\+\s*{')
 endfunction
 
 "set foldmethod=expr
@@ -131,6 +138,7 @@ function! NowPlayAgain()
 	call scnvim#sclang#send("z = Song.currentSong.cursor")
 	call scnvim#send_block()
 	call scnvim#sclang#send("Song.currentSong.cursor_(z)")
+	"call scnvim#sclang#send("Song.currentSong.playAfterLoad")
 	call scnvim#sclang#send("Song.currentSong.play")
 endfunction
 

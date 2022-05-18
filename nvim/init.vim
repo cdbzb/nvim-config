@@ -12,19 +12,15 @@ let g:python3_host_program='/usr/bin/python3'
 call plug#begin()
 " Reaper
 
-Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
-Plug 'nvim-treesitter/nvim-treesitter-refactor'
-Plug 'nvim-treesitter/playground'
-Plug 'haorenW1025/completion-nvim'
-Plug 'nvim-treesitter/completion-treesitter'
-Plug 'nvim-treesitter/nvim-treesitter-textobjects'
+"Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
+"Plug 'nvim-treesitter/nvim-treesitter-refactor'
+"Plug 'nvim-treesitter/playground'
+"Plug 'haorenW1025/completion-nvim'
+"Plug 'nvim-treesitter/completion-treesitter'
+"Plug 'nvim-treesitter/nvim-treesitter-textobjects'
 
+Plug 'AckslD/nvim-trevJ.lua'
 Plug 'madskjeldgaard/reaper-nvim'
-
-
-Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}  " We recommend updating the parsers on update
-Plug 'nvim-treesitter/playground'
-Plug 'nvim-treesitter/nvim-treesitter-textobjects'
 
 " OSC
 Plug 'davidgranstrom/osc.nvim'
@@ -39,6 +35,7 @@ Plug 'hrsh7th/cmp-path'
 Plug 'hrsh7th/cmp-cmdline'
 Plug 'hrsh7th/nvim-cmp'
 Plug 'quangnguyen30192/cmp-nvim-tags'
+Plug 'tzachar/cmp-tabnine', { 'do': './install.sh' }
 
 Plug 'davidgranstrom/scnvim',{'do':{-> scnvim#install() } }
 Plug 'mhinz/vim-startify'
@@ -59,10 +56,10 @@ Plug 'junegunn/fzf.vim'
 "Plug 'michal-h21/vim-zettel'
 Plug 'junegunn/vim-easy-align'
 Plug 'folke/which-key.nvim'
-"Plug 'easymotion/vim-easymotion'
 Plug 'ggandor/lightspeed.nvim'
 "Plug 'nvim-neorg/neorg' | Plug 'nvim-lua/plenary.nvim'
 "Plug 'https://github.com/alok/notational-fzf-vim'
+
 
 "Plug 'nvim-orgmode/orgmode'
 "Plug 'dhruvasagar/vim-dotoo'
@@ -70,6 +67,11 @@ Plug 'ggandor/lightspeed.nvim'
 " Plug 'tbodt/deoplete-tabnine', { 'do': './install.sh' }
 
 call plug#end() 
+
+lua << EOF
+vim.keymap.set('n','zj',function() require("trevj").format_at_cursor() end)
+EOF
+
 let mapleader = "\<SPACE>"
 let maplocalleader = ','
 set timeoutlen=500
@@ -78,140 +80,185 @@ set completeopt=menu,menuone,noselect
 lua << EOF
 
 
-require("nvim-treesitter.configs").setup {
-  -- ensure_installed = {"supercollider", "rust", "html", "javascript"},
-  ensure_installed = "supercollider",
-  highlight = {
-    enable = true, additional_vim_regex_highlighting = true,
-    -- disable = { "supercollider"},
-  },
-  incremental_selection = {
-    enable = true,
-    keymaps = {
-      init_selection = "<CR>",
-      scope_incremental = "<CR>",
-      node_incremental = "<TAB>",
-      node_decremental = "<S-TAB>",
-    },
-  },
-  indent = { enable = true },
-  matchup = { enable = true },
-  autopairs = { enable = true },
-  playground = {
-    enable = true,
-    disable = {},
-    updatetime = 25,
-    persist_queries = false,
-    keybindings = {
-      toggle_query_editor = "o",
-      toggle_hl_groups = "i",
-      toggle_injected_languages = "t",
-      toggle_anonymous_nodes = "a",
-      toggle_language_display = "I",
-      focus_language = "f",
-      unfocus_language = "F",
-      update = "R",
-      goto_node = "<cr>",
-      show_help = "?",
-    },
-  },
-  rainbow = {
-    enable = true,
-    extended_mode = true, -- Highlight also non-parentheses delimiters
-    max_file_lines = 1000,
-  },
-  refactor = {
-    smart_rename = { enable = true, keymaps = { smart_rename = "grr" } },
-    highlight_definitions = { enable = true },
-    navigation = {
-      enable = true,
-      keymaps = {
-        goto_definition_lsp_fallback = "gnd",
-        -- use telescope for these lists
-        -- list_definitions = "gnD",
-        -- list_definitions_toc = "gO",
-        -- @TODOUA: figure out if I need both below
-        goto_next_usage = "<a-*>", -- is this redundant?
-        goto_previous_usage = "<a-#>", -- also this one?
-      },
-      disable = { "supercollider"},
-    },
-    -- highlight_current_scope = {enable = true}
-  },
-  textobjects = {
-    lsp_interop = {
-      enable = true,
-      border = "none",
-      peek_definition_code = {
-        ["df"] = "@function.outer",
-        ["dF"] = "@class.outer",
-      },
-    },
-    move = {
-      enable = true,
-      set_jumps = true, -- whether to set jumps in the jumplist
-      goto_next_start = {
-        ["]m"] = "@function.outer",
-        ["]]"] = "@call.outer",
-      },
-      goto_next_end = {
-        ["]M"] = "@function.outer",
-        ["]["] = "@call.outer",
-      },
-      goto_previous_start = {
-        ["[m"] = "@function.outer",
-        ["[["] = "@call.outer",
-      },
-      goto_previous_end = {
-        ["[M"] = "@function.outer",
-        ["[]"] = "@call.outer",
-      },
-    },
-    select = {
-      enable = true,
-      lookahead = true,
-      keymaps = {
-        ["af"] = "@function.outer",
-        ["if"] = "@function.inner",
-        ["ac"] = "@call.outer",
-        ["ic"] = "@call.inner",
-      },
-    },
-    swap = {
-      enable = true,
-      swap_next = {
-        [",a"] = "@parameter.inner",
-      },
-      swap_previous = {
-        [",A"] = "@parameter.inner",
-      },
-    },
-  },
-  }
+local tabnine = require('cmp_tabnine.config')
+tabnine:setup({
+	max_lines = 1000;
+	max_num_results = 20;
+	sort = true;
+	run_on_every_keystroke = true;
+	snippet_placeholder = '..';
+	ignored_file_types = { -- default is not to ignore
+		-- uncomment to ignore in lua:
+		-- lua = true
+	};
+	show_prediction_strength = false;
+})
+
+--require("nvim-treesitter.configs").setup {
+--  -- ensure_installed = {"supercollider", "rust", "html", "javascript"},
+--  ensure_installed = "supercollider",
+--  highlight = {
+--    enable = true, additional_vim_regex_highlighting = true,
+--    -- disable = { "supercollider"},
+--  },
+--  incremental_selection = {
+--    enable = true,
+--    keymaps = {
+--      init_selection = "<CR>",
+--      scope_incremental = "<CR>",
+--      --node_incremental = "<TAB>",
+--      --node_decremental = "<S-TAB>",
+--    },
+--  },
+--  indent = { enable = true },
+--  matchup = { enable = true },
+--  autopairs = { enable = true },
+--  playground = {
+--    enable = true,
+--    disable = {},
+--    updatetime = 25,
+--    persist_queries = false,
+--    keybindings = {
+--      toggle_query_editor = "o",
+--      toggle_hl_groups = "i",
+--      toggle_injected_languages = "t",
+--      toggle_anonymous_nodes = "a",
+--      toggle_language_display = "I",
+--      focus_language = "f",
+--      unfocus_language = "F",
+--      update = "R",
+--      goto_node = "<cr>",
+--      show_help = "?",
+--    },
+--  },
+--  rainbow = {
+--    enable = true,
+--    extended_mode = true, -- Highlight also non-parentheses delimiters
+--    max_file_lines = 1000,
+--  },
+--  refactor = {
+--    smart_rename = { enable = true, keymaps = { smart_rename = "grr" } },
+--    highlight_definitions = { enable = true },
+--    navigation = {
+--      enable = true,
+--      keymaps = {
+--        goto_definition_lsp_fallback = "gnd",
+--        -- use telescope for these lists
+--        -- list_definitions = "gnD",
+--        -- list_definitions_toc = "gO",
+--        -- @TODOUA: figure out if I need both below
+--        goto_next_usage = "<a-*>", -- is this redundant?
+--        goto_previous_usage = "<a-#>", -- also this one?
+--      },
+--      disable = { "supercollider"},
+--    },
+--    -- highlight_current_scope = {enable = true}
+--  },
+--  textobjects = {
+--    lsp_interop = {
+--      enable = true,
+--      border = "none",
+--      peek_definition_code = {
+--        ["df"] = "@function.outer",
+--        ["dF"] = "@class.outer",
+--      },
+--    },
+--    move = {
+--      enable = true,
+--      set_jumps = true, -- whether to set jumps in the jumplist
+--      goto_next_start = {
+--        ["]m"] = "@function.outer",
+--        ["]]"] = "@call.outer",
+--      },
+--      goto_next_end = {
+--        ["]M"] = "@function.outer",
+--        ["]["] = "@call.outer",
+--      },
+--      goto_previous_start = {
+--        ["[m"] = "@function.outer",
+--        ["[["] = "@call.outer",
+--      },
+--      goto_previous_end = {
+--        ["[M"] = "@function.outer",
+--        ["[]"] = "@call.outer",
+--      },
+--    },
+--    select = {
+--      enable = true,
+--      lookahead = true,
+--      keymaps = {
+--        ["af"] = "@function.outer",
+--        ["if"] = "@function.inner",
+--        ["ac"] = "@call.outer",
+--        ["ic"] = "@call.inner",
+--      },
+--    },
+--    swap = {
+--      enable = true,
+--      swap_next = {
+--        [",a"] = "@parameter.inner",
+--      },
+--      swap_previous = {
+--        [",A"] = "@parameter.inner",
+--      },
+--    },
+--  },
+--  }
 
 local cmp = require'cmp'
 
 vim.opt.completeopt = { "menu", "menuone", "noselect" }
 vim.opt.shortmess:append "c"
 
+ local cmp_ultisnips_mappings = require("cmp_nvim_ultisnips.mappings")
 cmp.setup {
-  snippet = {
-      -- REQUIRED - you must specify a snippet engine
-      expand = function(args)
-        --vim.fn["vsnip#anonymous"](args.body) -- For `vsnip` users.
-        --require('luasnip').lsp_expand(args.body) -- For `luasnip` users.
-        -- require('snippy').expand_snippet(args.body) -- For `snippy` users.
-        vim.fn["UltiSnips#Anon"](args.body) -- For `ultisnips` users.
-      end,
-    },
+	snippet = {
+		-- REQUIRED - you must specify a snippet engine
+		expand = function(args)
+		--vim.fn["vsnip#anonymous"](args.body) -- For `vsnip` users.
+		--require('luasnip').lsp_expand(args.body) -- For `luasnip` users.
+		-- require('snippy').expand_snippet(args.body) -- For `snippy` users.
+		vim.fn["UltiSnips#Anon"](args.body) -- For `ultisnips` users.
+	end,
+	},
+
+
+
 	mapping = {
 		['<C-d>'] = cmp.mapping.scroll_docs(-4),
 		['<C-f>'] = cmp.mapping.scroll_docs(4),
 		['<C-Space>'] = cmp.mapping.complete(),
 		['<C-e>'] = cmp.mapping.close(),
 		['<CR>'] = cmp.mapping.confirm({ select = true }),
+		["<Tab>"] = cmp.mapping(
+		function(fallback)
+		if cmp.visible() then
+			cmp.select_next_item()
+		else  cmp_ultisnips_mappings.expand_or_jump_forwards(fallback)
+			end
+		end,
+		{ "i", "s", --[[ "c" (to enable the mapping in command mode) ]] }
+		),
+		["<S-Tab>"] = cmp.mapping(
+		function(fallback)
+			cmp_ultisnips_mappings.jump_backwards(fallback)
+		end,
+		{ "i", "s", --[[ "c" (to enable the mapping in command mode) ]] }
+		),
 	},
+	formatting = {
+		format = function(entry, vim_item)
+		vim_item.menu = ({
+		tags = "[Tags]",
+		path = "[Path]",
+		cmp_tabnine = "[TN]",
+		ultisnips = "[U]"
+		})[entry.source.name]
+	return vim_item
+end
+},
 	sources = {
+		{ name = 'cmp_tabnine' },
 		{ name = 'path' },
 		{ name = 'nvim_lsp' },
 		{ name = 'tags' },
@@ -220,13 +267,13 @@ cmp.setup {
 		{ name = 'ultisnips' },
 		-- { name = 'spell' },
 		{ name = 'buffer' , keyword_length=5}, -- dont complete until at 5 chars
-	},
+		},
 	view = {
 		entries = "native",
 	},
-	experimental = {
-		-- native_menu = true,
-		ghost_text = true
+experimental = {
+	-- native_menu = true,
+	ghost_text = true
 	}
 }
 
@@ -246,32 +293,6 @@ EOF
 "NOTE TAKING CRAPPP!!!
 " example
 let g:nv_search_paths = ['/Users/michael/Documents/Notes (The Archive)']
-lua <<EOF
-require'nvim-treesitter.configs'.setup {
-  textobjects = {
-    move = {
-      enable = true,
-      set_jumps = true, -- whether to set jumps in the jumplist
-      goto_next_start = {
-        ["]]"] = "@function.outer",
-        ["]m"] = "@class.outer",
-      },
-      goto_next_end = {
-        ["]["] = "@function.outer",
-        ["]M"] = "@class.outer",
-      },
-      goto_previous_start = {
-        ["[["] = "@function.outer",
-        ["[m"] = "@class.outer",
-      },
-      goto_previous_end = {
-        ["[]"] = "@function.outer",
-        ["[M"] = "@class.outer",
-      },
-    },
-  },
-}
-EOF
 nmap s <Plug>Lightspeed_s
 lua << EOF
   require("which-key").setup {
@@ -290,53 +311,10 @@ vim.g.reaper_target_ip = '127.0.0.1'
 vim.g.port= '8000'
 EOF
 autocmd filetype supercollider lua require'reaper-nvim'.setup()
-lua <<EOF
-require'nvim-treesitter.configs'.setup {
-  highlight = {
-    enable = true,
-    custom_captures = {
-      -- Highlight the @foo.bar capture group with the "Identifier" highlight group.
-      ["foo.bar"] = "Identifier",
-    },
-  },
-}
-EOF
 
 "org setup
 set conceallevel=2
 set concealcursor=nc
-lua << EOF
-local parser_config = require "nvim-treesitter.parsers".get_parser_configs()
---parser_config.org = {
---  install_info = {
---    url = 'https://github.com/milisims/tree-sitter-org',
---    revision = 'f110024d539e676f25b72b7c80b0fd43c34264ef',
---    files = {'src/parser.c', 'src/scanner.cc'},
---  },
---  filetype = 'org',
---}
-
-require'nvim-treesitter.configs'.setup {
-  -- If TS highlights are not enabled at all, or disabled via `disable` prop, highlighting will fallback to default Vim syntax highlighting
-  highlight = {
-    enable = true,
-    disable = {'org'}, -- Remove this to use TS highlighter for some of the highlights (Experimental)
-    additional_vim_regex_highlighting = {'org'}, -- Required since TS highlighter doesn't support all syntax features (conceal)
-  },
-  ensure_installed = {'org'}, -- Or run :TSUpdate org
-}
-
---require('orgmode').setup({
---org_agenda_files = {'~/tank/org/*'},
---org_default_notes_file = '~/tank/org/notes.org',
---org_agenda_templates = 
---{ 
---	t = { description = 'Task', template = '* TODO %?\n %u' },
---	l = { description = 'link', template = '%a***************' }
---}
-	
---})
-EOF
 
 nmap <leader>w <c-w>
 " Start interactive EasyAlign in visual mode (e.g. vipga)
@@ -407,11 +385,9 @@ autocmd CompleteDone * silent! pclose!
 
 "inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
 
-imap <expr><TAB> pumvisible() ? "\<C-n>" : UltiSnips_IsExpandable() ?  "<C-R>=UltiSnips#ExpandSnippetOrJump()<cr>" : "\<TAB>"
-
-"inoremap <expr><S-TAB> pumvisible() ? "\<C-p>" : "\<S-TAB>"
-inoremap <expr><CR> pumvisible() ? deoplete#close_popup() : "\<CR>"
-inoremap <expr><S-TAB> pumvisible() ? deoplete#complete() : "\<CR>"
+"imap <expr><TAB> pumvisible() ? "\<C-n>" : UltiSnips_IsExpandable() ?  "<C-R>=UltiSnips#ExpandSnippetOrJump()<cr>" : "\<TAB>"
+"inoremap <expr><CR> pumvisible() ? deoplete#close_popup() : "\<CR>"
+"inoremap <expr><S-TAB> pumvisible() ? deoplete#complete() : "\<CR>"
 
 let g:UltiSnips#ExpandTrigger="\<S-Tab>"
 let g:UltiSnips#JumpForward="<c-j>"
@@ -545,11 +521,8 @@ let g:scnvim_eval_flash_repeats = 0
 "map <LEADER>L ``:b clang<ENTER>Gm`P
 "imap <LEADER>l <ESC>,l
 map  <LEADER>; <ESC>A;<ESC>
-"imap  <LEADER>; <ESC>,;
-"| `<CR>`  | Toggle post window buffer | `<Plug>(scnvim-postwindow-toggle)` | Insert, Normal | 
-"| `K` | Open documentation | Uses vim `keywordprg` | Normal |
+nmap <Space>p <Plug>(scnvim-postwindow-toggle)
 
-"map ,line :set cursorline!<ENTER>
 "open associated RPP (at top of file)
 
 "for lilypond
@@ -729,3 +702,12 @@ function echo_sc_args()
 end
 EOF
 nmap <C-k> lua echo_sc_args()
+
+autocmd BufNewFile *.sc :set foldexpr=nvim_treesitter#foldexpr()
+autocmd BufAdd *.scd SCNvimStart
+
+map ,hm /^\s*\**\a\+\s*{<cr>
+map z0 :set foldlevel=0<CR>
+map ,ft :set foldmethod=nvim_treesitter#foldexpr()
+
+nmap <leader>ts i<C-R>=strftime("%Y%m%d_%I%M%S")<CR><Esc>

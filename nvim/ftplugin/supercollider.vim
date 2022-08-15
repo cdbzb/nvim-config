@@ -1,7 +1,5 @@
 " MY SUPERCOLLIDER VIMSCRIPTS! "
-function! Testy()
-	echom "working!"
-endfunction
+"
 
 function! CheckIsAddLineStart2(lnum)
 	let save_cursor=getcurpos()
@@ -62,17 +60,6 @@ function! FoldParts (lnum)
 		return '<4'
 	elseif match(thisline, 'SynthDef') == 0 
 		return '>2'
-	"elseif match(thisLine, '^\s*\a\+\s*\{') == 0 
-	"	return '>1'
-	"elseif match(thisLine, '^\s+\}$') >= 0 
-	"	return '<1'
-	"elseif match(thisline, ')\.add;') == 1
-	"	return '<2'
-		"return 's1'
-		"return -1
-		"return 's1'
-	"elseif match(thisline,")$") = 0
-	"	return '<1'
 	else 
 		return '='
 		endif
@@ -92,7 +79,7 @@ function! InsertDurs()
 	exe "normal $F]V%"
 	call scnvim#send_selection()
 	exe "sleep 100m"
-	call scnvim#sclang#send("Song.writeDurs(Song.sections-1)")
+	call v:lua.require'scnvim'.send("Song.writeDurs(Song.sections-1)")
 	exe "sleep 100m"
 	normal `m\<ESC>
 	exe "sleep 100m"
@@ -107,7 +94,7 @@ function!RecordSection()
 	let lyric = substitute(lyric,"\" *,","\"",'g')
 	let lyric = "Song.section(" . lyric . ")"
 	let lyric = "~recorder.(Song.currentSong," . lyric . ",1)"
-	call scnvim#sclang#send(lyric)
+	call v:lua.require'scnvim'.send(lyric)
 	"return lyric
 	"echom lyric
 	endfunction
@@ -118,7 +105,8 @@ function! SetCursor()
 	let number = input('cursor?')
 	call inputrestore()
 	let command="Song.currentSong.cursor_(" . number . ")"
-	call scnvim#sclang#send(command)
+	call v:lua.require'scnvim'.send(command) 
+	"call v:lua.require'scnvim'.send(command)
 endfunction
 
 
@@ -130,16 +118,37 @@ function! PlayFromHere()
 	let lyric = substitute(lyric,"\" *,","\"",'g')
 	let section= "Song.section(" . lyric . ")"
 	let command="Song.currentSong.cursor_(" . section. ")"
-	call scnvim#sclang#send(command)
+	call v:lua.require'scnvim'.send(command)
 endfunction
 
+function! GetStartString()
+	exe "normal $"
+	let line = search("addLine","bnc")
+	let line = getline(line)
+	let lyric = matchstr(line,"\".*\" *,",0,0)
+	let lyric = substitute(lyric,"\" *,","\"",'g')
+	let section= "Song.section(" . lyric . ")"
+	let command="Song.currentSong.getStartString(" . section. ")"
+	call v:lua.require'scnvim'.send(command)
+endfunction
+
+function! GetSectionNumber()
+	exe "normal $"
+	let line = search("addLine","bnc")
+	let line = getline(line)
+	let lyric = matchstr(line,"\".*\" *,",0,0)
+	let lyric = substitute(lyric,"\" *,","\"",'g')
+	let section= "Song.section(" . lyric . ")"
+	echo section
+	return section
+endfunction
 
 function! NowPlayAgain()
-	call scnvim#sclang#send("z = Song.currentSong.cursor")
+	call v:lua.require'scnvim'.send("z = Song.currentSong.cursor")
 	call scnvim#send_block()
-	call scnvim#sclang#send("Song.currentSong.cursor_(z)")
-	"call scnvim#sclang#send("Song.currentSong.playAfterLoad")
-	call scnvim#sclang#send("Song.currentSong.play")
+	call v:lua.require'scnvim'.send("Song.currentSong.cursor_(z)")
+	"call v:lua.require'scnvim'.send("Song.currentSong.playAfterLoad")
+	call v:lua.require'scnvim'.send("Song.currentSong.play")
 endfunction
 
 function! Transpose()
@@ -153,48 +162,42 @@ endfunction
 nmap <localleader>rec :call RecordSection() 
 nmap <localleader>P :call NowPlayAgain()<CR>
 lua local wk = require("which-key"); wk.register({["<localleader>P"]="reload and play"})
-nmap <localleader>dp yaw :call scnvim#sclang#send("")<left><left>Synth( \\<C-R>" )<CR>
-nmap <localleader>p :call scnvim#sclang#send("Song.play")<CR>
+nmap <localleader>dp yaw :call v:lua.require'scnvim'.send("")<left><left>Synth( \\<C-R>" )<CR>
+nmap <localleader>p :call v:lua.require'scnvim'.send("Song.play")<CR>
 lua local wk = require("which-key"); wk.register({["<localleader>p"]="play Song"})
-nmap <localleader>< m`:call SelectPart()<CR>,l,,``
 lua local wk = require("which-key"); wk.register({["<localleader><"]="reload part and play"})
-nmap <localleader>< m`:call SelectPart()<CR>,l,,``
-nmap <localleader>ii yaw:call scnvim#sclang#send("Song.current.<C-r>".play")<CR>
-nmap <localleader>, :call scnvim#sclang#send("Part.play")<CR>
+nmap <localleader>ii yaw:call v:lua.require'scnvim'.send("Song.current.<C-r>".play")<CR>
+map <localleader>, :call v:lua.require'scnvim'.send("Part.play")<CR>
 lua local wk = require("which-key"); wk.register({["<localleader>,"]="play Part"})
-nmap <localleader>< m`:call SelectPart()<CR>,l,,``
-nmap <localleader>sd :call scnvim#sclang#send("")<left><Left>
+nmap <localleader>sd :call v:lua.require'scnvim'.send("")<left><Left>
 nmap <localleader>st :SCNvimStart<CR>
 nmap <localleader>sp :SCNvimStop<CR>
 nmap <localleader>k <ESC>:w<ENTER>:SCNvimRecompile<ENTER>
 lua local wk = require("which-key"); wk.register({["<localleader>k"]="recompile"})
-nmap <localleader>< m`:call SelectPart()<CR>,l,,``
-nmap <localleader>x :call scnvim#sclang#send("~myFree.()")<CR>
+nmap <localleader>x :call v:lua.require'scnvim'.send("~myFree.()")<CR>
 lua local wk = require("which-key"); wk.register({["zp"]="myFree"})
-nmap <localleader>< m`:call SelectPart()<CR>,l,,``
-nmap zx :call scnvim#sclang#send("~myFree.()")<CR>
+nmap zx :call v:lua.require'scnvim'.send("~myFree.()")<CR>
 nmap <localleader>z <Plug>(scnvim-hard-stop)
 nmap zz <Plug>(scnvim-hard-stop)
 nmap <localleader>. <Plug>(scnvim-send-block)
 lua local wk = require("which-key"); wk.register({["<localleader>."]="send block"})
-nmap <localleader>< m`:call SelectPart()<CR>,l,,``
 nmap <localleader>l <Plug>(scnvim-send-line)
 vmap <localleader>l <Plug>(scnvim-send-selection)
 lua local wk = require("which-key"); wk.register({["<localleader>l"]="send line/selection"})
-nmap <localleader>< m`:call SelectPart()<CR>,l,,``
 nmap <localleader>sc <Plug>(scnvim-postwindow-clear)
 map <localleader>rpp m`ggl"zy$:!tmux new -d "open -a REAPER64.app <C-r>z"<CR>``
-"map <localleader>P <F5><ENTER>``,p
 nnoremap <localleader>df :silent execute "grep! -r SynthDef.*" . shellescape(expand("<cword>")) . " ~/tank/super/SynthDefLibrary/*"<cr>:copen<cr>
-nnoremap <localleader>dc yaw :call scnvim#sclang#send("")<left><Left>SynthDescLib.at(  \\<C-r>"  ).dump<cr>
-nnoremap <localleader>dt     :call scnvim#sclang#send("")<left><Left>SynthDefLibrary.tree<cr>
+nnoremap <localleader>dc yaw :call v:lua.require'scnvim'.send("")<left><Left>SynthDescLib.at(  \\<C-r>"  ).dump<cr>
+nnoremap <localleader>dt     :call v:lua.require'scnvim'.send("")<left><Left>SynthDefLibrary.tree<cr>
 map <localleader>u $F"vF"c
 lua local wk = require("which-key"); wk.register({["<localleader>u"]="play this tune"})
-nmap <localleader>< m`:call SelectPart()<CR>,l,,``
+nmap <localleader>< m`:call SelectPart()<CR>,.<ESC>,,``
 "cursor
 nmap <localleader>cu :call SetCursor()<CR>
 nmap <localleader>ch :call PlayFromHere()<CR>
 nmap <localleader>cH :call PlayFromHere()<CR>,p
+
+nmap <localleader>or :call v:lua.require'scnvim'.send("Part.current.rpp.open")<CR>
 
 "  Menus
 "let g:which_key_map2={}

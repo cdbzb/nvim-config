@@ -287,6 +287,7 @@ elseif &background=='dark'
   hi MoreMsg		guifg=#c0e080	guibg=NONE	gui=NONE
   hi Title		guifg=#f0c0f0	guibg=NONE	gui=NONE
   hi WarningMsg		guifg=#f08060	guibg=NONE	gui=NONE
+  "hi NormalFloat	guifg=#f08060   guibg=#000080   gui=NONE
   hi WildMenu		guifg=#000000	guibg=#d0d090	gui=NONE
   hi Folded		guifg=NONE	guibg=#004000	gui=NONE
   hi FoldColumn		guifg=#e0e0e0	guibg=#008000	gui=NONE
@@ -345,6 +346,7 @@ elseif &background=='dark'
   if &t_Co==8 || &t_Co==16
     " for 8-color and 16-color term
     hi Normal		ctermfg=LightGrey   ctermbg=Black
+    hi NormalFloat      ctermfg=LightGrey   ctermbg=144
     hi Special		ctermfg=Yellow	    ctermbg=bg
     hi Comment		ctermfg=DarkYellow  ctermbg=bg
     hi Constant		ctermfg=Blue	    ctermbg=bg

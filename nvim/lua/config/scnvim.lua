@@ -7,7 +7,7 @@ local map_expr = scnvim.map_expr
 scnvim.setup {
 	extensions = {
 		['fzf-sc'] = {
-			search_plugin = 'nvi>m-fzf',
+			search_plugin = 'nvim-fzf',
 			},
 		},
 	keymaps = {
@@ -35,7 +35,7 @@ scnvim.setup {
 		float = {
 			enabled =true,
 			callback =function(id) vim.api.nvim_win_set_option(id, 'winblend', 0) end,
-			height =16
+			height = 18
 			},
 		border = {
 

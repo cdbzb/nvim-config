@@ -51,6 +51,20 @@ ls.add_snippets(nil, {
 		t({ "","].pp" }) 
 	}),
 	s({
+		trig = "wdf",
+		namr = "wrap naked degrees in square brackets.df",
+		dscr = "wrap freqs in pbind"
+	},
+	{
+		i(0),
+		text({ '\"' }),
+		func(function(_, snip)
+			return snip.env.TM_SELECTED_TEXT[1] or {}
+		end, {}),
+		t({"\".df(\\" }), i(1), text({")"}),
+		i(2),
+	}),
+	s({
 		trig = "wrapp",
 		namr = "wrap freqs in pbind",
 		dscr = "wrap freqs in pbind"
@@ -59,7 +73,7 @@ ls.add_snippets(nil, {
 		text({ '[',"\t" }),
 		i(1),
 		func(function(_, snip)
-			return snip.env.TM_SELECTED_TEXT[1] or {}
+			return string.gsub(snip.env.TM_SELECTED_TEXT[1],"_","i")
 		end, {}),
 		i(2),
 		text({"", '].pp' }),

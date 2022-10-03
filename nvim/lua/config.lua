@@ -12,12 +12,15 @@ vim.cmd( [[
 call plug#begin()
 " Reaper
 
+Plug 'junegunn/goyo.vim'
+Plug 'junegunn/limelight.vim'
 Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
-"Plug 'nvim-treesitter/nvim-treesitter-refactor'
-"Plug 'nvim-treesitter/playground'
+Plug 'nvim-treesitter/nvim-treesitter-refactor'
+Plug 'nvim-treesitter/playground'
 "Plug 'haorenW1025/completion-nvim'
-"Plug 'nvim-treesitter/completion-treesitter'
+Plug 'nvim-treesitter/completion-treesitter'
 "Plug 'nvim-treesitter/nvim-treesitter-textobjects'
+Plug 'ray-x/cmp-treesitter'
 
 Plug 'AckslD/nvim-trevJ.lua'
 Plug 'saadparwaiz1/cmp_luasnip'
@@ -84,7 +87,7 @@ Plug 'Preservim/vim-markdown'
 "Plug 'dhruvasagar/vim-dotoo'
 " Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
 " Plug 'tbodt/deoplete-tabnine', { 'do': './install.sh' }
-
+Plug 'github/copilot.vim'
 call plug#end() 
 ]])
 
@@ -93,8 +96,8 @@ require("config.telekasten")
 require("config.luasnip")
 require("config.scnvim")
 -- require("config.tree-sitter")
- require("config.cmp")
- require("config.which-key")
+require("config.cmp")
+require("config.which-key")
 
 
 vim.cmd([[
@@ -110,3 +113,23 @@ imap <silent><expr> <C-E> luasnip#choice_active() ? '<Plug>luasnip-next-choice' 
 smap <silent><expr> <C-E> luasnip#choice_active() ? '<Plug>luasnip-next-choice' : '<C-E>'
 ]])
 
+local api=vim.api
+api.nvim_create_autocmd(
+  "FileType",
+  { pattern = { "SuperCollider" }, command = [[silent! lua require('scnvim').start()]] }
+)
+
+api.nvim_create_autocmd(
+"Filetype ", { pattern = { "SuperCollider" },command = [[ lua require'reaper-nvim'.setup() ]] }
+)
+api.nvim_create_autocmd(
+"Filetype ", { pattern = { "markdown" },command = [[lua require('cmp').setup.buffer { enabled = false }]] }
+)
+
+vim.cmd([[
+au User GoyoEnter Limelight
+]])
+
+vim.cmd([[
+au User GoyoLeave Limelight!
+]])

@@ -27,6 +27,12 @@ function! CheckIsCodeBlock(lnum)
 	return returnValue
 endfunction
 
+function! SelectPart () "range
+	"call search("P(","b")
+	call search('\(P.tune\|P.still\|P\|P.rpp\)(',"b")
+	execute "normal 0V%"
+endfunction
+
 function! FoldParts (lnum)
 	let save_cursor=getcurpos()
 	let thisline=getline(a:lnum)
@@ -36,6 +42,8 @@ function! FoldParts (lnum)
 	elseif match(thisline, 'P.still(') >= 0
 		return '>3'
 	elseif match(thisline, 'P.tune(') >= 0
+		return '>3'
+	elseif match(thisline, 'P.rpp(') >= 0
 		return '>3'
 	elseif match(thisline, ');') == 0
 		return '<3'
@@ -154,6 +162,12 @@ endfunction
 function! Transpose()
 	execute "s/(\\c)/('c#')/g"
 endfunction
+
+function! CleanSnippet()
+	execute 's/\<\a\+\>:_/_/'
+	execute 's/\<mul:.\+,\sadd:.*)/)/'
+endfunction
+
 
 
 "let g:which_key_map={}

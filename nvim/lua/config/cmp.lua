@@ -42,12 +42,19 @@ cmp.setup {
 	},
 
 
-	mapping = {
+	mapping = { 
 		['<C-d>'] = cmp.mapping.scroll_docs(-4),
 		['<C-f>'] = cmp.mapping.scroll_docs(4),
 		['<C-Space>'] = cmp.mapping.complete(),
 		['<C-e>'] = cmp.mapping.close(),
 		['<CR>'] = cmp.mapping.confirm({ select = true }),
+		['<C-n>'] = cmp.mapping.complete({
+			config = {
+				sources = {
+					{ name = 'luasnip' }
+				}
+			}
+		}),
 		-- ["<Tab>"] = cmp.mapping(
 		-- 	function(fallback)
 		-- 	if cmp.visible() then
@@ -85,13 +92,13 @@ cmp.setup {
 end
 },
 	sources = {
-		{ name = 'luasnip' },
 		{ name = 'cmp_tabnine' },
 		{ name = 'path' },
 		-- { name = 'nvim_lsp' },
 		{ name = 'tags' },
+		{ name = 'luasnip' },
 		-- { name = 'nvim_lua' },
-		-- { name = 'treesitter' },
+		{ name = 'treesitter' },
 		-- { name = 'ultisnips' },
 		-- { name = 'spell' },
 		{ name = 'buffer' , keyword_length=5}, -- dont complete until at 5 chars

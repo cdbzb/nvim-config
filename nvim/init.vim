@@ -8,17 +8,11 @@ lua require('config')
 
 nmap s <Plug>Lightspeed_s
 
-autocmd filetype supercollider lua require'reaper-nvim'.setup()
 lua <<EOF
 vim.g['reaper_target_ip'] = '127.0.0.1'
 --vim.g.port= '8000'
 EOF
 
-"org setup
-set conceallevel=2
-set concealcursor=nc
-
-nmap <leader>w <c-w>
 " Start interactive EasyAlign in visual mode (e.g. vipga)
 xmap ga <Plug>(EasyAlign)
 xmap ga <Plug>(EasyAlign)
@@ -30,7 +24,6 @@ set sessionoptions+=tabpages,globals
 set sessionoptions-=options
 set viewoptions-=options
 set sessionoptions-=help,buffers
-
 
 let g:ctrlp_working_path_mode = 'r'
 "'/Users/michael/.config/nvim/plugged/scnvim/scnvim-data']
@@ -63,17 +56,6 @@ map <leader>init :e ~/.config/nvim/init.vim<ENTER>
 
 autocmd CompleteDone * silent! pclose!
 
-
-"imap ,) <esc>ldt)
-
-"inoremap <expr><Tab> pumvisible() ? "\<C-n>" : "\<Tab>" 
-"highlight Folded ctermbg=Black
-"SCNVIM autocommand
-autocmd FileType supercollider exe "silent! call scnvim#sclang#open()"
-
-"let &packpath = &runtimepath
-"source ~/.vimrc
-
 " FROM VIMRC
 set rtp+=/usr/local/opt/fzf
 
@@ -93,11 +75,6 @@ set history=50		" keep 50 lines of command line history
 set ruler		" show the cursor position all the time
 set showcmd		" display incomplete commands
 set incsearch		" do incremental searching
-
-" For Win32 GUI: remove 't' flag from 'guioptions': no tearoff menu entries
-" let &guioptions = substitute(&guioptions, "t", "", "g")
-
-" Don't use Ex mode, use Q for formatting
 
 " CTRL-U in insert mode deletes a lot.  Use CTRL-G u to first break undo,
 " so that you can undo CTRL-U after inserting a line break.
@@ -167,18 +144,6 @@ autocmd Filetype * setlocal omnifunc=syntaxcomplete#Complete
 
 set autochdir
 
-""""""""""""""""""""""
-" for save view    ""
-""""""""""""""""""""""
-"set viewoptions=cursor,folds,slash,unix
-"
-"
-"
-"
-"""""""""""""""""""""""""""""""
-" my maps!!!!
-"""""""""""""""
-
 
 """""""""""
 " scnvim ""
@@ -229,11 +194,6 @@ map <Leader>xx <Plug>VimwikiToggleListItem
    " Settings for Vimwiki
    let g:vimwiki_list = [{'path':'~/Documents/vimwiki/markdown/','ext':'.md', 'syntax':'markdown'}]
 
-""""""""""""""""""""
-" command mode stuff
-" """""""""""""""""
-
-
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Parenthesis/bracket expanding
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -268,13 +228,6 @@ set hidden
 
 set noerrorbells visualbell t_vb=
 autocmd GUIEnter * set visualbell t_vb=
-
-
-"""""""""""
-" scvim "
-""""""""
-"let g:scSplitDirection="v"
-"let g:scSplitSize="30"
 
 """"" scrollbar
 
@@ -323,13 +276,6 @@ function! FoldAllParts ()
 		execute "normal `m"
 endfunction
 
-
-function! SelectPart () "range
-	"call search("P(","b")
-	call search('\(P.tune\|P.still\|P\)(',"b")
-	execute "normal 0V%"
-endfunction
-
 function! CopyLineFromPostWindow ()
 	execute "normal mQ"
 	execute "b sclang"
@@ -337,9 +283,6 @@ function! CopyLineFromPostWindow ()
 endfunction
 
 map zge :call CopyLineFromPostWindow()<CR>
-
-"map zdf :call LookupDefUnderCursor()<CR>
-" 808
 
 "fzf
 inoremap <expr> <c-x><c-f> fzf#vim#complete#path('rg --files')
@@ -372,7 +315,7 @@ nnoremap <leader>z :lua require('telekasten').panel()<CR>
 " we could define [[ in **insert mode** to call insert link
 " inoremap [[ <cmd>:lua require('telekasten').insert_link()<CR>
 " alternatively: leader [
-inoremap <leader>[ <cmd>:lua require('telekasten').insert_link({ i=true })<CR>
+" inoremap <leader>[ <cmd>:lua require('telekasten').insert_link({ i=true })<CR>
 inoremap <leader>zt <cmd>:lua require('telekasten').toggle_todo({ i=true })<CR>
 inoremap <leader># <cmd>lua require('telekasten').show_tags({i = true})<cr>
 

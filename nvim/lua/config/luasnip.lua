@@ -8,7 +8,7 @@ ls.config.set_config {
   -- Remember last snippet
   history = true,
   -- Dynamic update
-  updateevents = 'TextChanged,TextChangedI',
+  -- updateevents = 'TextChanged,TextChangedI',
   enable_autosnippets = false,
   ext_opts = {
     [ls_types.choiceNode] = {
@@ -38,5 +38,6 @@ return {
   expand_or_jump = expand_or_jump,
   jump_back = jumpa_back,
 }
+
 
 

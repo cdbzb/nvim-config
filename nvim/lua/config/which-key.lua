@@ -22,13 +22,15 @@ wk.register({
 			D = {function() tk.find_daily_notes() end,"Dailys" },
 			d = {function() tk.goto_today() end, "Today (home)" },
 			y = {function() tk.yank_notelink() end, "yank link"},
-			k = { function() tk.follow_link() end, "follow link" },
-			K = { function() tk.insert_link() end, "insert link" },
+
+			s = { function() tb.find_files({ cwd='/Users/michael/tank/super/More-Organized-Trek/Songs/' }) end, "Songs" },
 			g = {
 				name = "grep",
 				n = { function() tb.live_grep({cwd='/Users/michael/telekasten/'}) end,                      "notes" },
 				l = { function() tb.live_grep({cwd='/Users/michael/Documents/Logseq'}) end,                 "LogSeq" },
 				c = { function() tb.live_grep({cwd='/Users/michael/tank/super/Extensions/MW-Classes'}) end, "my classes" },
+				h = { function() tb.live_grep() end, "here" },
+
 			},
 			b = "buffer dir",
 			o = { function() tb.oldfiles() end,                                                "Recent" },
@@ -36,25 +38,26 @@ wk.register({
 			c = { function() tb.find_files({ cwd='~/tank/super/Extensions/MW-Classes/' }) end, "My Classes" },
 			h = { function() tb.find_files({ cwd=utils.buffer_dir() }) end,                    "Here" },
 			b = { function() tb.buffers() end,                                                 "Buffers" },
+			k=  {
+				name = "telekasten",
+				--	= {function() tk.new_note() end, "New" },
+				--	= {function() tk.new_templated_note() end, },
+				y       = {function() tk.yank_notelink() end, "Yank" },
+				c       = {function() tk.show_calendar() end, "Calendar" },
+				k       = { function() tk.follow_link() end, "follow link" },
+				K       = { function() tk.insert_link() end, "insert link" },
+				--	= {function() tk.paste_img_and_link() end, },
+				--	= {function() tk.toggle_todo() end, },
+				--	= {function() tk.show_backlinks() end, },
+				--	= {function() tk.find_friends() end, },
+				--	= {function() tk.preview_img() end, },
+				--	= {function() tk.browse_media() end, },
+				--	= {function() tk.show_tags() end, },
+				--	= {function() tk.show_tags() end, },
+				--	= {function() tk.rename_note() end, },
+				g = {function() tk.search_notes() end, "search under cursor in notes"},
+			},
 
-		},
-		k= {
-			name = "telekasten",
-		--	= {function() tk.new_note() end, "New" },
-		--	= {function() tk.new_templated_note() end, },
-		y	= {function() tk.yank_notelink() end, "Yank" },
-		c	= {function() tk.show_calendar() end, "Calendar" },
-		--	= {function() tk.paste_img_and_link() end, },
-		--	= {function() tk.toggle_todo() end, },
-		--	= {function() tk.show_backlinks() end, },
-		--	= {function() tk.find_friends() end, },
-		--	= {function() tk.preview_img() end, },
-		--	= {function() tk.browse_media() end, },
-		--	= {function() tk.show_tags() end, },
-		--	= {function() tk.show_tags() end, },
-		--	= {function() tk.rename_note() end, },
-			g = {function() tk.search_notes() end, "search under cursor in notes"},
-			f = { function() tk.find_notes() end, "find notes" },
 		},
 		z = {
 			--name = "fuzzy", -- optional group name
@@ -91,6 +94,7 @@ wk.register( {
 		k       = "recompile",
 		l       = "send line/selection",
 		u       = "play this tune",
+		n       = {function() require'scnvim'.send("Song.playOnly()") end, "play Only Again"},
 		["."]   = "send block",
 		d = {
 			name = "synthDefs",
@@ -137,9 +141,21 @@ nmap <leader>fzr :CtrlPMRU<CR>
 nnoremap <leader>zC :CalendarT<CR>
 nnoremap <leader>zI :lua require('telekasten').insert_img_link({ i=true })<CR>
 
+" press <Tab> to expand or jump in a snippet. These can also be mapped separately
+" via <Plug>luasnip-expand-snippet and <Plug>luasnip-jump-next.
+imap <silent><expr> <Tab> '<Plug>expand-or-jump' : '<Tab>' 
+" -1 for jumping backwards.
+
+inoremap <silent> <S-Tab> <cmd>lua require'luasnip'.jump(-1)<Cr>
+snoremap <silent> <Tab> <cmd>lua require('luasnip').jump(1)<Cr>
+snoremap <silent> <S-Tab> <cmd>lua require('luasnip').jump(-1)<Cr>
+
+" For changing choices in choiceNodes (not strictly necessary for a basic setup).
+imap <silent><expr> <C-E> luasnip#choice_active() ? '<Plug>luasnip-next-choice' : '<C-E>'
+smap <silent><expr> <C-E> luasnip#choice_active() ? '<Plug>luasnip-next-choice' : '<C-E>'
+
 nnoremap <leader>fzd :lua require'telescope.builtin'.find_files({cwd = vim.fn.expand("%:p:h")}) <CR>
 nnoremap <leader>fzs :lua require'telescope.builtin'.find_files({cwd='/Users/michael/tank/super/'}) <CR>
-
 
 nmap <localleader>dp yaw :call v:lua.require'scnvim'.send("")<left><left>Synth( \\<C-R>" )<CR>
 nmap <localleader>ii yaw:call v:lua.require'scnvim'.send("Song.current.<C-r>".play")<CR>

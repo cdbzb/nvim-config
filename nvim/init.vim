@@ -296,12 +296,12 @@ nmap sleep :!pmset sleepnow<CR>
 
 nmap <C-k> lua echo_sc_args()
 
-autocmd BufNewFile *.sc :set foldexpr=nvim_treesitter#foldexpr()
+autocmd BufEnter *.sc :set foldexpr=nvim_treesitter#foldexpr()
 "autocmd BufAdd *.scd SCNvimStart
 
 map ,hm /^\s*\**\a\+\s*{<cr>
 map z0 :set foldlevel=0<CR>
-map ,ft :set foldmethod=nvim_treesitter#foldexpr()
+map ,ft :set foldexpr=nvim_treesitter#foldexpr()
 
 nmap <leader>ts i<C-R>=strftime("%Y%m%d_%I%M%S")<CR><Esc>
 

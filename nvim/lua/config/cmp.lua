@@ -9,8 +9,8 @@ local cmp = require'cmp'
 local next_item = function(fallback)
   if cmp.visible() then
     cmp.select_next_item()
-  elseif has_words_before() then
-    cmp.complete()
+  --elseif has_words_before() then
+  --  cmp.complete()
   else
     fallback()
   end

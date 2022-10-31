@@ -15,7 +15,7 @@ require("nvim-treesitter.configs").setup {
       --node_decremental = "<c-Y>",
     },
   },
-  indent = { enable = true },
+  indent = { enable = false},
   matchup = { enable = true },
   autopairs = { enable = true },
   playground = {

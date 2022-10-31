@@ -101,7 +101,7 @@ function!RecordSection()
 	let lyric = matchstr(line,"\".*\" *,",0,0)
 	let lyric = substitute(lyric,"\" *,","\"",'g')
 	let lyric = "Song.section(" . lyric . ")"
-	let lyric = "~recorder.(Song.currentSong," . lyric . ",1)"
+	let lyric = "Song.rhythm(" . lyric . ",1)"
 	call v:lua.require'scnvim'.send(lyric)
 	"return lyric
 	"echom lyric
@@ -122,6 +122,7 @@ function! PlayFromHere()
 	exe "normal $"
 	let line = search("addLine","bnc")
 	let line = getline(line)
+	let line = substitute(line,"\'","\"",'g')
 	let lyric = matchstr(line,"\".*\" *,",0,0)
 	let lyric = substitute(lyric,"\" *,","\"",'g')
 	let section= "Song.section(" . lyric . ")"
@@ -153,7 +154,8 @@ endfunction
 
 function! NowPlayAgain()
 	call v:lua.require'scnvim'.send("z = Song.currentSong.cursor")
-	call scnvim#send_block()
+	call v:lua.require'scnvim.editor'.send_block()
+	"call scnvim#send_block()
 	call v:lua.require'scnvim'.send("Song.currentSong.cursor_(z)")
 	"call v:lua.require'scnvim'.send("Song.currentSong.playAfterLoad")
 	call v:lua.require'scnvim'.send("Song.currentSong.play")

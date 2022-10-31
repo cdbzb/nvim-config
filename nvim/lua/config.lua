@@ -12,6 +12,10 @@ vim.cmd( [[
 call plug#begin()
 " Reaper
 
+"Plug 'itchyny/calendar.vim'
+Plug 'arcticicestudio/nord-vim'
+Plug 'dracula/vim', { 'as': 'dracula' }
+Plug 'mattn/calendar-vim'
 Plug 'junegunn/goyo.vim'
 Plug 'junegunn/limelight.vim'
 Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
@@ -95,7 +99,7 @@ require("config.telescope")
 require("config.telekasten")
 require("config.luasnip")
 require("config.scnvim")
--- require("config.tree-sitter")
+require("config.tree-sitter")
 require("config.cmp")
 require("config.which-key")
 
@@ -115,9 +119,17 @@ smap <silent><expr> <C-E> luasnip#choice_active() ? '<Plug>luasnip-next-choice' 
 
 local api=vim.api
 api.nvim_create_autocmd(
-  "FileType",
-  { pattern = { "SuperCollider" }, command = [[silent! lua require('scnvim').start()]] }
+  "FileType", {
+		pattern = { "SuperCollider" }, command = [[silent! lua require('scnvim').start()]] 
+	}
 )
+api.nvim_create_autocmd(
+	"BufEnter", {
+		pattern = { "*.sc" },
+		command = ":set foldexpr=nvim_treesitter#<CR>"
+	}
+)
+--autocmd BufNewFile *.sc :set foldexpr=nvim_treesitter#foldexpr()
 
 api.nvim_create_autocmd(
 "Filetype ", { pattern = { "SuperCollider" },command = [[ lua require'reaper-nvim'.setup() ]] }

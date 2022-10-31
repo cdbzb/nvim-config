@@ -32,8 +32,12 @@ scnvim.setup {
 		cmd = '/usr/local/bin/pandoc',
 		},
 	postwin = {
+		size = 55,
+		auto_toggle_error = false,
+		fixed_size = 55,
+		highlight = true,
 		float = {
-			enabled =true,
+			--enabled =true,
 			callback =function(id) vim.api.nvim_win_set_option(id, 'winblend', 0) end,
 			height = 18
 			},

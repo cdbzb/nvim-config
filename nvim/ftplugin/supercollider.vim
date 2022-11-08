@@ -123,7 +123,7 @@ function! PlayFromHere()
 	let line = search("addLine","bnc")
 	let line = getline(line)
 	let line = substitute(line,"\'","\"",'g')
-	let lyric = matchstr(line,"\".*\" *,",0,0)
+	let lyric = matchstr(line,"\"[\^\"]*\"",0,0)
 	let lyric = substitute(lyric,"\" *,","\"",'g')
 	let section= "Song.section(" . lyric . ")"
 	let command="Song.currentSong.cursor_(" . section. ")"

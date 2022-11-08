@@ -92,11 +92,11 @@ cmp.setup {
 end
 },
 	sources = {
+		{ name = 'luasnip' },
 		{ name = 'cmp_tabnine' },
 		{ name = 'path' },
 		-- { name = 'nvim_lsp' },
 		{ name = 'tags' },
-		{ name = 'luasnip' },
 		-- { name = 'nvim_lua' },
 		{ name = 'treesitter' },
 		-- { name = 'ultisnips' },
@@ -108,7 +108,7 @@ end
 	},
 experimental = {
 	-- native_menu = true,
-	ghost_text = true
+	-- ghost_text = true
 	}
 }
 

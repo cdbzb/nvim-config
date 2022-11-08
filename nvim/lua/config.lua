@@ -91,7 +91,8 @@ Plug 'Preservim/vim-markdown'
 "Plug 'dhruvasagar/vim-dotoo'
 " Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
 " Plug 'tbodt/deoplete-tabnine', { 'do': './install.sh' }
-Plug 'github/copilot.vim'
+
+"Plug 'github/copilot.vim'
 call plug#end() 
 ]])
 

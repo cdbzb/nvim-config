@@ -89,7 +89,7 @@ wk.register( {
 		p       = {function() require'scnvim'.send("Song.play") end, "play Song" },
 		[ "<" ] = "reload part and play",
 		[ "," ] = "play Part",
-		o       = "open RPP",
+		--o       = "open RPP",
 		f       = { ":set ft=supercollider<CR>","set filetype" },
 		k       = "recompile",
 		l       = "send line/selection",

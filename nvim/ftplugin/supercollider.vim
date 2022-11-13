@@ -28,9 +28,15 @@ function! CheckIsCodeBlock(lnum)
 endfunction
 
 function! SelectPart () "range
-	"call search("P(","b")
+	" get Song.cursor
+	" set cursor of just past part
+	call SetPartCursor()
 	call search('\(P.tune\|P.still\|P\|P.rpp\)(',"b")
 	execute "normal 0V%"
+	call feedkeys(":call SetPartCursorToNil()\<CR>")
+
+	"call v:lua.feedkeys(":call SetPartCursorToNil()\<CR>")
+	" call SetPartCursorToNil()
 endfunction
 
 function! FoldParts (lnum)
@@ -96,6 +102,16 @@ function! InsertDurs()
 	normal \<ESC>
 endfunction
 
+"function! CountSectionNumber()
+"	let cursor = line('.')
+"	let total = 0
+"	while cursor > 0
+"		let total = total + 1
+"		let cursor = cursor - 1
+"	endwhile
+"	echo total
+"endfunction
+
 function!RecordSection()
 	let line = getline(".")
 	let lyric = matchstr(line,"\".*\" *,",0,0)
@@ -134,18 +150,29 @@ function! GetStartString()
 	exe "normal $"
 	let line = search("addLine","bnc")
 	let line = getline(line)
-	let lyric = matchstr(line,"\".*\" *,",0,0)
+	let lyric = matchstr(line,"\"[\^\"]*\"",0,0)
 	let lyric = substitute(lyric,"\" *,","\"",'g')
 	let section= "Song.section(" . lyric . ")"
 	let command="Song.currentSong.getStartString(" . section. ")"
 	call v:lua.require'scnvim'.send(command)
 endfunction
 
+function! SetPartCursor()
+	let sectionNumber = GetSectionNumber()
+	let setPartCursor = "Song.partCursor_(" . GetSectionNumber() . ")"
+	call v:lua.require'scnvim'.send(setPartCursor)
+endfunction
+
+function! SetPartCursorToNil()
+	call v:lua.require'scnvim'.send("Song.partCursor_(nil)")
+endfunction
+
 function! GetSectionNumber()
 	exe "normal $"
 	let line = search("addLine","bnc")
 	let line = getline(line)
-	let lyric = matchstr(line,"\".*\" *,",0,0)
+	let line = substitute(line,"\'","\"",'g')
+	let lyric = matchstr(line,"\"[\^\"]*\"",0,0)
 	let lyric = substitute(lyric,"\" *,","\"",'g')
 	let section= "Song.section(" . lyric . ")"
 	echo section

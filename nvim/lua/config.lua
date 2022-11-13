@@ -13,6 +13,7 @@ call plug#begin()
 " Reaper
 
 "Plug 'itchyny/calendar.vim'
+Plug 'rktjmp/hotpot.nvim'
 Plug 'arcticicestudio/nord-vim'
 Plug 'dracula/vim', { 'as': 'dracula' }
 Plug 'mattn/calendar-vim'
@@ -103,6 +104,12 @@ require("config.scnvim")
 require("config.tree-sitter")
 require("config.cmp")
 require("config.which-key")
+
+--local test = require('showmarks')
+--test()
+
+--neat2 = require('is-neat')
+--neat2("nothin")
 
 
 vim.cmd([[

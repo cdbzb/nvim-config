@@ -97,7 +97,7 @@ ls.add_snippets(nil, {
 		i(0)
 	}),
 	s("part",{
-		t("P(\\"),i(1,"name:"),t(",start:\\"),i(2),t({ ",music: { |p b e|","\t" }),i(3),t({ "","});"})
+		t("P(\\"),i(1,"name:"),t({ ", music: { |p b e|","\t" }),i(2),t({ "","});"})
 	}),
 	s("tune", {
 		t'P.tune(\\' ,
@@ -144,7 +144,16 @@ ls.add_snippets(nil, {
 
 	}),
 	s("env",
-		fmt("{}{}({}).kr({},gate:{})",{ c(1,{t("Env."),t("* Env.")}),i(2),i(3),i(4,"2"),i(5,"1")})
+		fmt("{}{}({}).kr({},gate:{})",{
+			c( 1, {
+				t("Env."),
+				t("* Env."),
+				t("Env")
+			}), i(2),i(3),i(4,"2"),c(5, {
+				i(1,"1"),
+				t("\\gate.kr(1)")
+			})
+		})
 	),
 	s("mega",
 		fmt([[

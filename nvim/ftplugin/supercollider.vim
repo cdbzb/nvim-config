@@ -31,7 +31,7 @@ function! SelectPart () "range
 	" get Song.cursor
 	" set cursor of just past part
 	call SetPartCursor()
-	call search('\(P.tune\|P.still\|P\|P.rpp\)(',"b")
+	call search('\(P.tune\|P.still\|P\|P.rpp\|P.synthV\)(',"b")
 	execute "normal 0V%"
 	call feedkeys(":call SetPartCursorToNil()\<CR>")
 
@@ -43,15 +43,9 @@ function! FoldParts (lnum)
 	let save_cursor=getcurpos()
 	let thisline=getline(a:lnum)
 	let nextline=getline(a:lnum+1)
-	if match(thisline, 'P(') >= 0
+	if match(thisline, 'P\.*\a*(\s*\\') >= 0
 		return '>3'
-	elseif match(thisline, 'P.still(') >= 0
-		return '>3'
-	elseif match(thisline, 'P.tune(') >= 0
-		return '>3'
-	elseif match(thisline, 'P.rpp(') >= 0
-		return '>3'
-	elseif match(thisline, ');') == 0
+	elseif match(thisline, '}*);') == 0
 		return '<3'
 	elseif match(thisline, 'MUTED);')  >0
 		return '<3'

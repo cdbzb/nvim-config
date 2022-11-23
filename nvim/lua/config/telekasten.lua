@@ -28,7 +28,8 @@ require('telekasten').setup({
     image_subdir = "img",
 
     -- markdown file extension
-    extension    = ".md",
+     extension    = ".md",
+    --extension = ".org",
 
     -- Generate note filenames. One of:
     -- "title" (default) - Use title if supplied, uuid otherwise
@@ -47,7 +48,8 @@ require('telekasten').setup({
     weeklies_create_nonexisting = true,
 
     -- skip telescope prompt for goto_today and goto_thisweek
-    journal_auto_open = false,
+    --journal_auto_open = false,
+    journal_auto_open = true,
 
     -- template for new notes (new_note, follow_link)
     -- set to `nil` or do not specify if you do not want a template

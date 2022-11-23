@@ -152,12 +152,10 @@ set autochdir
 
 set titlestring=%f
 set title
-"vmap <LEADER>l <Plug>(scnvim-send-selection)
 "let swithchbuf +=useopen
 "map <LEADER>L ``:b clang<ENTER>Gm`P
 "imap <LEADER>l <ESC>,l
 map  <LEADER>; <ESC>A;<ESC>
-nmap <Space>p <Plug>(scnvim-postwindow-toggle)
 
 "open associated RPP (at top of file)
 

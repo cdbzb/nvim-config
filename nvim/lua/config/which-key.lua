@@ -42,6 +42,7 @@ wk.register({
 				name = "telekasten",
 				--	= {function() tk.new_note() end, "New" },
 				--	= {function() tk.new_templated_note() end, },
+				t      = {function() tk.show_tags() end, "Show Tags" },
 				y       = {function() tk.yank_notelink() end, "Yank" },
 				c       = {function() tk.show_calendar() end, "Calendar" },
 				k       = { function() tk.follow_link() end, "follow link" },
@@ -53,12 +54,12 @@ wk.register({
 				--	= {function() tk.preview_img() end, },
 				--	= {function() tk.browse_media() end, },
 				--	= {function() tk.show_tags() end, },
-				--	= {function() tk.show_tags() end, },
 				--	= {function() tk.rename_note() end, },
 				g = {function() tk.search_notes() end, "search under cursor in notes"},
 			},
 
 		},
+		pf = {function() sc.send("PF()") end, "make a piano!"},
 		z = {
 			--name = "fuzzy", -- optional group name
 			b       = 'buffer',
@@ -125,6 +126,10 @@ wk.register( {
 			o = { function() sc.send("Part.current.rpp.open") end, "open RPP" },
 			b = { function() sc.send("Part.current.rpp.build") end, "build RPP" }
 		},
+		v = { 
+			o = { function() sc.send("Part.current.synthV.open") end, "open synthV" },
+			r = { function() sc.send("Part.current.synthV.render") end, "render synthV" }
+		}
 }} )
 
 vim.cmd( [[

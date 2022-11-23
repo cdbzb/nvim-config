@@ -19,9 +19,11 @@ Plug 'dracula/vim', { 'as': 'dracula' }
 Plug 'mattn/calendar-vim'
 Plug 'junegunn/goyo.vim'
 Plug 'junegunn/limelight.vim'
-Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
-Plug 'nvim-treesitter/nvim-treesitter-refactor'
-Plug 'nvim-treesitter/playground'
+
+"Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
+"Plug 'nvim-treesitter/nvim-treesitter-refactor'
+"Plug 'nvim-treesitter/playground'
+
 "Plug 'haorenW1025/completion-nvim'
 Plug 'nvim-treesitter/completion-treesitter'
 "Plug 'nvim-treesitter/nvim-treesitter-textobjects'
@@ -101,7 +103,7 @@ require("config.telescope")
 require("config.telekasten")
 require("config.luasnip")
 require("config.scnvim")
-require("config.tree-sitter")
+--require("config.tree-sitter")
 require("config.cmp")
 require("config.which-key")
 

@@ -177,17 +177,15 @@ ls.add_snippets(nil, {
 	
 	),
 	s("synthV",
-		fmt([[
-		P.synthV({},
-		[
+	fmt([[
+		P.synthV({}, params: {{|p b| [
 			lyrics: {},
-		],music:{{|p b e|
+		] }}, music:{{|p b e|
 			{{
 				e.playbuf
 				=> p.synthVTracks.at(e.key).()
 			}}.play
-		}}
-	);
+		}});
 	]],{
 		i(1,"voice - start"),i(2)
 	})

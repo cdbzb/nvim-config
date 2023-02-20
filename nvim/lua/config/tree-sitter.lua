@@ -3,8 +3,9 @@ require("nvim-treesitter.configs").setup {
   -- ensure_installed = {"supercollider", "rust", "html", "javascript"},
   ensure_installed = "supercollider",
   highlight = {
-    enable = true, additional_vim_regex_highlighting = true,
-    -- disable = { "supercollider"},
+    enable = true, 
+  --  -- additional_vim_regex_highlighting =true,
+  --  -- disable = { "supercollider"},
   },
   incremental_selection = {
     enable = true,
@@ -18,26 +19,8 @@ require("nvim-treesitter.configs").setup {
   indent = { enable = false},
   matchup = { enable = true },
   autopairs = { enable = true },
-  playground = {
-    enable = true,
-    disable = {},
-    updatetime = 25,
-    persist_queries = false,
-    keybindings = {
-      toggle_query_editor = "o",
-      toggle_hl_groups = "i",
-      toggle_injected_languages = "t",
-      toggle_anonymous_nodes = "a",
-      toggle_language_display = "I",
-      focus_language = "f",
-      unfocus_language = "F",
-      update = "R",
-      goto_node = "<cr>",
-      show_help = "?",
-    },
-  },
   rainbow = {
-    enable = true,
+    enable =false,
     extended_mode = true, -- Highlight also non-parentheses delimiters
     max_file_lines = 1000,
   },

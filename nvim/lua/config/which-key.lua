@@ -5,6 +5,7 @@ utils = require("telescope.utils")
 tk = require("telekasten")
 sc = require("scnvim")
 
+
 wk.setup {
     -- your configuration comes here
     -- or leave it empty to use the default settings
@@ -14,7 +15,13 @@ wk.setup {
   }
 
 wk.register({
+	s = { "<Plug>Lightspeed_s", "lightspeed" };
 	[ "<leader>" ] = {
+		b = { 
+			name = "buffers",
+			e = { ":call DeleteEmptyBuffers()<CR>", "delete empty" },
+			b = { ":source /Users/michael/.config/nvim/lua/config/bufferline.lua","source bufferline.lua"},
+		},
 		f = {
 			name = "Find Files",
 			n = { function() tk.find_notes() end, "Notes" },
@@ -79,7 +86,11 @@ wk.register({
 			l = { "<C-w>l","right" },
 			c = { "<C-w>c","close" },
 		},
-		a = {function() sc.send("Date.insertStamp") end, "Insert Timestamp"}
+		a = {function() sc.send("Date.insertStamp") end, "Insert Timestamp"},
+		t = { name = terminal,
+			t = { ":ToggleTerm<CR>","ToggleTerm"  }
+
+		}
 	}
 })
 wk.register( {
@@ -128,7 +139,21 @@ wk.register( {
 		},
 		v = { 
 			o = { function() sc.send("Part.current.synthV.open") end, "open synthV" },
-			r = { function() sc.send("Part.current.synthV.render") end, "render synthV" }
+			r = { function() 
+				vim.api.nvim_call_function("SelectPart",{})
+				-- vim.api.nvim_call_function("sleep",{0.1})
+				require'scnvim.editor'.send_selection()
+				sc.send("Part.current.synthV.render")
+			end, "render synthV" }
+		},
+		a = { 
+			name = "arm",
+			o = {function() sc.send("RecOnsets.record") end, "RecOnsets"},
+			k = {function() sc.send("RecKey.record") end, "RecKey"},
+			e = {function() sc.send("RecEnv.record") end, "RecEnv"},
+			r = {function() sc.send("Rec.record") end, "Rec"}
+
+
 		}
 }} )
 
@@ -154,6 +179,8 @@ imap <silent><expr> <Tab> '<Plug>expand-or-jump' : '<Tab>'
 inoremap <silent> <S-Tab> <cmd>lua require'luasnip'.jump(-1)<Cr>
 snoremap <silent> <Tab> <cmd>lua require('luasnip').jump(1)<Cr>
 snoremap <silent> <S-Tab> <cmd>lua require('luasnip').jump(-1)<Cr>
+
+inoremap <silent> <C-]> <cmd>lua require'luasnip'.jump(1)<Cr>
 
 " For changing choices in choiceNodes (not strictly necessary for a basic setup).
 imap <silent><expr> <C-E> luasnip#choice_active() ? '<Plug>luasnip-next-choice' : '<C-E>'

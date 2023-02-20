@@ -1,3 +1,4 @@
+
 let data_dir = has('nvim') ? stdpath('data') . '/site' : '~/.vim'
 if empty(glob(data_dir . '/autoload/plug.vim'))
   silent execute '!curl -fLo '.data_dir.'/autoload/plug.vim --create-dirs  https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim'
@@ -5,8 +6,6 @@ if empty(glob(data_dir . '/autoload/plug.vim'))
 endif
 
 lua require('config')
-
-nmap s <Plug>Lightspeed_s
 
 lua <<EOF
 vim.g['reaper_target_ip'] = '127.0.0.1'
@@ -44,7 +43,6 @@ let g:netrw_winsize=25
 "terminal
 tnoremap <Esc> <C-\><C-n>
 
-"fold color
 "deoplete + neosnippet + autopairs
 let g:AutoPairsMapCR=1
 let g:AutoPairsSpace = 0
@@ -161,8 +159,8 @@ map  <LEADER>; <ESC>A;<ESC>
 
 "for lilypond
 "map ,swap "adabl"bdab"aPF|;"bP
-cmap halve !perl -pe 's/(\d+)/$1*.5/eg'
-cmap double !perl -pe 's/(\d+)/$1*2/eg'
+" cmap halve !perl -pe 's/(\d+)/$1*.5/eg'
+" cmap double !perl -pe 's/(\d+)/$1*2/eg'
 " map <F5> :w<bar>:!lilypond -o=% % <CR> <ENTER> 
 "map <F5> :w<bar>:!tmux new -d "lilypond % %"<CR> <ENTER> 
 "map <Leader>. <F5><ENTER>``
@@ -185,6 +183,8 @@ colorscheme peaksea
 " set gfn=Menlo:h21
 set background=dark
 colorscheme peaksea
+set termguicolors
+color kanagawa
 
 
 map <Leader>xx <Plug>VimwikiToggleListItem
@@ -332,3 +332,16 @@ hi tkHighlight ctermbg=yellow ctermfg=darkred cterm=bold guibg=yellow guifg=dark
 hi link CalNavi CalRuler
 hi tkTagSep ctermfg=gray guifg=gray
 hi tkTag ctermfg=175 guifg=#d3869B
+
+function! DeleteEmptyBuffers()
+    let [i, n; empty] = [1, bufnr('$')]
+    while i <= n
+        if bufexists(i) && bufname(i) == ''
+            call add(empty, i)
+        endif
+        let i += 1
+    endwhile
+    if len(empty) > 0
+        exe 'bdelete' join(empty)
+    endif
+endfunction

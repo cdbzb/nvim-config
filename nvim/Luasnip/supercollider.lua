@@ -99,6 +99,31 @@ ls.add_snippets(nil, {
 	s("part",{
 		t("P(\\"),i(1,"name:"),t({ ", music: { |p b e|","\t" }),i(2),t({ "","});"})
 	}),
+	s("still",{
+		t("P.still(\\"),
+		i(1,"name:"),
+		t(", timecode: "),
+		i(2),
+		t({ ".seconds, music: { |p b e|",
+			"\t e.still.( ",
+			"\t\twait: " })
+			,i(3),
+			c(4, { --table of choices
+				{ t( {"","\t\ttext: [\""} ), i(1), t{[[","]]}, i(2), t{"\"],"} },
+				{ t( { ",","\t\tfade: " } ), i(1), t{","}},
+				t{""}
+
+			}) ,
+			t({
+				"",
+				"\t)",
+			}),
+			i(0),
+			t({
+				"",
+				"});"
+			})
+	}),
 	s("tune", {
 		t'P.tune(\\' ,
 	sn(1,{
@@ -191,7 +216,26 @@ ls.add_snippets(nil, {
 	})
 		
 	),
-
+	s("double",
+		fmt([[
+			P.double({}, params: {{|p b| [
+				{}
+			] }}, music:{{|p b e|
+				{{
+					e.playbuf
+					=> p.synthVTracks.at(e.key).()
+				}}.play
+			}});
+		]],{
+			i(1,"voice - start"),i(2)
+		})
+		
+	),
+	s("filter", 
+	fmt([[ filter: ({}{}), ]],
+	{ i(1, "midinote:"), i(2, " _ - 12") }
+		)
+	),
 	s("start",{
 		t"start: \\",
 		f(function(_,parent)
@@ -202,7 +246,7 @@ ls.add_snippets(nil, {
 			return ""
 		end,{}
 		)
-	})
+	}),
     },
 })
 		

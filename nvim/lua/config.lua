@@ -8,9 +8,21 @@ vim.g.maplocalleader = ','
 set.timeoutlen=500
 set.completeopt=menu,menuone,noselect
 
-vim.cmd( [[
+vim.cmd([[
 call plug#begin()
 " Reaper
+
+Plug 'numToStr/Comment.nvim' 
+" Plug 'nikvydp/neomux'
+Plug 'akinsho/toggleterm.nvim'
+Plug 'p00f/nvim-ts-rainbow'
+Plug 'savq/melange'
+Plug 'fenetikm/falcon'
+Plug 'rebelot/kanagawa.nvim'
+Plug 'mhartington/oceanic-next'
+Plug 'akinsho/bufferline.nvim' , { 'tag': 'v3.*' }
+Plug 'projekt0n/github-nvim-theme'
+Plug 'ishan9299/nvim-solarized-lua'
 
 "Plug 'itchyny/calendar.vim'
 Plug 'rktjmp/hotpot.nvim'
@@ -20,14 +32,15 @@ Plug 'mattn/calendar-vim'
 Plug 'junegunn/goyo.vim'
 Plug 'junegunn/limelight.vim'
 
-"Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
-"Plug 'nvim-treesitter/nvim-treesitter-refactor'
+Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
+Plug 'nvim-treesitter/nvim-treesitter-refactor'
 "Plug 'nvim-treesitter/playground'
 
-"Plug 'haorenW1025/completion-nvim'
+Plug 'haorenW1025/completion-nvim'
+
 Plug 'nvim-treesitter/completion-treesitter'
-"Plug 'nvim-treesitter/nvim-treesitter-textobjects'
-Plug 'ray-x/cmp-treesitter'
+Plug 'nvim-treesitter/nvim-treesitter-textobjects'
+"Plug 'ray-x/cmp-treesitter'
 
 Plug 'AckslD/nvim-trevJ.lua'
 Plug 'saadparwaiz1/cmp_luasnip'
@@ -52,6 +65,7 @@ Plug 'quangnguyen30192/cmp-nvim-tags'
 Plug 'tzachar/cmp-tabnine', { 'do': './install.sh' }
 
 Plug 'davidgranstrom/scnvim',{'do':{-> scnvim#install() } }
+
 Plug 'mhinz/vim-startify'
 Plug 'jiangmiao/auto-pairs'
 Plug 'vim-scripts/peaksea'
@@ -99,19 +113,16 @@ Plug 'Preservim/vim-markdown'
 call plug#end() 
 ]])
 
+require("config.bufferline")
+require("toggleterm").setup{}
 require("config.telescope")
+require('Comment').setup()
 require("config.telekasten")
 require("config.luasnip")
 require("config.scnvim")
---require("config.tree-sitter")
+require("config.tree-sitter")
 require("config.cmp")
 require("config.which-key")
-
---local test = require('showmarks')
---test()
-
---neat2 = require('is-neat')
---neat2("nothin")
 
 
 vim.cmd([[
@@ -121,6 +132,9 @@ inoremap <silent> <S-Tab> <cmd>lua require'luasnip'.jump(-1)<Cr>
 snoremap <silent> <c-n> <cmd>lua require('luasnip').jump(1)<Cr>
 inoremap <silent> <c-n> <cmd>lua require('luasnip').jump(1)<Cr>
 snoremap <silent> <S-Tab> <cmd>lua require('luasnip').jump(-1)<Cr>
+
+smap hh <c-o>2b
+map <leader>mul <ESC>:s/, mul:1.0, add:0.0//<CR>
 
 " For changing choices in choiceNodes (not strictly necessary for a basic setup).
 imap <silent><expr> <C-E> luasnip#choice_active() ? '<Plug>luasnip-next-choice' : '<C-E>'
@@ -155,3 +169,20 @@ au User GoyoEnter Limelight
 vim.cmd([[
 au User GoyoLeave Limelight!
 ]])
+
+local status, bufferline = pcall(require, "bufferline")
+if not status then
+  print("ERROR bufferline")
+  return
+end
+bufferline.setup{
+        options = {
+            mode = "buffers", -- set to "tabs" to only show tabpages instead
+	    numbers = "ordinal",
+            custom_filter = function(buf_number, buf_numbers)
+                if vim.fn.bufname(buf_number) ~= "" then
+                    return true
+                end
+            end,
+        }
+}

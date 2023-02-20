@@ -71,11 +71,11 @@ cmp.setup {
 		-- { "i", "s", --[[ "c" (to enable the mapping in command mode) ]] }
 		-- ),
 
-    ['<Tab>'] = cmp.mapping(next_item, { 'i', 's' }),
-    ['<S-Tab>'] = cmp.mapping(prev_item , { 'i', 's' }),
-    -- ['<C-n>'] = cmp.mapping(next_item, { 'i', 's' }),
-    -- ['<C-n>'] = cmp.mapping(next_item, {'i','s'}),
-    -- ['<C-p>'] = cmp.mapping(prev_item , { 'i', 's' }),
+		--['<Tab>'] = cmp.mapping(next_item, { 'i', 's' }),
+		--['<S-Tab>'] = cmp.mapping(prev_item , { 'i', 's' }),
+		-- ['<C-n>'] = cmp.mapping(next_item, { 'i', 's' }),
+		-- ['<C-n>'] = cmp.mapping(next_item, {'i','s'}),
+		-- ['<C-p>'] = cmp.mapping(prev_item , { 'i', 's' }),
 
     
 	},

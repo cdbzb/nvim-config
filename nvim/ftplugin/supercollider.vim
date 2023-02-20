@@ -31,7 +31,7 @@ function! SelectPart () "range
 	" get Song.cursor
 	" set cursor of just past part
 	call SetPartCursor()
-	call search('\(P.tune\|P.still\|P\|P.rpp\|P.synthV\)(',"b")
+	call search('\(P.tune\|P.still\|P\|P.rpp\|P.synthV\|P.double\)(',"b")
 	execute "normal 0V%"
 	call feedkeys(":call SetPartCursorToNil()\<CR>")
 
@@ -95,6 +95,8 @@ function! InsertDurs()
 	exe "sleep 100m"
 	normal \<ESC>
 endfunction
+
+
 
 "function! CountSectionNumber()
 "	let cursor = line('.')
@@ -171,6 +173,14 @@ function! GetSectionNumber()
 	let section= "Song.section(" . lyric . ")"
 	echo section
 	return section
+endfunction
+
+function! RenderSynthV()
+	call SelectPart()
+	sleep 0.1
+	call v:lua.require'scnvim.editor'.send_selection()
+	sleep 0.1
+	call v:lua.require'scnvim'.send("Part.current.synthV.render")
 endfunction
 
 function! NowPlayAgain()

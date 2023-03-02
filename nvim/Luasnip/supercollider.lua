@@ -203,8 +203,9 @@ ls.add_snippets(nil, {
 	),
 	s("synthV",
 	fmt([[
-		P.synthV({}, params: {{|p b| [
-			lyrics: {},
+		P.synthV({}, take: \lead, params: {{|p b| [
+			lyrics: "{}",
+			pitchTake: 1
 		] }}, music:{{|p b e|
 			{{
 				e.playbuf
@@ -218,7 +219,7 @@ ls.add_snippets(nil, {
 	),
 	s("double",
 		fmt([[
-			P.double({}, params: {{|p b| [
+			P.double({}, take: {}, params: {{|p b| [
 				{}
 			] }}, music:{{|p b e|
 				{{
@@ -227,9 +228,33 @@ ls.add_snippets(nil, {
 				}}.play
 			}});
 		]],{
-			i(1,"voice - start"),i(2)
+			i(1,"voice - start"),i(2, "\\lead"),i(3)
 		})
 		
+	),
+	s("synthvdouble",
+	fmt([[
+		P.synthV({}, take:\lead, params: {{|p b| [
+			lyrics: "{}",
+			pitchTake: 1
+		] }}, music:{{|p b e|
+			{{
+				e.playbuf
+				=> p.synthVTracks.at(e.key).()
+			}}.play
+		}});
+		P.double({}, params: {{|p b| [
+				{}
+			] }}, music:{{|p b e|
+				{{
+					e.playbuf
+					=> p.synthVTracks.at(e.key).()
+				}}.play
+			}});
+]],{
+		i(1,"voice - start"),i(2),f(function(args, snip) return args[1] end, {1}),i(3)
+	})
+	
 	),
 	s("filter", 
 	fmt([[ filter: ({}{}), ]],

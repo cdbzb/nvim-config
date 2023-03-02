@@ -31,7 +31,7 @@ function! SelectPart () "range
 	" get Song.cursor
 	" set cursor of just past part
 	call SetPartCursor()
-	call search('\(P.tune\|P.still\|P\|P.rpp\|P.synthV\|P.double\)(',"b")
+	call search('\(P.tune\|P.still\|P\|P.rpp\|P.synthV\|P.double\|P.lazyV\|P.lazyDouble\)(',"b")
 	execute "normal 0V%"
 	call feedkeys(":call SetPartCursorToNil()\<CR>")
 
@@ -39,11 +39,16 @@ function! SelectPart () "range
 	" call SetPartCursorToNil()
 endfunction
 
+function! RenderNextSynthV ()
+	execute "/P.\\(synthV\\|double\\)"
+	execute "normal ,vr"
+endfunction
+
 function! FoldParts (lnum)
 	let save_cursor=getcurpos()
 	let thisline=getline(a:lnum)
 	let nextline=getline(a:lnum+1)
-	if match(thisline, 'P\.*\a*(\s*\\') >= 0
+	if match(thisline, '^P\.*\a*(\s*') >= 0
 		return '>3'
 	elseif match(thisline, '}*);') == 0
 		return '<3'

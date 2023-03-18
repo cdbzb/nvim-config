@@ -14,6 +14,7 @@ local c = ls.choice_node
 local dynamicn = ls.dynamic_node
 local postfix = require("luasnip.extras.postfix").postfix
 local fmt = require("luasnip.extras.fmt").fmt
+local snippets = {}
 
 vim.api.nvim_set_keymap("i", "<C-.>", "<Plug>luasnip-next-choice", {})
 ls.config.set_config({
@@ -36,8 +37,7 @@ local getSection = function()
 
 local date = function() return {os.date('%Y-%m-%d')} end
 
-ls.add_snippets(nil, {
-    all = {
+return {
         s({
             trig = "date",
             namr = "Date",
@@ -49,6 +49,22 @@ ls.add_snippets(nil, {
 		t( {"[", "\t"} ),
 		i(1),
 		t({ "","].pp" }) 
+	}),
+	s({ trig="ww", snippetType= "snippet"},t".asBeats.warpTo( e.tempoMap ).q"),
+	s({ trig="qq", snippetType= "snippet"},t"=> _.q"),
+	
+	s("play",{
+		c(1,{
+			sn(1,{
+				t{ "[","\t" },i(1),t{ "\t","].pp" }
+			}),
+			sn(1,{
+				t"(",i(1),t").play"
+			}),
+			sn(1,{
+				t"{",i(1),t"}.play"
+			}),
+		})
 	}),
 	s({
 		trig = "wdf",
@@ -87,18 +103,22 @@ ls.add_snippets(nil, {
 		i(1),
 		t("}")
 	}),
-	s("play",{
-		t("{"),
-		func(function(_, snip)
-			return snip.env.TM_SELECTED_TEXT[1] or {}
-		end, {}),
-		i(1),
-		t("}.play"),
-		i(0)
-	}),
-	s("part",{
-		t("P(\\"),i(1,"name:"),t({ ", music: { |p b e|","\t" }),i(2),t({ "","});"})
-	}),
+	s("Play",
+	fmt([[
+	{{
+	{}
+	}}.play;
+	]],{
+		f(function(_, snip)
+			-- return snip.env.TM_SELECTED_TEXT or {}
+			local res, env = {}, snip.env
+			for _, ele in ipairs(env.LS_SELECT_RAW) do table.insert(res, ele) end
+			return res
+
+		end,{}
+		)
+	})
+	),
 	s("still",{
 		t("P.still(\\"),
 		i(1,"name:"),
@@ -147,27 +167,6 @@ ls.add_snippets(nil, {
 		i(1),t',].pp'
 
 	}),
-	postfix(".part", {
-		f(function(_, parent)
-			return "P(\'" .. parent.snippet.env.POSTFIX_MATCH .. "'" 
-		end, {}),
-		t(",start:\\"),
-		-- i(1),
-		sn(1,{
-			f(function(_,parent)
-				local section = vim.api.nvim_exec([[
-				call GetSectionNumber()
-				]],true)
-				require'scnvim'.send('Song.currentSong.getStartString(' .. section .. ')')
-				return ""
-			end,{}
-			),
-			i(1)
-		}),
-
-		t({ ",music: {|p b e|","\t" }),i(2),t({ "","});"})
-
-	}),
 	s("env",
 		fmt("{}{}({}).kr({},gate:{})",{
 			c( 1, {
@@ -202,20 +201,48 @@ ls.add_snippets(nil, {
 	
 	),
 	s("synthV",
-	fmt([[
-		P.synthV({}, take: \lead, params: {{|p b| [
-			lyrics: "{}",
-			pitchTake: 1
-		] }}, music:{{|p b e|
-			{{
-				e.playbuf
-				=> p.synthVTracks.at(e.key).()
-			}}.play
-		}});
-	]],{
-		i(1,"voice - start"),i(2)
-	})
+		fmt([[
+			P.synthV({}, take: \lead, params: {{|p b| [
+				lyrics: "{}",
+				pitchTake: 1
+			] }}, music:{{|p b e|
+				{{
+					e.playbuf
+					=> p.synthVTracks.at(e.key).()
+				}}.play
+			}});
+		]],{
+			i(1,"voice - start"),i(2)
+		})
+	),
+	s({ trig = 'role.(%a*)',regTrig=true, name=' synthv for role' },
+		fmt([[
+			P.synthV(role: \{}, take: \lead, params: {{|p b| [
+				lyrics: "{}",
+				pitchTake: 1
+			] }}, music:{{|p b e|
+				{{
+					e.playbuf
+					=> p.synthVTracks.at(e.key).()
+				}}.play
+
+			}});
+		]],{
+			f( function(_,snip) return snip.captures[1] end ),
+			-- i(1,"voice - start"),
+			i(1)
+		})
 		
+	),
+	s({trig = '(%a*)(.part)', regTrig=true, name='part regex',snippetType="snippet" },
+		fmt([[
+			P(\{}, music: {{ |p b e|
+				{}
+			}});
+		]],{
+			f( function(_, snip) return snip.captures[1] end ),
+			i(1,"")
+		})
 	),
 	s("double",
 		fmt([[
@@ -272,8 +299,7 @@ ls.add_snippets(nil, {
 		end,{}
 		)
 	}),
-    },
-})
+}
 		
 
 

@@ -1,7 +1,7 @@
 local ls = require'luasnip'
 local ls_types = require'luasnip.util.types'
 
-require("luasnip").add_snippets("supercollider", require("scnvim/utils").get_snippets())
+-- require("luasnip").add_snippets("supercollider", require("scnvim/utils").get_snippets())
 require("luasnip.loaders.from_lua").load({paths = "/Users/michael/.config/nvim/Luasnip"})
 
 ls.config.set_config {
@@ -9,7 +9,7 @@ ls.config.set_config {
   history = true,
   -- Dynamic update
   -- updateevents = 'TextChanged,TextChangedI',
-  enable_autosnippets = false,
+  enable_autosnippets = true,
   ext_opts = {
     [ls_types.choiceNode] = {
       active = {

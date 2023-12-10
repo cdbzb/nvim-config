@@ -93,7 +93,7 @@ end
 },
 	sources = {
 		{ name = 'luasnip' },
-		{ name = 'cmp_tabnine' },
+		-- { name = 'cmp_tabnine' },
 		{ name = 'path' },
 		-- { name = 'nvim_lsp' },
 		{ name = 'tags' },

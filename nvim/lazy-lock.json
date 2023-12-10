@@ -1,0 +1,16 @@
+{
+  "Comment.nvim": { "branch": "master", "commit": "0236521ea582747b58869cb72f70ccfa967d2e89" },
+  "auto-pairs": { "branch": "master", "commit": "39f06b873a8449af8ff6a3eee716d3da14d63a76" },
+  "falcon": { "branch": "master", "commit": "634cef5919b14d0c68cec6fc7b094554e8ef9d7f" },
+  "kanagawa.nvim": { "branch": "master", "commit": "c19b9023842697ec92caf72cd3599f7dd7be4456" },
+  "lazy.nvim": { "branch": "main", "commit": "96584866b9c5e998cbae300594d0ccfd0c464627" },
+  "melange": { "branch": "master", "commit": "ca3444c8e5002ee5ab6f077660317f869c7b6a36" },
+  "nvim-ts-rainbow": { "branch": "master", "commit": "ef95c15a935f97c65a80e48e12fe72d49aacf9b9" },
+  "oceanic-next": { "branch": "master", "commit": "09833f72d5ba23de2e8bcae18f479f326f5f677a" },
+  "peaksea": { "branch": "master", "commit": "2051d4e5384b94b4e258b059e959ffb5202dec11" },
+  "scnvim": { "branch": "main", "commit": "f9e75bf21c77882625f89baa745d9bc4992742dc" },
+  "toggleterm.nvim": { "branch": "main", "commit": "c80844fd52ba76f48fabf83e2b9f9b93273f418d" },
+  "vim-startify": { "branch": "master", "commit": "4e089dffdad46f3f5593f34362d530e8fe823dcf" },
+  "vim-surround": { "branch": "master", "commit": "3d188ed2113431cf8dac77be61b842acb64433d9" },
+  "which-key.nvim": { "branch": "main", "commit": "4433e5ec9a507e5097571ed55c02ea9658fb268a" }
+}

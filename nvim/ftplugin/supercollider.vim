@@ -31,7 +31,7 @@ function! SelectPart () "range
 	" get Song.cursor
 	" set cursor of just past part
 	call SetPartCursor()
-	call search('\(P.tune\|P.still\|P\|P.rpp\|P.synthV\|P.double\|P.lazyV\|P.lazyDouble\)(',"b")
+	call search('\(P.tune\|P.still\|P\|P.rpp\|P.synthV\|P.synthVs\|P.double\|P.lazyV\|P.lazyDouble\)(',"b")
 	execute "normal 0V%"
 	call feedkeys(":call SetPartCursorToNil()\<CR>")
 

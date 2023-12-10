@@ -2,7 +2,7 @@
 wk = require("which-key")
 tb = require("telescope.builtin")
 utils = require("telescope.utils")
-tk = require("telekasten")
+-- tk = require("telekasten")
 sc = require("scnvim")
 
 
@@ -15,8 +15,19 @@ wk.setup {
   }
 
 wk.register({
+	g = {
+		name = "splitjoin",
+		j = {function() require'splitjoin'.join() end, "Join the object under cursor" },
+		[ "," ] = {function() require'splitjoin'.split() end, "Split the object under cursor" }
+	},
 	s = { "<Plug>Lightspeed_s", "lightspeed" };
 	[ "<leader>" ] = {
+		j = {
+			name = jump,
+			l = {
+				"/addLine<enter>z.","nextline" 
+			}
+		},
 		b = { 
 			name = "buffers",
 			e = { ":call DeleteEmptyBuffers()<CR>", "delete empty" },
@@ -24,36 +35,35 @@ wk.register({
 		},
 		f = {
 			name = "Find Files",
-			n = { function() tk.find_notes() end, "Notes" },
-			N = {function() tk.new_note() end, "New Note" },
-			D = {function() tk.find_daily_notes() end,"Dailys" },
-			d = {function() tk.goto_today() end, "Today (home)" },
-			y = {function() tk.yank_notelink() end, "yank link"},
-
-			s = { function() tb.find_files({ cwd='/Users/michael/tank/super/More-Organized-Trek/Songs/' }) end, "Songs" },
+			-- n = { function() tk.find_notes() end, "Notes" },
+			-- N = {function() tk.new_note() end, "New Note" },
+			-- y = {function() tk.yank_notelink() end, "yank link"},
+			d = {function() require'telescope'.extensions.supercollider.sc_definitions() end, "sc defs"},
+			D = {function() require'telescope'.extensions.scdoc.scdoc() end, "sc docs" },
+			s = { function() tb.find_files({ cwd='/Users/michael/tank/super/Trek/Songs/' }) end, "Songs" },
 			g = {
 				name = "grep",
 				n = { function() tb.live_grep({cwd='/Users/michael/telekasten/'}) end,                      "notes" },
 				l = { function() tb.live_grep({cwd='/Users/michael/Documents/Logseq'}) end,                 "LogSeq" },
-				c = { function() tb.live_grep({cwd='/Users/michael/tank/super/Extensions/MW-Classes'}) end, "my classes" },
+				c = { function() tb.live_grep({cwd='/Users/michael/tank/super/Trek/MW-Classes'}) end, "my classes" },
 				h = { function() tb.live_grep() end, "here" },
 
 			},
 			b = "buffer dir",
 			o = { function() tb.oldfiles() end,                                                "Recent" },
 			t = { function() tb.tags() end,                                                    "Tags" },
-			c = { function() tb.find_files({ cwd='~/tank/super/Extensions/MW-Classes/' }) end, "My Classes" },
+			c = { function() tb.find_files({ cwd='~/tank/super/Trek/MW-Classes/' }) end, "My Classes" },
 			h = { function() tb.find_files({ cwd=utils.buffer_dir() }) end,                    "Here" },
 			b = { function() tb.buffers() end,                                                 "Buffers" },
 			k=  {
 				name = "telekasten",
 				--	= {function() tk.new_note() end, "New" },
 				--	= {function() tk.new_templated_note() end, },
-				t      = {function() tk.show_tags() end, "Show Tags" },
-				y       = {function() tk.yank_notelink() end, "Yank" },
-				c       = {function() tk.show_calendar() end, "Calendar" },
-				k       = { function() tk.follow_link() end, "follow link" },
-				K       = { function() tk.insert_link() end, "insert link" },
+				-- t      = {function() tk.show_tags() end, "Show Tags" },
+				-- y       = {function() tk.yank_notelink() end, "Yank" },
+				-- c       = {function() tk.show_calendar() end, "Calendar" },
+				-- k       = { function() tk.follow_link() end, "follow link" },
+				-- K       = { function() tk.insert_link() end, "insert link" },
 				--	= {function() tk.paste_img_and_link() end, },
 				--	= {function() tk.toggle_todo() end, },
 				--	= {function() tk.show_backlinks() end, },
@@ -88,9 +98,9 @@ wk.register({
 		},
 		a = {function() sc.send("Date.insertStamp") end, "Insert Timestamp"},
 		t = { name = terminal,
-			t = { ":ToggleTerm<CR>","ToggleTerm"  }
+		t = { ":ToggleTerm<CR>","ToggleTerm"  }
 
-		}
+	}
 	}
 })
 wk.register( {
@@ -99,14 +109,24 @@ wk.register( {
 
 		P       = { ":call NowPlayAgain()<CR>","reload and play" },
 		p       = {function() require'scnvim'.send("Song.play") end, "play Song" },
+		o		= {function() require'scnvim'.send("Song.makeScroll") end, "makeScroll"},
 		[ "<" ] = "reload part and play",
 		[ "," ] = "play Part",
 		--o       = "open RPP",
 		f       = { ":set ft=supercollider<CR>","set filetype" },
 		k       = "recompile",
 		l       = "send line/selection",
+		m = {
+			name = "monitors",
+			a = {function() require'scnvim'.send("Monitors.airpods") end, "airpods"},
+			b = {function() require'scnvim'.send("Monitors.bose") end, "airpods"},
+			h = {function() require'scnvim'.send("Monitors.headphones") end, "headphones"},
+			z = {function() require'scnvim'.send("Monitors.zoom") end, "zoom"},
+			t = {function() require'scnvim'.send("().play") end, "test"}
+		},
 		u       = "play this tune",
 		n       = {function() require'scnvim'.send("Song.playOnly()") end, "play Only Again"},
+		N       = { [[:call v:lua.require'scnvim'.send("Song.playOnly(\\)")<LEFT><LEFT><LEFT>]],"play only"  },
 		["."]   = "send block",
 		d = {
 			name = "synthDefs",
@@ -126,10 +146,18 @@ wk.register( {
 			t = "start",
 			p = "stop",
 			c = "clear Post",
-			d = "send to sclang"
+			d = "send to sclang",
+			b = {function() sc.send("s.newBusAllocators") end, "new BusAllocators"},
 		},
+		[ "/" ] = {
+				function()
+				vim.api.nvim_call_function("SelectPart",{})
+				-- vim.api.nvim_call_function("sleep",{0.1})
+				require'scnvim.editor'.send_selection()
+			end, "reload part without playing"
+			},
 		i = {
-			name = "ii for part under cursor",
+			name = "ii for part name under cursor",
 			i = "play part under cursor"
 		},
 		r = {
@@ -144,7 +172,18 @@ wk.register( {
 				-- vim.api.nvim_call_function("sleep",{0.1})
 				require'scnvim.editor'.send_selection()
 				sc.send("Part.current.synthV.render")
-			end, "render synthV" }
+			end, "render synthV" },
+			R = { function() 
+				vim.api.nvim_call_function("SelectPart",{})
+				-- vim.api.nvim_call_function("sleep",{0.1})
+				require'scnvim.editor'.send_selection()
+				sc.send("SynthV.renderMultiple")
+			end, "render synthVs" },
+			s = { function ()
+				vim.api.nvim_call_function("PlayFromHere",{})
+				sc.send("SynthV.renderSection")
+			end, "render SynthVs in section"
+			}
 		},
 		a = { 
 			name = "arm",
@@ -152,8 +191,10 @@ wk.register( {
 			k = {function() sc.send("RecKey.record") end, "RecKey"},
 			e = {function() sc.send("RecEnv.record") end, "RecEnv"},
 			r = {function() sc.send("Rec.record") end, "Rec"}
-
-
+		},
+		w = {
+			name = "Window",
+			c = {function() sc.send("Window.closeAll") end, "closeAll"}
 		}
 }} )
 
@@ -206,7 +247,7 @@ vmap <localleader>l <Plug>(scnvim-send-selection)
 nmap <localleader>sc <Plug>(scnvim-postwindow-clear)
 
 map <localleader>rpp m`ggl"zy$:!tmux new -d "open -a REAPER64.app <C-r>z"<CR>``
-nnoremap <localleader>df :silent execute "grep! -r SynthDef.*" . shellescape(expand("<cword>")) . " ~/tank/super/SynthDefLibrary/*"<cr>:copen<cr>
+nnoremap <localleader>df :silent execute "grep! -r SynthDef.*" . shellescape(expand("<cword>")) . " ~/tank/super/Trek/SynthDefLibrary/*"<cr>:copen<cr>
 nnoremap <localleader>dc yaw :call v:lua.require'scnvim'.send("")<left><Left>SynthDescLib.at(  \\<C-r>"  ).dump<cr>
 nnoremap <localleader>dt     :call v:lua.require'scnvim'.send("")<left><Left>SynthDefLibrary.tree<cr>
 map <localleader>u $F"vF"c

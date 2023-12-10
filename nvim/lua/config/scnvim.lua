@@ -1,10 +1,16 @@
 
 local scnvim = require('scnvim')
 scnvim.setup()
-
+--
 local map = scnvim.map
 local map_expr = scnvim.map_expr
 scnvim.setup {
+	ensure_installed = true,
+	--[[ sclang = {
+		cmd = "/Users/michael/tank/super-mraethel/supercollider/build/Install/SuperCollider/SuperCollider.app/Contents/MacOS/sclang",
+	-- 	cmd = "sclang"
+		args = {'-l', "/tmp/sclang_conf.yaml"  }
+	}, ]]
 	extensions = {
 		['fzf-sc'] = {
 			search_plugin = 'nvim-fzf',
@@ -48,7 +54,7 @@ scnvim.setup {
 		},
 	snippet = {
 		engine ={
-		name ="luasnip"
+			name ="luasnip"
 		}
 	}
 }

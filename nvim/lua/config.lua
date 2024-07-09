@@ -1,93 +1,152 @@
 local set = vim.opt
 vim.g.python3_host_program ='/usr/bin/python3'
-
-
 vim.g.mapleader = " "
 vim.g.maplocalleader = ','
 
+
+--  lazy-nvim
+local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
+if not vim.loop.fs_stat(lazypath) then
+  vim.fn.system({
+    "git",
+    "clone",
+    "--filter=blob:none",
+    "https://github.com/folke/lazy.nvim.git",
+    "--branch=stable", -- latest stable release
+    lazypath,
+  })
+end
+vim.opt.rtp:prepend(lazypath)
+
+-- Example using a list of specs with the default options
+
+require("lazy").setup({
+	{
+		'stevearc/oil.nvim',
+		opts = {},
+		-- Optional dependencies
+		-- dependencies = { "nvim-tree/nvim-web-devicons" },
+	},
+	"nvim-tree/nvim-tree.lua",
+	{ "ThePrimeagen/harpoon", branch = "harpoon2" },
+	"mhinz/vim-startify",
+	'tpope/vim-surround',
+	"numToStr/Comment.nvim", 
+	"rebelot/kanagawa.nvim",
+	{ "L3MON4D3/LuaSnip", 
+	event = "VeryLazy",
+	-- lazy =true,
+	-- config = function() 
+	-- 	require("config.luasnip")
+	-- end,
+	}
+	,
+	{ "hrsh7th/nvim-cmp", lazy = true},
+	"hrsh7th/cmp-nvim-lsp",
+	"hrsh7th/cmp-buffer",
+	"hrsh7th/cmp-path",
+	"hrsh7th/cmp-cmdline",
+	-- "tzachar/cmp-tabnine",
+	{ "davidgranstrom/scnvim", lazy = false},
+	"cdbzb/scnvim-logger",
+
+	"madskjeldgaard/reaper-nvim",
+	"akinsho/toggleterm.nvim",
+
+	"junegunn/vim-easy-align",
+	-- "ggandor/lightspeed.nvim",
+	"ggandor/leap.nvim",
+	{"folke/which-key.nvim", lazy = true },
+
+	"nvim-lua/plenary.nvim",
+	"BurntSushi/ripgrep",
+	"nvim-telescope/telescope.nvim", 
+	-- 'nvim-telescope/telescope-media-files.nvim',
+	"madskjeldgaard/telescope-supercollider.nvim",
+	"davidgranstrom/telescope-scdoc.nvim",
+
+
+	{ 'nvim-treesitter/nvim-treesitter',  build= ":TSUpdate" },
+	"nvim-treesitter/completion-treesitter",
+	"nvim-treesitter/nvim-treesitter-textobjects",
+	"nvim-treesitter/nvim-treesitter-refactor",
+
+	"haorenW1025/completion-nvim",
+	"quangnguyen30192/cmp-nvim-tags",
+
+	"jiangmiao/auto-pairs",
+	"davidgranstrom/osc.nvim",
+	"neovim/nvim-lspconfig",
+	-- "Furkanzmc/zettelkasten.nvim",
+	"nvim-lua/popup.nvim",
+	"vijaymarupudi/nvim-fzf",
+	"madskjeldgaard/fzf-sc",
+	-- {"junegunn/fzf",  build =   ": call fzf#install()" },
+	-- "junegunn/fzf.vim",
+
+	"echasnovski/mini.splitjoin",
+	-- "akinsho/bufferline.nvim" 
+	--
+	{
+		"toppair/peek.nvim",
+		event = { "VeryLazy" },
+		build = "deno task --quiet build:fast",
+		config = function()
+			require("peek").setup()
+			-- refer to `configuration to change defaults`
+			vim.api.nvim_create_user_command("PeekOpen", require("peek").open, {})
+			vim.api.nvim_create_user_command("PeekClose", require("peek").close, {})
+		end,
+},
+})
+require'lspconfig'.marksman.setup{}
+-- local harpoon = require("harpoon")
+
+-- REQUIRED
+-- harpoon:setup({
+--
+-- global_settings = {
+--     -- sets the marks upon calling `toggle` on the ui, instead of require `:w`.
+--     save_on_toggle = true,
+--
+--     -- saves the harpoon file upon every change. disabling is unrecommended.
+--     save_on_change = true,
+--
+--     -- sets harpoon to run the command immediately as it's passed to the terminal when calling `sendCommand`.
+--     enter_on_sendcmd = false,
+--
+--     -- closes any tmux windows harpoon that harpoon creates when you close Neovim.
+--     tmux_autoclose_windows = false,
+--
+--     -- filetypes that you want to prevent from adding to the harpoon list menu.
+--     excluded_filetypes = { "harpoon" },
+--
+--     -- set marks specific to each git branch inside git repository
+--     mark_branch = false,
+--
+--     -- enable tabline with harpoon marks
+--     tabline = false,
+--     tabline_prefix = "   ",
+--     tabline_suffix = "   ",
+-- }
+-- })
+-- REQUIRED
+
+vim.cmd([[colorscheme peaksea
+" set gfn=Menlo:h21
+set background=dark
+colorscheme peaksea
+set termguicolors
+color kanagawa]])
+
 set.timeoutlen=500
 set.completeopt=menu,menuone,noselect
-vim.cmd([[
-call plug#begin()
-" Reaper
-Plug	'mhinz/vim-startify',
-Plug	'numToStr/Comment.nvim', 
-Plug	'akinsho/toggleterm.nvim',
-Plug	'p00f/nvim-ts-rainbow',
-Plug	'savq/melange',
-Plug	'fenetikm/falcon',
-Plug	'rebelot/kanagawa.nvim',
-Plug	'mhartington/oceanic-next',
-Plug	'jiangmiao/auto-pairs',
-Plug	'vim-scripts/peaksea',
-Plug	'tpope/vim-surround',
-Plug 'akinsho/bufferline.nvim' , { 'tag': 'v3.*' }
-Plug 'projekt0n/github-nvim-theme'
-Plug 'ishan9299/nvim-solarized-lua'
 
-Plug 'arcticicestudio/nord-vim'
-Plug 'dracula/vim', { 'as': 'dracula' }
-Plug 'junegunn/goyo.vim'
-Plug 'junegunn/limelight.vim'
-Plug 'ellisonleao/glow.nvim'
-Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
-Plug 'nvim-treesitter/nvim-treesitter-refactor'
-"Plug 'nvim-treesitter/playground'
-
-Plug 'haorenW1025/completion-nvim'
-
-Plug 'nvim-treesitter/completion-treesitter'
-Plug 'nvim-treesitter/nvim-treesitter-textobjects'
-" Plug 'AndrewRadev/splitjoin.vim'
-" Plug 'bennypowers/splitjoin.nvim'
-Plug 'echasnovski/mini.splitjoin'
-Plug 'AckslD/nvim-trevJ.lua'
-Plug 'saadparwaiz1/cmp_luasnip'
-Plug 'L3MON4D3/LuaSnip'
-Plug 'madskjeldgaard/reaper-nvim'
-Plug 'madskjeldgaard/fzf-sc'
-Plug 'madskjeldgaard/telescope-supercollider.nvim'
-Plug 'davidgranstrom/telescope-scdoc.nvim'
-
-" OSC
-Plug 'davidgranstrom/osc.nvim'
-Plug 'preservim/nerdtree'
-
-Plug 'neovim/nvim-lspconfig'
-Plug 'hrsh7th/cmp-nvim-lsp'
-Plug 'hrsh7th/cmp-buffer'
-Plug 'hrsh7th/cmp-path'
-Plug 'hrsh7th/cmp-cmdline'
-Plug 'tzachar/cmp-tabnine'
-Plug 'hrsh7th/nvim-cmp'
-Plug 'quangnguyen30192/cmp-nvim-tags'
-
-Plug 'davidgranstrom/scnvim',{'do':{-> scnvim#install() } }
-
-Plug 'gcmt/taboo.vim'
-Plug 'vim-scripts/utl.vim'
-Plug 'xolox/vim-misc'
-Plug 'ctrlpvim/ctrlp.vim'
-Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
-Plug 'junegunn/fzf.vim'
-Plug 'vijaymarupudi/nvim-fzf'
-Plug 'Furkanzmc/zettelkasten.nvim'
-Plug 'junegunn/vim-easy-align'
-Plug 'folke/which-key.nvim'
-Plug 'ggandor/lightspeed.nvim'
-
-Plug 'nvim-lua/plenary.nvim'
-Plug 'BurntSushi/ripgrep'
-Plug 'nvim-telescope/telescope.nvim', { 'tag': '0.1.0' }
-Plug 'nvim-telescope/telescope-media-files.nvim'
-
-Plug 'nvim-lua/popup.nvim'
-Plug 'Preservim/vim-markdown'
-
-call plug#end() 
-]])
-
-require("config.bufferline")
+require('leap').add_default_mappings() --s S
+require('leap').init_highlight(true)
+require("nvim-tree").setup()
+require("oil").setup()
+-- require("config.bufferline")
 require("toggleterm").setup{}
 require("config.telescope")
 require'telescope'.load_extension('scdoc')
@@ -98,7 +157,7 @@ require("config.scnvim")
 require("config.tree-sitter")
 require("config.cmp")
 require("config.which-key")
-require'glow'.setup()
+-- require'glow'.setup()
 require('mini.splitjoin').setup()
 function search_string(str)
   local match_pos = vim.fn.search(str)
@@ -110,29 +169,12 @@ function search_string(str)
   end
 end
 
-
-vim.cmd([[
-imap <silent><expr> <Tab> luasnip#expand_or_jumpable() ? '<Plug>luasnip-expand-or-jump' : '<Tab>' 
-" -1 for jumping backwards.
-inoremap <silent> <S-Tab> <cmd>lua require'luasnip'.jump(-1)<Cr>
-snoremap <silent> <c-n> <cmd>lua require('luasnip').jump(1)<Cr>
-inoremap <silent> <c-n> <cmd>lua require('luasnip').jump(1)<Cr>
-snoremap <silent> <S-Tab> <cmd>lua require('luasnip').jump(-1)<Cr>
-
-smap hh <c-o>2b
-map <leader>mul <ESC>:s/, mul:1.0, add:0.0//<CR>
-
-" For changing choices in choiceNodes (not strictly necessary for a basic setup).
-imap <silent><expr> <C-E> luasnip#choice_active() ? '<Plug>luasnip-next-choice' : '<C-E>'
-smap <silent><expr> <C-E> luasnip#choice_active() ? '<Plug>luasnip-next-choice' : '<C-E>'
-]])
-
 local api=vim.api
-api.nvim_create_autocmd(
-  "FileType", {
-		pattern = { "SuperCollider" }, command = [[silent! lua require('scnvim').start()]] 
-	}
-)
+-- api.nvim_create_autocmd(
+--   "FileType", {
+-- 		pattern = { "SuperCollider" }, command = [[silent! lua require('scnvim').start()]] 
+-- 	}
+-- )
 api.nvim_create_autocmd(
 	"BufEnter", {
 		pattern = { "*.sc" },
@@ -164,12 +206,27 @@ api.nvim_create_autocmd(
 	}
 )
 api.nvim_create_autocmd(
-"Filetype ", { pattern = { "SuperCollider" },command = [[ lua require'reaper-nvim'.setup() ]] }
+"Filetype", { pattern = { "SuperCollider" },command = [[ lua require'reaper-nvim'.setup() ]] }
 )
 api.nvim_create_autocmd(
-"Filetype ", { pattern = { "markdown" },command = [[lua require('cmp').setup.buffer { enabled = false }]] }
+"Filetype", { pattern = { "markdown" },command = [[lua require('cmp').setup.buffer { enabled = false }]] }
 )
 
+	vim.cmd([[
+	imap <silent><expr> <Tab> luasnip#expand_or_jumpable() ? '<Plug>luasnip-expand-or-jump' : '<Tab>' 
+	" -1 for jumping backwards.
+	inoremap <silent> <S-Tab> <cmd>lua require'luasnip'.jump(-1)<Cr>
+	snoremap <silent> <c-n> <cmd>lua require('luasnip').jump(1)<Cr>
+	inoremap <silent> <c-n> <cmd>lua require('luasnip').jump(1)<Cr>
+	snoremap <silent> <S-Tab> <cmd>lua require('luasnip').jump(-1)<Cr>
+
+	smap hh <c-o>2b
+	map <leader>mul <ESC>:s/, mul:1.0, add:0.0//<CR>
+
+	" For changing choices in choiceNodes (not strictly necessary for a basic setup).
+	imap <silent><expr> <C-E> luasnip#choice_active() ? '<Plug>luasnip-next-choice' : '<C-E>'
+	smap <silent><expr> <C-E> luasnip#choice_active() ? '<Plug>luasnip-next-choice' : '<C-E>'
+	]])
 vim.cmd([[
 au User GoyoEnter Limelight
 ]])

@@ -4,7 +4,7 @@ tb = require("telescope.builtin")
 utils = require("telescope.utils")
 -- tk = require("telekasten")
 sc = require("scnvim")
-
+harpoon = require("harpoon")
 
 wk.setup {
     -- your configuration comes here
@@ -20,7 +20,7 @@ wk.register({
 		j = {function() require'splitjoin'.join() end, "Join the object under cursor" },
 		[ "," ] = {function() require'splitjoin'.split() end, "Split the object under cursor" }
 	},
-	s = { "<Plug>Lightspeed_s", "lightspeed" };
+	-- s = { "<Plug>Lightspeed_s", "lightspeed" };
 	[ "<leader>" ] = {
 		j = {
 			name = jump,
@@ -40,10 +40,11 @@ wk.register({
 			-- y = {function() tk.yank_notelink() end, "yank link"},
 			d = {function() require'telescope'.extensions.supercollider.sc_definitions() end, "sc defs"},
 			D = {function() require'telescope'.extensions.scdoc.scdoc() end, "sc docs" },
+			a = {function() require'telescope'.extensions.harpoon.marks() end, "harpoon" },
 			s = { function() tb.find_files({ cwd='/Users/michael/tank/super/Trek/Songs/' }) end, "Songs" },
 			g = {
 				name = "grep",
-				n = { function() tb.live_grep({cwd='/Users/michael/telekasten/'}) end,                      "notes" },
+				-- n = { function() tb.live_grep({cwd='/Users/michael/telekasten/'}) end,                      "notes" },
 				l = { function() tb.live_grep({cwd='/Users/michael/Documents/Logseq'}) end,                 "LogSeq" },
 				c = { function() tb.live_grep({cwd='/Users/michael/tank/super/Trek/MW-Classes'}) end, "my classes" },
 				h = { function() tb.live_grep() end, "here" },
@@ -55,8 +56,8 @@ wk.register({
 			c = { function() tb.find_files({ cwd='~/tank/super/Trek/MW-Classes/' }) end, "My Classes" },
 			h = { function() tb.find_files({ cwd=utils.buffer_dir() }) end,                    "Here" },
 			b = { function() tb.buffers() end,                                                 "Buffers" },
-			k=  {
-				name = "telekasten",
+			-- k=  {
+				-- name = "telekasten",
 				--	= {function() tk.new_note() end, "New" },
 				--	= {function() tk.new_templated_note() end, },
 				-- t      = {function() tk.show_tags() end, "Show Tags" },
@@ -72,20 +73,9 @@ wk.register({
 				--	= {function() tk.browse_media() end, },
 				--	= {function() tk.show_tags() end, },
 				--	= {function() tk.rename_note() end, },
-				g = {function() tk.search_notes() end, "search under cursor in notes"},
-			},
+				-- g = {function() tk.search_notes() end, "search under cursor in notes"},
+			-- },
 
-		},
-		pf = {function() sc.send("PF()") end, "make a piano!"},
-		z = {
-			--name = "fuzzy", -- optional group name
-			b       = 'buffer',
-			r       = 'recent',
-			c       = 'current file',
-			[ "." ] = 'working dir',
-			[ "/" ] = 'root',
-			d       = 'telescope buffer dir',
-			t       = { function() tb.find_files() end, "test" },
 		},
 		w = {
 			name = "Window",
@@ -97,10 +87,21 @@ wk.register({
 			c = { "<C-w>c","close" },
 		},
 		a = {function() sc.send("Date.insertStamp") end, "Insert Timestamp"},
-		t = { name = terminal,
-		t = { ":ToggleTerm<CR>","ToggleTerm"  }
-
-	}
+		t = {
+			name = "terminal",
+			t = { ":ToggleTerm<CR>","ToggleTerm"  }
+		},
+		h = {
+			name = "harpoon",
+			a = { function() harpoon:list():append() end, "append" },
+			h = { function() harpoon.ui:toggle_quick_menu(harpoon:list()) end, "ui" },
+			[ "1" ] = { function() harpoon:list():select(1) end, "1" },
+			[ "2" ] = { function() harpoon:list():select(2) end, "2" },
+			[ "3" ] = { function() harpoon:list():select(3) end, "3" }
+			-- 2 = { function() harpoon:list():select(2) end },
+			-- 3 = { function() harpoon:list():select(3) end },
+			-- 4 = { function() harpoon:list():select(4) end },
+		}
 	}
 })
 wk.register( {
@@ -118,6 +119,8 @@ wk.register( {
 		l       = "send line/selection",
 		m = {
 			name = "monitors",
+			f = {function() sc.send("Monitors.gui") end, "volume fader"},
+			m = {function() sc.send("s.volume_(-90); Monitors.gui") end, "volume fader"},
 			a = {function() require'scnvim'.send("Monitors.airpods") end, "airpods"},
 			b = {function() require'scnvim'.send("Monitors.bose") end, "airpods"},
 			h = {function() require'scnvim'.send("Monitors.headphones") end, "headphones"},
@@ -139,7 +142,8 @@ wk.register( {
 			name = "cursor",
 			u = "input",
 			h = "Here",
-			H = "set Here and Play Song"
+			H = "set Here and Play Song",
+			d = {function() require'scnvim'.send("Song.cursor_(Song.cursor - 1)") end, "decrement"}
 		},
 		s = {
 			name = "sclang",
@@ -148,6 +152,8 @@ wk.register( {
 			c = "clear Post",
 			d = "send to sclang",
 			b = {function() sc.send("s.newBusAllocators") end, "new BusAllocators"},
+			m = {function() sc.send("Song.makeScroll") end, "Make Song Scroll"},
+			f = {function() sc.send("PF()") end, "make a piano!"},
 		},
 		[ "/" ] = {
 				function()
@@ -161,18 +167,22 @@ wk.register( {
 			i = "play part under cursor"
 		},
 		r = {
+			name = "record section - RPP",
 			e = { ":call RecordSection()<CR>", "record section" },
 			o = { function() sc.send("Part.current.rpp.open") end, "open RPP" },
 			b = { function() sc.send("Part.current.rpp.build") end, "build RPP" }
 		},
-		v = { 
+		v = {
+			name = "synthVs",
 			o = { function() sc.send("Part.current.synthV.open") end, "open synthV" },
-			r = { function() 
-				vim.api.nvim_call_function("SelectPart",{})
-				-- vim.api.nvim_call_function("sleep",{0.1})
-				require'scnvim.editor'.send_selection()
-				sc.send("Part.current.synthV.render")
-			end, "render synthV" },
+			r = {
+				function() 
+					vim.api.nvim_call_function("SelectPart",{})
+					-- vim.api.nvim_call_function("sleep",{0.1})
+					require'scnvim.editor'.send_selection()
+					sc.send("Part.current.synthV.render")
+				end, "render synthV" 
+			},
 			R = { function() 
 				vim.api.nvim_call_function("SelectPart",{})
 				-- vim.api.nvim_call_function("sleep",{0.1})
@@ -239,8 +249,9 @@ nmap <localleader>sp :SCNvimStop<CR>
 nmap <localleader>k <ESC>:w<ENTER>:SCNvimRecompile<ENTER>
 nmap <localleader>x :call v:lua.require'scnvim'.send("~myFree.()")<CR>
 nmap zx :call v:lua.require'scnvim'.send("~myFree.()")<CR>
+nmap zz :call v:lua.require'scnvim'.send("~myFree.()")<CR>
 nmap <localleader>z <Plug>(scnvim-hard-stop)
-nmap zz <Plug>(scnvim-hard-stop)
+nmap zZ <Plug>(scnvim-hard-stop)
 nmap <localleader>. <Plug>(scnvim-send-block)
 nmap <localleader>l <Plug>(scnvim-send-line)
 vmap <localleader>l <Plug>(scnvim-send-selection)

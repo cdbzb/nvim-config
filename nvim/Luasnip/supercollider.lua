@@ -421,6 +421,44 @@ return {
 		end,{}
 		)
 	}),
+	s({ trig = 'anim.(%d*)',regTrig=true, name='make an animation for Maura Offshore' },
+		fmt([[
+			(
+				Reaper.play( {}, {});
+				~recPath +/+ "{}" ++ ".wav"
+				=> _.version
+				// => _.record(0,2,Reaper.lastPlayLength)
+				;
+				{}
+			);
+		]],{
+			f( function(_,snip) return snip.captures[1] end ),
+			i(1, "end"),
+			-- i(1,"voice - start"),
+			i(2, "fileName"),
+			i(0)
+		})
+		
+	),
+	s({ trig = 'drawLine',regTrig=true, name='dfawLine' },
+		fmt([[
+		{{ 
+			var start = {}f:{};
+			var end = {}f:{};
+			~drawLine.(start, end, pan: {})
+			=> Reaper.sched( start, _ )
+		}}.();
+		]],{
+			i(1, "start"),
+			i(2),
+			-- i(1,"voice - start"),
+			i(3, "end"),
+			i(4),
+			i(5, "0"),
+		})
+		
+	),
+	
 }
 		
 

@@ -14,8 +14,11 @@ scnvim.setup {
 	extensions = {
 		['fzf-sc'] = {
 			search_plugin = 'nvim-fzf',
-			},
 		},
+		-- logger = {
+		-- 	path = '/tmp/post'
+		-- },
+	},
 	keymaps = {
 		[',l'] = map('editor.send_line', {'i', 'n'}),
 		[',.'] = {
@@ -27,8 +30,8 @@ scnvim.setup {
 		['zp'] = map('postwin.clear', {'n', 'i'}),
 		[',fp'] = map('postwin.focus',{'n'}),
 		['<C-k>'] = map('signature.show', {'n', 'i'}),
-		['zz'] = map('sclang.hard_stop', {'n', 'x', 'i'}),
-		['<leader>st'] = map(scnvim.start),
+		['zZ'] = map('sclang.hard_stop', {'n', 'x', 'i'}),
+		['<leader>st'] = map('scnvim.start'),
 		['<leader>sp'] = map(scnvim.recompile),
 		['<F1>'] = map_expr('s.boot'),
 		['<F2>'] = map_expr('s.meter'),
@@ -60,3 +63,4 @@ scnvim.setup {
 }
 
 scnvim.load_extension('fzf-sc')
+-- scnvim.load_extension('logger')

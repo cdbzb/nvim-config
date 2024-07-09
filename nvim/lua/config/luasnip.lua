@@ -2,8 +2,12 @@ local ls = require'luasnip'
 local ls_types = require'luasnip.util.types'
 
 -- require("luasnip").add_snippets("supercollider", require("scnvim/utils").get_snippets())
-require'luasnip'.add_snippets('supercollider', require'scnvim.utils'.get_snippets())
+-- require'luasnip'.add_snippets(
+-- 	'supercollider',
+-- 	 require'scnvim.utils'.get_snippets()
+-- )
 require("luasnip.loaders.from_lua").load({paths = "/Users/michael/.config/nvim/Luasnip"})
+require("luasnip.loaders.from_lua").lazy_load({paths = "/Users/michael/.config/nvim/SCNvim_snippets"})
 
 ls.config.set_config {
   -- Remember last snippet

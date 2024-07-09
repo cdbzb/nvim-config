@@ -27,6 +27,15 @@ function! CheckIsCodeBlock(lnum)
 	return returnValue
 endfunction
 
+function! NumSections()
+  redir => cnt
+    silent exe '%s/' . 'addLine' . '//gn'
+  redir END
+
+  let res = strpart(cnt, 0, stridx(cnt, " "))
+  return res
+endfunction	
+
 function! SelectPart () "range
 	" get Song.cursor
 	" set cursor of just past part
@@ -139,7 +148,8 @@ function! PlayFromHere()
 	exe "normal $"
 	let line = search("addLine","bnc")
 	let line = getline(line)
-	let line = substitute(line,"\'","\"",'g')
+	" this line was to convert old single quoted lines
+	" let line = substitute(line,"\'","\"",'g')
 	let lyric = matchstr(line,"\"[\^\"]*\"",0,0)
 	let lyric = substitute(lyric,"\" *,","\"",'g')
 	let section= "Song.section(" . lyric . ")"

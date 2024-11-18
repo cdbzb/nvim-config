@@ -1,0 +1,1 @@
+/Users/michael/.cache/nvim/scnvim/scnvim_snippets.lua

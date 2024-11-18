@@ -1,11 +1,11 @@
 
 let data_dir = has('nvim') ? stdpath('data') . '/site' : '~/.vim'
-if empty(glob(data_dir . '/autoload/plug.vim'))
-  silent execute '!curl -fLo '.data_dir.'/autoload/plug.vim --create-dirs  https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim'
-  autocmd VimEnter * PlugInstall --sync | source $MYVIMRC
-endif
+"if empty(glob(data_dir . '/autoload/plug.vim'))
+"  silent execute '!curl -fLo '.data_dir.'/autoload/plug.vim --create-dirs  https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim'
+"  autocmd VimEnter * PlugInstall --sync | source $MYVIMRC
+"endif
 
-lua require('config')
+ lua require('config')
 
 lua <<EOF
 vim.g['reaper_target_ip'] = '127.0.0.1'
@@ -179,12 +179,6 @@ map  <LEADER>; <ESC>A;<ESC>
 "omap ab :normal vab<CR>
 
 map <Leader>gf Y:!open <C-r>"<BACKSPACE> 
-colorscheme peaksea
-" set gfn=Menlo:h21
-set background=dark
-colorscheme peaksea
-set termguicolors
-color kanagawa
 
 
 map <Leader>xx <Plug>VimwikiToggleListItem
@@ -308,14 +302,14 @@ hi link FloatBorder TermCursorNC
 hi NormalFloat      ctermfg=lightgrey   ctermbg=17
 
 " on hesitation, bring up the panel
-nnoremap <leader>z :lua require('telekasten').panel()<CR>
+" nnoremap <leader>z :lua require('telekasten').panel()<CR>
 
 " we could define [[ in **insert mode** to call insert link
 " inoremap [[ <cmd>:lua require('telekasten').insert_link()<CR>
 " alternatively: leader [
 " inoremap <leader>[ <cmd>:lua require('telekasten').insert_link({ i=true })<CR>
-inoremap <leader>zt <cmd>:lua require('telekasten').toggle_todo({ i=true })<CR>
-inoremap <leader># <cmd>lua require('telekasten').show_tags({i = true})<cr>
+" inoremap <leader>zt <cmd>:lua require('telekasten').toggle_todo({ i=true })<CR>
+" inoremap <leader># <cmd>lua require('telekasten').show_tags({i = true})<cr>
 
 " ----- the following are for syntax-coloring [[links]] and ==highlighted text==
 " ----- (see the section about coloring in README.md)

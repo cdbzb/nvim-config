@@ -144,7 +144,6 @@ return {
 			local res, env = {}, snip.env
 			for _, ele in ipairs(env.LS_SELECT_RAW) do table.insert(res, ele) end
 			return res
-
 		end,{}
 		)
 	})
@@ -440,7 +439,23 @@ return {
 		})
 		
 	),
-	s({ trig = 'drawLine',regTrig=true, name='dfawLine' },
+	s({ trig = '*new ([a-zA-Z,%s]+)',regTrig = true, name='new' },
+		fmt([[
+		*new {{|{}|
+			^super.new.init({})
+		}}
+
+		init{{|{}|
+		}}
+		]],{
+			f( function(_,snip) return snip.captures[1] end ),
+			f( function(_,snip) return snip.captures[1] end ),
+			f( function(_,snip) return snip.captures[1] end ),
+
+		}
+	)
+	),
+	s({ trig = 'drawLine',regTrig=true, name='drawLine' },
 		fmt([[
 		{{ 
 			var start = {}f:{};

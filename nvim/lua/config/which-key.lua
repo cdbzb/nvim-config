@@ -4,7 +4,6 @@ tb = require("telescope.builtin")
 utils = require("telescope.utils")
 -- tk = require("telekasten")
 sc = require("scnvim")
-harpoon = require("harpoon")
 
 wk.setup {
     -- your configuration comes here
@@ -15,11 +14,7 @@ wk.setup {
   }
 
 wk.register({
-	g = {
-		name = "splitjoin",
-		j = {function() require'splitjoin'.join() end, "Join the object under cursor" },
-		[ "," ] = {function() require'splitjoin'.split() end, "Split the object under cursor" }
-	},
+
 	-- s = { "<Plug>Lightspeed_s", "lightspeed" };
 	[ "<leader>" ] = {
 		j = {
@@ -154,6 +149,7 @@ wk.register( {
 			b = {function() sc.send("s.newBusAllocators") end, "new BusAllocators"},
 			m = {function() sc.send("Song.makeScroll") end, "Make Song Scroll"},
 			f = {function() sc.send("PF()") end, "make a piano!"},
+			s = {function() sc.send("s.boot") end, "boot server"},
 		},
 		[ "/" ] = {
 				function()
@@ -248,11 +244,11 @@ nmap <localleader>st :SCNvimStart<CR>
 nmap <localleader>sp :SCNvimStop<CR>
 nmap <localleader>k <ESC>:w<ENTER>:SCNvimRecompile<ENTER>
 nmap <localleader>x :call v:lua.require'scnvim'.send("~myFree.()")<CR>
-nmap zx :call v:lua.require'scnvim'.send("~myFree.()")<CR>
-nmap zz :call v:lua.require'scnvim'.send("~myFree.()")<CR>
+nmap zx :call v:lua.require'scnvim'.send("MyFree()")<CR>
+nmap zz :call v:lua.require'scnvim'.send("MyFree()")<CR>
 nmap <localleader>z <Plug>(scnvim-hard-stop)
 nmap zZ <Plug>(scnvim-hard-stop)
-nmap <localleader>. <Plug>(scnvim-send-block)
+" nmap <localleader>. <Plug>(scnvim-send-block)
 nmap <localleader>l <Plug>(scnvim-send-line)
 vmap <localleader>l <Plug>(scnvim-send-selection)
 nmap <localleader>sc <Plug>(scnvim-postwindow-clear)

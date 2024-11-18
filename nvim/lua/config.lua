@@ -28,7 +28,7 @@ require("lazy").setup({
 		-- dependencies = { "nvim-tree/nvim-web-devicons" },
 	},
 	"nvim-tree/nvim-tree.lua",
-	{ "ThePrimeagen/harpoon", branch = "harpoon2" },
+	-- { "ThePrimeagen/harpoon", branch = "harpoon2" },
 	"mhinz/vim-startify",
 	'tpope/vim-surround',
 	"numToStr/Comment.nvim", 
@@ -67,11 +67,11 @@ require("lazy").setup({
 
 
 	{ 'nvim-treesitter/nvim-treesitter',  build= ":TSUpdate" },
-	"nvim-treesitter/completion-treesitter",
+	-- "nvim-treesitter/completion-treesitter",
 	"nvim-treesitter/nvim-treesitter-textobjects",
 	"nvim-treesitter/nvim-treesitter-refactor",
 
-	"haorenW1025/completion-nvim",
+	-- "haorenW1025/completion-nvim",
 	"quangnguyen30192/cmp-nvim-tags",
 
 	"jiangmiao/auto-pairs",
@@ -100,37 +100,6 @@ require("lazy").setup({
 },
 })
 require'lspconfig'.marksman.setup{}
--- local harpoon = require("harpoon")
-
--- REQUIRED
--- harpoon:setup({
---
--- global_settings = {
---     -- sets the marks upon calling `toggle` on the ui, instead of require `:w`.
---     save_on_toggle = true,
---
---     -- saves the harpoon file upon every change. disabling is unrecommended.
---     save_on_change = true,
---
---     -- sets harpoon to run the command immediately as it's passed to the terminal when calling `sendCommand`.
---     enter_on_sendcmd = false,
---
---     -- closes any tmux windows harpoon that harpoon creates when you close Neovim.
---     tmux_autoclose_windows = false,
---
---     -- filetypes that you want to prevent from adding to the harpoon list menu.
---     excluded_filetypes = { "harpoon" },
---
---     -- set marks specific to each git branch inside git repository
---     mark_branch = false,
---
---     -- enable tabline with harpoon marks
---     tabline = false,
---     tabline_prefix = "   ",
---     tabline_suffix = "   ",
--- }
--- })
--- REQUIRED
 
 vim.cmd([[colorscheme peaksea
 " set gfn=Menlo:h21

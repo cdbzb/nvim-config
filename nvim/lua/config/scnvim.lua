@@ -15,9 +15,9 @@ scnvim.setup {
 		['fzf-sc'] = {
 			search_plugin = 'nvim-fzf',
 		},
-		-- logger = {
-		-- 	path = '/tmp/post'
-		-- },
+		logger = {
+			path = '/tmp/post'
+		},
 	},
 	keymaps = {
 		[',l'] = map('editor.send_line', {'i', 'n'}),
@@ -44,7 +44,7 @@ scnvim.setup {
 		size = 55,
 		auto_toggle_error = false,
 		fixed_size = 55,
-		highlight = true,
+		-- highlight = true,
 		float = {
 			--enabled =true,
 			callback =function(id) vim.api.nvim_win_set_option(id, 'winblend', 0) end,
@@ -62,5 +62,5 @@ scnvim.setup {
 	}
 }
 
-scnvim.load_extension('fzf-sc')
+-- scnvim.load_extension('fzf-sc')
 -- scnvim.load_extension('logger')

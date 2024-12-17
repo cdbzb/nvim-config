@@ -55,6 +55,8 @@ cmp.setup {
 				}
 			}
 		}),
+
+
 		-- ["<Tab>"] = cmp.mapping(
 		-- 	function(fallback)
 		-- 	if cmp.visible() then
@@ -92,6 +94,7 @@ cmp.setup {
 end
 },
 	sources = {
+		{ name = 'text' },
 		{ name = 'luasnip' },
 		-- { name = 'cmp_tabnine' },
 		{ name = 'path' },

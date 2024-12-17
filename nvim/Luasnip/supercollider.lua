@@ -301,7 +301,7 @@ return {
 		{ i(1, "2") }
 		)
 	),
-	s({ trig = 'double.(%a*)',regTrig=true, name=' synthv for role' },
+	s({ trig = 'double.(%a*)',regTrig=true, name='synthv for role' },
 		fmt([[
 			P.double(role: \{}, take: \lead, params: {{|p b| [
 				pitchTake: 1

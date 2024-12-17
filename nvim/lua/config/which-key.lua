@@ -10,7 +10,14 @@ wk.setup {
     -- or leave it empty to use the default settings
     -- refer to the configuration section below
 
-    triggers = {"<leader>","<localleader>"} -- or specify a list manually
+    -- triggers = {"<leader>","<localleader>",} -- or specify a list manually
+       triggers = {
+		   {" "},
+		   {","},
+         -- { "<auto>", mode = "nixsotc" },
+         { "<auto>", mode = "nxsotc" },
+         { "a", mode = { "n", "v" } },
+       }
   }
 
 wk.register({
@@ -27,12 +34,14 @@ wk.register({
 			name = "buffers",
 			e = { ":call DeleteEmptyBuffers()<CR>", "delete empty" },
 			b = { ":source /Users/michael/.config/nvim/lua/config/bufferline.lua","source bufferline.lua"},
+			w = { ":lua MiniBufremove.wipeout()<CR>", "miniBuf Wipeout" },
+			d = { ":lua MiniBufremove.wipeout()<CR>", "miniBuf Delete" },
+			U = { ":lua MiniBufremove.unshow()<CR>", "miniBuf Unshow All" },
+			u = { ":lua MiniBufremove.unshow_in_window()<CR>", "miniBuf Unshow in Win" },
+
 		},
 		f = {
 			name = "Find Files",
-			-- n = { function() tk.find_notes() end, "Notes" },
-			-- N = {function() tk.new_note() end, "New Note" },
-			-- y = {function() tk.yank_notelink() end, "yank link"},
 			d = {function() require'telescope'.extensions.supercollider.sc_definitions() end, "sc defs"},
 			D = {function() require'telescope'.extensions.scdoc.scdoc() end, "sc docs" },
 			a = {function() require'telescope'.extensions.harpoon.marks() end, "harpoon" },
@@ -51,26 +60,6 @@ wk.register({
 			c = { function() tb.find_files({ cwd='~/tank/super/Trek/MW-Classes/' }) end, "My Classes" },
 			h = { function() tb.find_files({ cwd=utils.buffer_dir() }) end,                    "Here" },
 			b = { function() tb.buffers() end,                                                 "Buffers" },
-			-- k=  {
-				-- name = "telekasten",
-				--	= {function() tk.new_note() end, "New" },
-				--	= {function() tk.new_templated_note() end, },
-				-- t      = {function() tk.show_tags() end, "Show Tags" },
-				-- y       = {function() tk.yank_notelink() end, "Yank" },
-				-- c       = {function() tk.show_calendar() end, "Calendar" },
-				-- k       = { function() tk.follow_link() end, "follow link" },
-				-- K       = { function() tk.insert_link() end, "insert link" },
-				--	= {function() tk.paste_img_and_link() end, },
-				--	= {function() tk.toggle_todo() end, },
-				--	= {function() tk.show_backlinks() end, },
-				--	= {function() tk.find_friends() end, },
-				--	= {function() tk.preview_img() end, },
-				--	= {function() tk.browse_media() end, },
-				--	= {function() tk.show_tags() end, },
-				--	= {function() tk.rename_note() end, },
-				-- g = {function() tk.search_notes() end, "search under cursor in notes"},
-			-- },
-
 		},
 		w = {
 			name = "Window",
@@ -86,19 +75,9 @@ wk.register({
 			name = "terminal",
 			t = { ":ToggleTerm<CR>","ToggleTerm"  }
 		},
-		h = {
-			name = "harpoon",
-			a = { function() harpoon:list():append() end, "append" },
-			h = { function() harpoon.ui:toggle_quick_menu(harpoon:list()) end, "ui" },
-			[ "1" ] = { function() harpoon:list():select(1) end, "1" },
-			[ "2" ] = { function() harpoon:list():select(2) end, "2" },
-			[ "3" ] = { function() harpoon:list():select(3) end, "3" }
-			-- 2 = { function() harpoon:list():select(2) end },
-			-- 3 = { function() harpoon:list():select(3) end },
-			-- 4 = { function() harpoon:list():select(4) end },
-		}
 	}
 })
+
 wk.register( {
 	["<localleader>"] = {
 		name = "SC commands",
@@ -144,7 +123,7 @@ wk.register( {
 			name = "sclang",
 			t = "start",
 			p = "stop",
-			c = "clear Post",
+			c = {function() require'scnvim.postwin'.clear() end, "clear Post" },
 			d = "send to sclang",
 			b = {function() sc.send("s.newBusAllocators") end, "new BusAllocators"},
 			m = {function() sc.send("Song.makeScroll") end, "Make Song Scroll"},
@@ -202,7 +181,8 @@ wk.register( {
 			name = "Window",
 			c = {function() sc.send("Window.closeAll") end, "closeAll"}
 		}
-}} )
+	}
+})
 
 vim.cmd( [[
 
@@ -251,7 +231,7 @@ nmap zZ <Plug>(scnvim-hard-stop)
 " nmap <localleader>. <Plug>(scnvim-send-block)
 nmap <localleader>l <Plug>(scnvim-send-line)
 vmap <localleader>l <Plug>(scnvim-send-selection)
-nmap <localleader>sc <Plug>(scnvim-postwindow-clear)
+" nmap <localleader>sc <Plug>(scnvim-postwindow-clear)
 
 map <localleader>rpp m`ggl"zy$:!tmux new -d "open -a REAPER64.app <C-r>z"<CR>``
 nnoremap <localleader>df :silent execute "grep! -r SynthDef.*" . shellescape(expand("<cword>")) . " ~/tank/super/Trek/SynthDefLibrary/*"<cr>:copen<cr>

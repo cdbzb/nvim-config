@@ -34,15 +34,37 @@ vim.opt.shortmess:append "c"
 
 local luasnip = require( "luasnip" )
 local cmp = require( "cmp" )
-cmp.setup {
+
+
+local cmp = require('cmp')
+
+-- Optional: Define a custom highlight group for selected items
+vim.cmd([[
+    highlight SelectionHighlight guibg=#444040 guifg=NONE
+]])
+
+cmp.setup ({
+	window = {
+		completion = cmp.config.window.bordered({
+			winhighlight = 'Normal:Normal,FloatBorder:BorderBG,CursorLine:SelectionHighlight,Search:None,CmpItemAbsSel:SelectionHighlight,CmpItemAbsSelBg:SelectionHighlight'
+		}),
+		documentation = cmp.config.window.bordered({
+			winhighlight = 'Normal:Normal,FloatBorder:BorderBG'
+		})
+	},
+	mapping = cmp.mapping.preset.insert({
+	}),
+
 	snippet = {
 		expand = function(args)
-		luasnip.lsp_expand(args.body)
+			luasnip.lsp_expand(args.body)
 		end
 	},
 
 
-	mapping = { 
+	mapping = cmp.mapping.preset.insert{ 
+		-- ['<C-n>'] = cmp.mapping.select_next_item({ behavior = cmp.SelectBehavior.Select }),
+		-- ['<C-p>'] = cmp.mapping.select_prev_item({ behavior = cmp.SelectBehavior.Select }),
 		['<C-d>'] = cmp.mapping.scroll_docs(-4),
 		['<C-f>'] = cmp.mapping.scroll_docs(4),
 		['<C-Space>'] = cmp.mapping.complete(),
@@ -59,68 +81,68 @@ cmp.setup {
 
 		-- ["<Tab>"] = cmp.mapping(
 		-- 	function(fallback)
-		-- 	if cmp.visible() then
-		-- 	cmp.select_next_item()
-		-- else  cmp_ultisnips_mappings.expand_or_jump_forwards(fallback)
-		-- 	end
-		-- end,
-		-- { "i", "s", --[[ "c" (to enable the mapping in command mode) ]] }
-		-- ),
-		-- ["<S-Tab>"] = cmp.mapping(
-		-- function(fallback)
-		-- 	cmp_ultisnips_mappings.jump_backwards(fallback)
-		-- end,
-		-- { "i", "s", --[[ "c" (to enable the mapping in command mode) ]] }
-		-- ),
+			-- 	if cmp.visible() then
+			-- 	cmp.select_next_item()
+			-- else  cmp_ultisnips_mappings.expand_or_jump_forwards(fallback)
+			-- 	end
+			-- end,
+			-- { "i", "s", --[[ "c" (to enable the mapping in command mode) ]] }
+			-- ),
+			-- ["<S-Tab>"] = cmp.mapping(
+			-- function(fallback)
+				-- 	cmp_ultisnips_mappings.jump_backwards(fallback)
+				-- end,
+				-- { "i", "s", --[[ "c" (to enable the mapping in command mode) ]] }
+				-- ),
 
-		--['<Tab>'] = cmp.mapping(next_item, { 'i', 's' }),
-		--['<S-Tab>'] = cmp.mapping(prev_item , { 'i', 's' }),
-		-- ['<C-n>'] = cmp.mapping(next_item, { 'i', 's' }),
-		-- ['<C-n>'] = cmp.mapping(next_item, {'i','s'}),
-		-- ['<C-p>'] = cmp.mapping(prev_item , { 'i', 's' }),
+				--['<Tab>'] = cmp.mapping(next_item, { 'i', 's' }),
+				--['<S-Tab>'] = cmp.mapping(prev_item , { 'i', 's' }),
+				-- ['<C-n>'] = cmp.mapping(next_item, { 'i', 's' }),
+				-- ['<C-n>'] = cmp.mapping(next_item, {'i','s'}),
+				-- ['<C-p>'] = cmp.mapping(prev_item , { 'i', 's' }),
 
-    
-	},
-	formatting = {
-		format = function(entry, vim_item)
-		vim_item.menu = ({
-		tags = "[Tags]",
-		path = "[Path]",
-		cmp_tabnine = "[TN]",
-		-- ultisnips = "[U]"
-		luasnip = "[LS]"
-		})[entry.source.name]
-	return vim_item
-end
-},
-	sources = {
-		{ name = 'text' },
-		{ name = 'luasnip' },
-		-- { name = 'cmp_tabnine' },
-		{ name = 'path' },
-		-- { name = 'nvim_lsp' },
-		{ name = 'tags' },
-		-- { name = 'nvim_lua' },
-		{ name = 'treesitter' },
-		-- { name = 'ultisnips' },
-		-- { name = 'spell' },
-		{ name = 'buffer' , keyword_length=5}, -- dont complete until at 5 chars
-		},
-	view = {
-		entries = "native",
-	},
-experimental = {
-	-- native_menu = true,
-	-- ghost_text = true
-	}
-}
+
+			},
+			formatting = {
+				format = function(entry, vim_item)
+					vim_item.menu = ({
+						tags = "[Tags]",
+						path = "[Path]",
+						cmp_tabnine = "[TN]",
+						-- ultisnips = "[U]"
+						luasnip = "[LS]"
+					})[entry.source.name]
+					return vim_item
+				end
+			},
+			sources = {
+				{ name = 'text' },
+				-- { name = 'luasnip' },
+				-- { name = 'cmp_tabnine' },
+				{ name = 'path' },
+				-- { name = 'nvim_lsp' },
+				{ name = 'tags' },
+				-- { name = 'nvim_lua' },
+				{ name = 'treesitter' },
+				-- { name = 'ultisnips' },
+				-- { name = 'spell' },
+				{ name = 'buffer' , keyword_length=5}, -- dont complete until at 5 chars
+			},
+			view = {
+				entries = "native",
+			},
+			experimental = {
+				-- native_menu = true,
+				-- ghost_text = true
+			}
+		})
 
 -- The nvim-cmp almost supports LSP's capabilities so You should advertise it to LSP servers..
-local capabilities = vim.lsp.protocol.make_client_capabilities()
-capabilities = require('cmp_nvim_lsp').default_capabilities
+-- local capabilities = vim.lsp.protocol.make_client_capabilities()
+-- capabilities = require('cmp_nvim_lsp').default_capabilities
 
 -- The following example advertise capabilities to `clangd`.
-require'lspconfig'.clangd.setup {
-  capabilities = capabilities,
-}
+-- require'lspconfig'.clangd.setup {
+--   capabilities = capabilities,
+-- }
 

@@ -1,0 +1,16 @@
+[user]
+	email = yourgitemail@example.com
+	name = michael
+[init]
+	defaultBranch = main
+[filter "lfs"]
+	required = true
+	clean = git-lfs clean -- %f
+	smudge = git-lfs smudge -- %f
+	process = git-lfs filter-process
+[core]
+	editor = vim
+[alias]
+	lola = log --all --decorate --graph --oneline --date=short
+[http]
+	postBuffer = 524288000

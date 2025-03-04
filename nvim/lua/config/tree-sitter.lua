@@ -1,6 +1,7 @@
 require("nvim-treesitter.configs").setup {
   -- ensure_installed = {"supercollider", "rust", "html", "javascript"},
   ensure_installed = "supercollider",
+  ignore_install = { 'org' },
   highlight = {
     enable = true, 
   --  -- additional_vim_regex_highlighting =true,

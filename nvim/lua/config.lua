@@ -23,6 +23,22 @@ vim.opt.rtp:prepend(lazypath)
 require("lazy").setup({
 	{ "rebelot/kanagawa.nvim", lazy = true},
 	{
+		'nvim-orgmode/orgmode',
+		event = 'VeryLazy',
+		ft = { 'org' },
+		config = function()
+			-- Setup orgmode
+			require('config.orgmode')
+
+			-- NOTE: If you are using nvim-treesitter with ~ensure_installed = "all"~ option
+			-- add ~org~ to ignore_install
+			-- require('nvim-treesitter.configs').setup({
+				--   ensure_installed = 'all',
+				--   ignore_install = { 'org' },
+				-- })
+			end,
+		},
+	{
 		'stevearc/oil.nvim',
 		opts = {},
 		-- Optional dependencies
@@ -127,6 +143,8 @@ require("lazy").setup({
 		end,
 }, 
 })
+
+
 -- require'config.luasnip'
 -- require'lspconfig'.marksman.setup{}
 vim.cmd([[colorscheme peaksea
@@ -165,9 +183,16 @@ local api=vim.api
 -- 	}
 -- )
 api.nvim_create_autocmd(
-	"BufEnter", {
+	"bufenter", {
+		pattern = { "*.org" },
+		-- command = ":set foldexpr=nvim_treesitter#<cr>"
+		command = ":setlocal foldtext=getline(v:foldstart)"
+	}
+)
+api.nvim_create_autocmd(
+	"bufenter", {
 		pattern = { "*.sc" },
-		command = ":set foldexpr=nvim_treesitter#<CR>"
+		command = ":set foldexpr=nvim_treesitter#<cr>"
 	}
 )
 api.nvim_create_autocmd(
@@ -205,6 +230,7 @@ api.nvim_create_autocmd(
 )
 
 
+
 local status, bufferline = pcall(require, "bufferline")
 if not status then
   print("ERROR bufferline")
@@ -221,6 +247,9 @@ bufferline.setup{
             end,
         }
 }
+
+
+
 	-- vim.cmd([[
 	-- imap <silent><expr> <Tab> luasnip#expand_or_jumpable() ? '<Plug>luasnip-expand-or-jump' : '<Tab>' 
 	-- " -1 for jumping backwards.

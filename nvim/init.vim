@@ -12,6 +12,10 @@ vim.g['reaper_target_ip'] = '127.0.0.1'
 --vim.g.port= '8000'
 EOF
 
+command! -count=1 SapfStop lua require'toggleterm'.exec("stop",    <count>, 12)
+command! -count=1 SapfQuit lua require'toggleterm'.exec("quit",    <count>, 12)
+command! -count=1 SapfStart lua require'toggleterm'.exec("sapf -p /Users/michael/tank/SAPF/sapf-prelude.txt", <count>, 12)
+
 " Start interactive EasyAlign in visual mode (e.g. vipga)
 xmap ga <Plug>(EasyAlign)
 xmap ga <Plug>(EasyAlign)

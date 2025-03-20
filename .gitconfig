@@ -1,6 +1,8 @@
 [user]
 	email = yourgitemail@example.com
 	name = michael
+[credential]
+	helper = osxkeychain
 [init]
 	defaultBranch = main
 [filter "lfs"]

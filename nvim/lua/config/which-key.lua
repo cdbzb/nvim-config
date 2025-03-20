@@ -44,12 +44,14 @@ wk.register({
 			name = "Find Files",
 			d = {function() require'telescope'.extensions.supercollider.sc_definitions() end, "sc defs"},
 			D = {function() require'telescope'.extensions.scdoc.scdoc() end, "sc docs" },
-			a = {function() require'telescope'.extensions.harpoon.marks() end, "harpoon" },
 			s = { function() tb.find_files({ cwd='/Users/michael/tank/super/Trek/Songs/' }) end, "Songs" },
+			c = { function() tb.find_files({ cwd='/Users/michael.config' }) end, "config" },
 			g = {
 				name = "grep",
 				-- n = { function() tb.live_grep({cwd='/Users/michael/telekasten/'}) end,                      "notes" },
-				l = { function() tb.live_grep({cwd='/Users/michael/Documents/Logseq'}) end,                 "LogSeq" },
+				l = { function() tb.live_grep({cwd='/Users/michael/Documents/Logseq'}) end, "LogSeq" },
+				s = { function() tb.live_grep({cwd='/Users/michael/tank/super/Trek/Songs'}) end, "Songs" },
+				k = { function() tb.live_grep({cwd='/Users/michael/tank/super/Trek'}) end, "Trek" },
 				c = { function() tb.live_grep({cwd='/Users/michael/tank/super/Trek/MW-Classes'}) end, "my classes" },
 				h = { function() tb.live_grep() end, "here" },
 
@@ -185,15 +187,6 @@ wk.register( {
 })
 
 vim.cmd( [[
-
-nmap zm :Limelight<cr>
-nmap zM :Limelight!<cr>
-nmap <leader>fzb :CtrlPBuffer<CR>
-nmap <leader>fzc :CtrlPCurFile<CR>
-nmap <leader>fz/ :CtrlPRoot<CR>
-nmap <leader>fz. :CtrlPCurWD<CR>
-nmap <leader>fzr :CtrlPMRU<CR>
-
 
 nnoremap <leader>zC :CalendarT<CR>
 nnoremap <leader>zI :lua require('telekasten').insert_img_link({ i=true })<CR>

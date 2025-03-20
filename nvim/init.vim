@@ -12,6 +12,10 @@ vim.g['reaper_target_ip'] = '127.0.0.1'
 --vim.g.port= '8000'
 EOF
 
+command! -count=1 SapfStop lua require'toggleterm'.exec("stop",    <count>, 12)
+command! -count=1 SapfQuit lua require'toggleterm'.exec("quit",    <count>, 12)
+command! -count=1 SapfStart lua require'toggleterm'.exec("sapf -p /Users/michael/tank/SAPF/sapf-prelude.txt", <count>, 12)
+
 " Start interactive EasyAlign in visual mode (e.g. vipga)
 xmap ga <Plug>(EasyAlign)
 xmap ga <Plug>(EasyAlign)
@@ -44,11 +48,11 @@ let g:netrw_winsize=25
 tnoremap <Esc> <C-\><C-n>
 
 "deoplete + neosnippet + autopairs
-let g:AutoPairsMapCR=1
-let g:AutoPairsSpace = 0
+" let g:AutoPairsMapCR=1
+" let g:AutoPairsSpace = 0
 
-inoremap <buffer> <silent> <S-Space> <C-R>=AutoPairsSpace()<CR>
-let g:deoplete#enable_smart_case = 1
+" inoremap <buffer> <silent> <S-Space> <C-R>=AutoPairsSpace()<CR>
+" let g:deoplete#enable_smart_case = 1
 
 map <leader>init :e ~/.config/nvim/init.vim<ENTER>
 

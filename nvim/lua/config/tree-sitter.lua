@@ -1,6 +1,13 @@
 require("nvim-treesitter.configs").setup {
   -- ensure_installed = {"supercollider", "rust", "html", "javascript"},
-  ensure_installed = "supercollider",
+  highlight = {
+    enable = true,
+  },
+  -- Enable this if you're using treesitter
+  conceal = {
+    enable = true,
+  },ure_installed = "supercollider",
+  ignore_install = { 'org' },
   highlight = {
     enable = true, 
   --  -- additional_vim_regex_highlighting =true,
@@ -18,7 +25,7 @@ require("nvim-treesitter.configs").setup {
   },
   indent = { enable = false},
   matchup = { enable = true },
-  autopairs = { enable = true },
+  -- autopairs = { enable = true },
   rainbow = {
     enable =false,
     extended_mode = true, -- Highlight also non-parentheses delimiters

@@ -38,7 +38,8 @@ scnvim.setup {
 		['zx'] = map_expr('~myFree.()')
 		},
 	documentation = {
-		cmd = '/usr/local/bin/pandoc',
+		-- cmd = '/usr/local/bin/pandoc',
+		cmd = '/opt/homebrew/bin/pandoc',
 		},
 	postwin = {
 		size = 55,

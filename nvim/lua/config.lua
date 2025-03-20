@@ -67,6 +67,7 @@ require("lazy").setup({
 	},
 
 	{"akinsho/toggleterm.nvim", opts={}},
+	-- {"kassio/neoterm", opts={}},
 
 	"junegunn/vim-easy-align",
 	-- "ggandor/lightspeed.nvim",

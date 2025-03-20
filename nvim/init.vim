@@ -48,11 +48,11 @@ let g:netrw_winsize=25
 tnoremap <Esc> <C-\><C-n>
 
 "deoplete + neosnippet + autopairs
-let g:AutoPairsMapCR=1
-let g:AutoPairsSpace = 0
+" let g:AutoPairsMapCR=1
+" let g:AutoPairsSpace = 0
 
-inoremap <buffer> <silent> <S-Space> <C-R>=AutoPairsSpace()<CR>
-let g:deoplete#enable_smart_case = 1
+" inoremap <buffer> <silent> <S-Space> <C-R>=AutoPairsSpace()<CR>
+" let g:deoplete#enable_smart_case = 1
 
 map <leader>init :e ~/.config/nvim/init.vim<ENTER>
 

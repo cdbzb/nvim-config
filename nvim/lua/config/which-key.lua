@@ -188,15 +188,6 @@ wk.register( {
 
 vim.cmd( [[
 
-nmap zm :Limelight<cr>
-nmap zM :Limelight!<cr>
-nmap <leader>fzb :CtrlPBuffer<CR>
-nmap <leader>fzc :CtrlPCurFile<CR>
-nmap <leader>fz/ :CtrlPRoot<CR>
-nmap <leader>fz. :CtrlPCurWD<CR>
-nmap <leader>fzr :CtrlPMRU<CR>
-
-
 nnoremap <leader>zC :CalendarT<CR>
 nnoremap <leader>zI :lua require('telekasten').insert_img_link({ i=true })<CR>
 

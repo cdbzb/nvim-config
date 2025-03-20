@@ -3,7 +3,10 @@ vim.g.python3_host_program ='/usr/bin/python3'
 vim.g.mapleader = " "
 vim.g.maplocalleader = ','
 
+vim.opt.conceallevel = 2
+vim.opt.concealcursor = 'n'  -- conceals in normal and command mode
 
+require('config.songFunctions')
 --  lazy-nvim
 local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
 if not vim.loop.fs_stat(lazypath) then
@@ -36,8 +39,27 @@ require("lazy").setup({
 				--   ensure_installed = 'all',
 				--   ignore_install = { 'org' },
 				-- })
-			end,
+		end,
+	},
+	{
+		"chipsenkbeil/org-roam.nvim",
+		tag = "0.1.1",
+		dependencies = {
+			{
+				"nvim-orgmode/orgmode",
+				tag = "0.3.7",
+			},
 		},
+		config = function()
+			require("org-roam").setup({
+				directory = "~/org_roam_files",
+				-- optional
+				org_files = {
+					"~/tank/org/*.org",
+				}
+			})
+		end
+	},
 	{
 		'stevearc/oil.nvim',
 		opts = {},
@@ -120,7 +142,7 @@ require("lazy").setup({
 		end
 	},
 	-- "haorenW1025/completion-nvim",
-	"jiangmiao/auto-pairs", 
+	-- "jiangmiao/auto-pairs", 
 	 {"neovim/nvim-lspconfig", enable = false},
 	-- "Furkanzmc/zettelkasten.nvim",
 	"nvim-lua/popup.nvim",
@@ -185,7 +207,7 @@ local api=vim.api
 api.nvim_create_autocmd(
 	"bufenter", {
 		pattern = { "*.org" },
-		-- command = ":set foldexpr=nvim_treesitter#<cr>"
+		command = ":set foldexpr=nvim_treesitter#<cr>",
 		command = ":setlocal foldtext=getline(v:foldstart)"
 	}
 )

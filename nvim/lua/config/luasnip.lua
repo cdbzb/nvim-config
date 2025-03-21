@@ -19,6 +19,7 @@ vim.keymap.set({"i", "s"}, "<Tab>", function()
 end, { silent = true })
 
 require("luasnip").add_snippets("supercollider", require("scnvim/utils").get_snippets())
+require("luasnip").add_snippets("org")
 
 -- require'luasnip'.add_snippets(
 -- 	'supercollider',

@@ -42,6 +42,21 @@ require("lazy").setup({
 		end,
 	},
 	{
+		"nvim-orgmode/telescope-orgmode.nvim",
+		event = "VeryLazy",
+		dependencies = {
+			"nvim-orgmode/orgmode",
+			"nvim-telescope/telescope.nvim",
+		},
+		config = function()
+			require("telescope").load_extension("orgmode")
+
+			vim.keymap.set("n", "<leader>of", require("telescope").extensions.orgmode.refile_heading)
+			vim.keymap.set("n", "<leader>oh", require("telescope").extensions.orgmode.search_headings)
+			vim.keymap.set("n", "<leader>o#", require("telescope").extensions.orgmode.insert_link)
+		end,
+	},
+	{
 		"chipsenkbeil/org-roam.nvim",
 		tag = "0.1.1",
 		dependencies = {
@@ -250,6 +265,9 @@ api.nvim_create_autocmd(
 )
 api.nvim_create_autocmd(
 "Filetype", { pattern = { "SuperCollider" },command = [[ lua require'config.luasnip' ]] }
+)
+api.nvim_create_autocmd(
+"Filetype", { pattern = { "org" },command = [[ lua require'config.luasnip' ]] }
 )
 api.nvim_create_autocmd(
 "Filetype", { pattern = { "SuperCollider" },command = [[ lua require'reaper-nvim'.setup() ]] }

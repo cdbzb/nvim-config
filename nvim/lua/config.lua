@@ -143,6 +143,13 @@ require("lazy").setup({
 	},
 	-- "haorenW1025/completion-nvim",
 	-- "jiangmiao/auto-pairs", 
+	{
+		'windwp/nvim-autopairs',
+		event = "InsertEnter",
+		config = true
+		-- use opts = {} for passing setup options
+		-- this is equivalent to setup({}) function
+	},
 	 {"neovim/nvim-lspconfig", enable = false},
 	-- "Furkanzmc/zettelkasten.nvim",
 	"nvim-lua/popup.nvim",

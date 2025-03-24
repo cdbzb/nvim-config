@@ -109,7 +109,7 @@ require("lazy").setup({
 		end
 	},
 	{
-		"davidgranstrom/scnvim", lazy = false, dependencies = {
+		"cdbzb/scnvim", lazy = false, dependencies = {
 			"davidgranstrom/osc.nvim",
 			"cdbzb/scnvim-logger",
 			"madskjeldgaard/reaper-nvim",

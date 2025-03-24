@@ -64,4 +64,4 @@ scnvim.setup {
 }
 
 -- scnvim.load_extension('fzf-sc')
--- scnvim.load_extension('logger')
+scnvim.load_extension('logger')

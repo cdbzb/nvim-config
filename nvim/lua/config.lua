@@ -51,9 +51,9 @@ require("lazy").setup({
 		config = function()
 			require("telescope").load_extension("orgmode")
 
-			vim.keymap.set("n", "<leader>of", require("telescope").extensions.orgmode.refile_heading)
-			vim.keymap.set("n", "<leader>oh", require("telescope").extensions.orgmode.search_headings)
-			vim.keymap.set("n", "<leader>o#", require("telescope").extensions.orgmode.insert_link)
+			-- vim.keymap.set("n", "<leader>nf", require("telescope").extensions.orgmode.refile_heading)
+			vim.keymap.set("n", "<leader>nt", require("telescope").extensions.orgmode.search_headings)
+			vim.keymap.set("n", "<leader>n#", require("telescope").extensions.orgmode.insert_link)
 		end,
 	},
 	{
@@ -67,10 +67,11 @@ require("lazy").setup({
 		},
 		config = function()
 			require("org-roam").setup({
-				directory = "~/org_roam_files",
+				directory = "~/tank/org_roam_files",
 				-- optional
 				org_files = {
 					"~/tank/org/*.org",
+					"~/tank/org_roam_files/*.org"
 				}
 			})
 		end
@@ -120,6 +121,7 @@ require("lazy").setup({
 	},
 
 	{"akinsho/toggleterm.nvim", opts={}},
+	-- {"kassio/neoterm", opts={}},
 
 	"junegunn/vim-easy-align",
 	-- "ggandor/lightspeed.nvim",

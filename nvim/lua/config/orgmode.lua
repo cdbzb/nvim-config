@@ -1,5 +1,5 @@
 require('orgmode').setup({
-	org_agenda_files = { '~/tank/org/*', '~/tank/org_roam_files/' },
+	org_agenda_files = { '~/tank/org/*', '~/tank/org_roam_files/*' },
 	org_default_notes_file = '~/tank/org/refile.org',
 	-- org_hide_leading_stars = true,
 	org_hide_emphasis_markers = true,

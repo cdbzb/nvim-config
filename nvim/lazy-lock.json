@@ -31,7 +31,7 @@
   "popup.nvim": { "branch": "master", "commit": "b7404d35d5d3548a82149238289fa71f7f6de4ac" },
   "reaper-nvim": { "branch": "master", "commit": "dc30b618bb0e2c47b7e0dce781527627291b3365" },
   "ripgrep": { "branch": "master", "commit": "de4baa10024f2cb62d438596274b9b710e01c59b" },
-  "scnvim": { "branch": "master", "commit": "4f34ce6797c148341df7eee7ff1a288e6f98c241" },
+  "scnvim": { "branch": "main", "commit": "7fcfd73d6d3b4cf6a31f62f07de3e35744962a20" },
   "scnvim-logger": { "branch": "main", "commit": "bf21656ba916ab7c6d2a8ac7bbdae2527bd6de28" },
   "telescope-orgmode.nvim": { "branch": "main", "commit": "2cd2ea778726c6e44429fef82f23b63197dbce1b" },
   "telescope-scdoc.nvim": { "branch": "main", "commit": "e5e13a782829655ca2079705cf4a48d6d9ac6369" },

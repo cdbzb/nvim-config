@@ -43,7 +43,7 @@ require("lazy").setup({
 	},
 	{
 		"nvim-orgmode/telescope-orgmode.nvim",
-		event = "VeryLazy",
+		-- event = "VeryLazy",
 		dependencies = {
 			"nvim-orgmode/orgmode",
 			"nvim-telescope/telescope.nvim",

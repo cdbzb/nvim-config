@@ -1,8 +1,18 @@
 require('orgmode').setup({
-	org_agenda_files = { '~/tank/org/*', '~/tank/org_roam_files/*' },
+	org_agenda_files = { '~/tank/org/*', '~/tank/org_roam_files/*', '~/tank/org_roam_files/daily/*' },
 	org_default_notes_file = '~/tank/org/refile.org',
 	-- org_hide_leading_stars = true,
 	org_hide_emphasis_markers = true,
+  org_adapt_indentation = true,
+  -- org_special_block_alist = {
+  --   SuperCollider = {
+  --     indentation = function(block_info)
+  --       -- Custom indentation logic for SuperCollider code blocks
+  --       return 2  -- 2-space indentation
+  --     end
+  --   }
+  -- },
+	org_blank_before_new_entry = { heading = false, plain_list_item = false },
 	org_capture_templates = 
 	{ 
 		m = {

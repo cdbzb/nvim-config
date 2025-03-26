@@ -26,6 +26,20 @@ vim.opt.rtp:prepend(lazypath)
 require("lazy").setup({
 	{ "rebelot/kanagawa.nvim", lazy = true},
 	{
+		"NeogitOrg/neogit",
+		dependencies = {
+			"nvim-lua/plenary.nvim",         -- required
+			"sindrets/diffview.nvim",        -- optional - Diff integration
+
+			-- Only one of these is needed.
+			"nvim-telescope/telescope.nvim", -- optional
+			"ibhagwan/fzf-lua",              -- optional
+			"echasnovski/mini.pick",         -- optional
+		},
+		config = true
+	},
+
+	{
 		'nvim-orgmode/orgmode',
 		event = 'VeryLazy',
 		ft = { 'org' },

@@ -129,6 +129,7 @@ require("lazy").setup({
 			"cdbzb/scnvim-logger",
 			"madskjeldgaard/reaper-nvim",
 		},
+		branch = "main",
 		config = function()
 			require("config.scnvim")
 		end

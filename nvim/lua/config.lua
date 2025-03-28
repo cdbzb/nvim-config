@@ -66,7 +66,7 @@ require("lazy").setup({
 			require("telescope").load_extension("orgmode")
 
 			-- vim.keymap.set("n", "<leader>nf", require("telescope").extensions.orgmode.refile_heading)
-			vim.keymap.set("n", "<leader>nt", require("telescope").extensions.orgmode.search_headings)
+			-- vim.keymap.set("n", "<leader>nt", require("telescope").extensions.orgmode.search_headings)
 			vim.keymap.set("n", "<leader>n#", require("telescope").extensions.orgmode.insert_link)
 		end,
 	},

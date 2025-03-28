@@ -20,6 +20,11 @@ require('orgmode').setup({
 	},
 	org_capture_templates = 
 	{ 
+			d = {
+				description = "Todo (Daily Note)",
+				template = "* TODO %?\n  %u", -- %u = inactive timestamp
+				target = "~/tank/org_roam_files/daily/%<%Y-%m-%d>.org", -- Auto-filename by date
+			},
 		m = {
 			description = 'Mandarin',
 			template = '**** on ln: %a %?\n %u',
@@ -37,3 +42,16 @@ require('orgmode').setup({
 -- Add this to your Neovim config (e.g., init.lua)
 vim.api.nvim_set_keymap('x', 'iS', ':<C-u>normal! [zjV]zk<CR>', { noremap = true, silent = true })
 vim.api.nvim_set_keymap('o', 'iS', ':normal viS<CR>', { noremap = true, silent = true })
+--
+-- Define a highlight group for orgmode inline code
+vim.api.nvim_set_hl(0, 'OrgInlineCode', { bg = '#3a3a3a', fg = '#f8f8f2', italic = true })
+
+-- Apply the highlight to inline code patterns
+-- vim.cmd([[
+--   augroup OrgInlineCodeHighlight
+--     autocmd!
+--     autocmd FileType org syntax match OrgInlineCode /`[^`]\+`/
+--     " autocmd FileType org syntax match OrgInlineCode /=[^=]\+=/
+--     autocmd FileType org hi link OrgInlineCode OrgInlineCode
+--   augroup END
+-- ]])

@@ -13,6 +13,11 @@ require('orgmode').setup({
   --   }
   -- },
 	org_blank_before_new_entry = { heading = false, plain_list_item = false },
+	mappings = {
+		org = {
+			org_return = nil, -- Disable <CR> mapping
+		},
+	},
 	org_capture_templates = 
 	{ 
 		m = {

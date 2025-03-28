@@ -27,7 +27,7 @@ wk.register({
 		j = {
 			name = jump,
 			l = {
-				"/addLine<enter>z.","nextline" 
+				"/GaddLine<enter>z.","nextline" 
 			}
 		},
 		b = { 
@@ -40,6 +40,11 @@ wk.register({
 			u = { ":lua MiniBufremove.unshow_in_window()<CR>", "miniBuf Unshow in Win" },
 
 		},
+		e = {
+			name = "edit",
+			c = { ":e ~/.config/nvim/lua <CR>", "nvim lua config" },
+			w = { ":e ~/.config/nvim/lua/config/which-key.lua <CR>", "which-key config" }
+		},
 		f = {
 			name = "Find Files",
 			d = {function() require'telescope'.extensions.supercollider.sc_definitions() end, "sc defs"},
@@ -50,6 +55,7 @@ wk.register({
 				name = "grep",
 				-- n = { function() tb.live_grep({cwd='/Users/michael/telekasten/'}) end,                      "notes" },
 				l = { function() tb.live_grep({cwd='/Users/michael/Documents/Logseq'}) end, "LogSeq" },
+				o = { function() require'telescope'.extensions.orgmode.search_headings() end, "org" },
 				s = { function() tb.live_grep({cwd='/Users/michael/tank/super/Trek/Songs'}) end, "Songs" },
 				k = { function() tb.live_grep({cwd='/Users/michael/tank/super/Trek'}) end, "Trek" },
 				c = { function() tb.live_grep({cwd='/Users/michael/tank/super/Trek/MW-Classes'}) end, "my classes" },
@@ -77,6 +83,14 @@ wk.register({
 			name = "terminal",
 			t = { ":ToggleTerm<CR>","ToggleTerm"  }
 		},
+		l = {
+			name = "launch",
+			g = { ":Neogit<CR>","NeoGit"},
+		},
+		n = {
+			P = { ":!push-org.sh<CR>", "push org-roam"}
+		}
+
 	}
 })
 

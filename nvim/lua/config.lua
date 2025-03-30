@@ -5,6 +5,7 @@ vim.g.maplocalleader = ','
 
 vim.opt.conceallevel = 2
 vim.opt.concealcursor = 'n'  -- conceals in normal and command mode
+vim.o.shell = '/bin/bash'
 
 require('config.songFunctions')
 --  lazy-nvim

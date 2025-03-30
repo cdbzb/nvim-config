@@ -88,7 +88,7 @@ wk.register({
 			g = { ":Neogit<CR>","NeoGit"},
 		},
 		n = {
-			P = { ":!push-org.sh<CR>", "push org-roam"}
+			P = { ":!~/.config/nvim/scripts/push-org.sh<CR>", "push org-roam"}
 		}
 
 	}

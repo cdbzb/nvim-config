@@ -2,11 +2,12 @@ require("nvim-treesitter.configs").setup {
   -- ensure_installed = {"supercollider", "rust", "html", "javascript"},
   highlight = {
     enable = true,
+	additional_vim_regex_highlighting = {'org'} -- Needed for orgmode
   },
   -- Enable this if you're using treesitter
   conceal = {
     enable = true,
-  },ure_installed = "supercollider",
+  },ensure_installed = "supercollider",
   ignore_install = { 'org' },
   highlight = {
     enable = true, 

@@ -2,3 +2,5 @@
 	graphonly = log --graph --decorate --oneline --simplify-by-decoration --all
 	lola = log --graph --oneline --all
 	st = status
+[user]
+	name = michael webster

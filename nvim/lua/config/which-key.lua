@@ -58,6 +58,7 @@ wk.register({
 				-- n = { function() tb.live_grep({cwd='/Users/michael/telekasten/'}) end,                      "notes" },
 				l = { function() tb.live_grep({cwd='/Users/michael/Documents/Logseq'}) end, "LogSeq" },
 				o = { function() require'telescope'.extensions.orgmode.search_headings() end, "org" },
+				d = { function() tb.live_grep({cwd='/Users/michael/tank/super/Trek/SynthDefLibrary/'}) end, "SynthDefs" },
 				s = { function() tb.live_grep({cwd='/Users/michael/tank/super/Trek/Songs'}) end, "Songs" },
 				k = { function() tb.live_grep({cwd='/Users/michael/tank/super/Trek'}) end, "Trek" },
 				c = { function() tb.live_grep({cwd='/Users/michael/tank/super/Trek/MW-Classes'}) end, "my classes" },

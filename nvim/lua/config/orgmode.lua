@@ -25,6 +25,12 @@ require('orgmode').setup({
 				template = "* TODO %?\n  %u", -- %u = inactive timestamp
 				target = "~/tank/org_roam_files/daily/%<%Y-%m-%d>.org", -- Auto-filename by date
 			},
+			D = {
+				description = "Todo (Daily Note) with linenum",
+				template = '**** TODO %?\non ln: %a \n %u',
+				-- template = "* TODO %?\n  %u", -- %u = inactive timestamp
+				target = "~/tank/org_roam_files/daily/%<%Y-%m-%d>.org", -- Auto-filename by date
+			},
 		m = {
 			description = 'Mandarin',
 			template = '**** on ln: %a %?\n %u',

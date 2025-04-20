@@ -4,3 +4,5 @@
 	st = status
 [user]
 	name = michael webster
+[pull]
+	rebase = true

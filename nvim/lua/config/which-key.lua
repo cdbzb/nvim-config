@@ -50,6 +50,8 @@ wk.register({
 			d = {function() require'telescope'.extensions.supercollider.sc_definitions() end, "sc defs"},
 			D = {function() require'telescope'.extensions.scdoc.scdoc() end, "sc docs" },
 			s = { function() tb.find_files({ cwd='/Users/michael/tank/super/Trek/Songs/' }) end, "Songs" },
+			m = { function() tb.find_files({ cwd='/Users/michael/tank/super/scd/Mandarin/' }) end, "Mandarin" },
+			-- l = { function() tb.find_files({ cwd='/Users/michael/tank/super/Trek/SynthDefLibrary/' }) end, "SynthDefs" },
 			c = { function() tb.find_files({ cwd='/Users/michael.config' }) end, "config" },
 			g = {
 				name = "grep",
@@ -242,7 +244,7 @@ vmap <localleader>l <Plug>(scnvim-send-selection)
 " nmap <localleader>sc <Plug>(scnvim-postwindow-clear)
 
 map <localleader>rpp m`ggl"zy$:!tmux new -d "open -a REAPER64.app <C-r>z"<CR>``
-nnoremap <localleader>df :silent execute "grep! -r SynthDef.*" . shellescape(expand("<cword>")) . " ~/tank/super/Trek/SynthDefLibrary/*"<cr>:copen<cr>
+nnoremap <localleader>df :silent execute "grep! SynthDef.*" . shellescape(expand("<cword>")) . " ~/tank/super/Trek/SynthDefLibrary/*"<cr>:copen<cr>
 nnoremap <localleader>dc yaw :call v:lua.require'scnvim'.send("")<left><Left>SynthDescLib.at(  \\<C-r>"  ).dump<cr>
 nnoremap <localleader>dt     :call v:lua.require'scnvim'.send("")<left><Left>SynthDefLibrary.tree<cr>
 map <localleader>u $F"vF"c

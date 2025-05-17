@@ -67,7 +67,10 @@ wk.register({
 			},
 			b = "buffer dir",
 			o = { function() tb.oldfiles() end,                                                "Recent" },
-			t = { function() tb.tags() end,                                                    "Tags" },
+			t = { function() tb.tags({
+				path_display = { "smart" }
+			}) end,                                                    "Tags" },
+
 			c = { function() tb.find_files({ cwd='~/tank/super/Trek/MW-Classes/' }) end, "My Classes" },
 			h = { function() tb.find_files({ cwd=utils.buffer_dir() }) end,                    "Here" },
 			b = { function() tb.buffers() end,                                                 "Buffers" },

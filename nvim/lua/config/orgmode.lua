@@ -61,3 +61,10 @@ vim.api.nvim_set_hl(0, 'OrgInlineCode', { bg = '#3a3a3a', fg = '#f8f8f2', italic
 --     autocmd FileType org hi link OrgInlineCode OrgInlineCode
 --   augroup END
 -- ]])
+function create_org_link()
+  local file_path = vim.fn.expand('%:p')  -- full path to current file
+  local line_num = vim.fn.line('.')       -- current line number
+  local link = string.format("[[file:%s::%d]]", file_path, line_num)
+  vim.fn.setreg('+', link)  -- copy to system clipboard
+  print("Org link copied: " .. link)
+end

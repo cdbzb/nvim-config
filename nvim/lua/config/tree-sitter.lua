@@ -11,7 +11,8 @@ require("nvim-treesitter.configs").setup {
   ignore_install = { 'org' },
   highlight = {
     enable = true, 
-  --  -- additional_vim_regex_highlighting =true,
+  additional_vim_regex_highlighting = { "supercollider" },
+    -- additional_vim_regex_highlighting =true,
    disable = { "scnvim"},
    enable = { "supercollider"},
   },

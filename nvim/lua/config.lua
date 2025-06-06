@@ -105,6 +105,7 @@ require("lazy").setup({
 	{ "L3MON4D3/LuaSnip", 
 	event = "VeryLazy",
 	opts = {},
+	dependencies = {"cdbzb/scnvim"},
 	-- lazy =true,
 	-- config = function() 
 	-- 		require("config.luasnip")
@@ -312,7 +313,6 @@ bufferline.setup{
             end,
         }
 }
-
 
 
 	-- vim.cmd([[

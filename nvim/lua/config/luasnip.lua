@@ -1,13 +1,11 @@
 local ls = require'luasnip'
 local ls_types = require("luasnip.util.types")
 
-local ls = require("luasnip")
-
-vim.keymap.set({"i", "s"}, "<Tab>", function()
-    if ls.expand_or_jumpable() then
-        ls.expand_or_jump()
-    end
-end, { silent = true })
+-- vim.keymap.set({"i", "s"}, "<Tab>", function()
+--     if ls.expand_or_jumpable() then
+--         ls.expand_or_jump()
+--     end
+-- end, { silent = true })
 
 vim.keymap.set({"i", "s"}, "<Tab>", function()
     if ls.expand_or_jumpable() then
@@ -18,13 +16,13 @@ vim.keymap.set({"i", "s"}, "<Tab>", function()
     end
 end, { silent = true })
 
-require("luasnip").add_snippets("supercollider", require("scnvim/utils").get_snippets())
-require("luasnip").add_snippets("org")
+-- require("luasnip").add_snippets("supercollider", require("scnvim/utils").get_snippets())
+-- require("luasnip").add_snippets("org")
 
--- require'luasnip'.add_snippets(
--- 	'supercollider',
--- 	 require'scnvim.utils'.get_snippets()
--- )
+require'luasnip'.add_snippets(
+	'supercollider',
+	 require'scnvim.utils'.get_snippets()
+)
 require("luasnip.loaders.from_lua").lazy_load({paths = "/Users/michael/.config/nvim/Luasnip"})
 require("luasnip.loaders.from_lua").lazy_load({paths = "/Users/michael/.config/nvim/scnvim/SCNvim_snippets.lua"})
 

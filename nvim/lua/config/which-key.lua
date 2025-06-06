@@ -181,6 +181,12 @@ wk.register( {
 					sc.send("Part.current.synthV.render")
 				end, "render synthV" 
 			},
+			e = {
+				function()
+					-- require'scnvim.editor'.send_selection()
+					sc.send("SynthV.current.render")
+				end, "synthV.current.render"
+			},
 			R = { function() 
 				vim.api.nvim_call_function("SelectPart",{})
 				-- vim.api.nvim_call_function("sleep",{0.1})

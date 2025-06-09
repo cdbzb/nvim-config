@@ -1,5 +1,7 @@
  lua require('config')
 
+imap <C-CR> <Plug>(neorg.itero-next-iteration)
+
 lua <<EOF
 vim.g['reaper_target_ip'] = '127.0.0.1'
 --vim.g.port= '8000'

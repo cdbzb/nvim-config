@@ -25,7 +25,64 @@ vim.opt.rtp:prepend(lazypath)
 -- Example using a list of specs with the default options
 
 require("lazy").setup({
-	{ "rebelot/kanagawa.nvim", lazy = true},
+	{ "rebelot/kanagawa.nvim", lazy =false},
+	{
+		"nvim-neorg/neorg-telescope",
+		dependencies = {
+			"nvim-telescope/telescope.nvim",
+			"nvim-neorg/neorg",
+		}
+	},
+	{
+		"nvim-neorg/neorg",
+		lazy = false, -- Disable lazy loading as some `lazy.nvim` distributions set `lazy = true` by default
+		dependencies = {"vhyrro/luarocks.nvim", priority=1000, config=true},
+		version = "*", -- Pin Neorg to the latest stable release
+		config = function()
+			require("neorg").setup {
+				load = {
+					["core.defaults"] = {},
+					["core.concealer"] = {},
+					["core.summary"] = {},
+					["core.integrations.treesitter"] = {},
+					["core.completion"] = {config = {engine = "nvim-cmp"}},
+					["core.integrations.telescope"] = {
+						config = {
+							insert_file_link = {
+								-- Whether to show the title preview in telescope. Affects performance with a large
+								-- number of files.
+								show_title_preview = true,
+							},
+						}
+					},
+					["core.dirman"] = {
+						config = {
+							workspaces = {
+								notes = "~/notes",
+							},
+							default_workspace = "notes",
+						},
+					},
+					["core.keybinds"] = {
+						config = {
+							neorg_leader = "<Leader>o", -- or whatever your leader is
+							hook = function(keybinds)
+								keybinds.remap_event("norg", "i", "<M-CR>", "core.itero.next-iteration") -- remove default
+								keybinds.remap_event("norg", "i", "<M-CR>", "core.itero.next-iteration") -- remove default
+
+								-- Set your new keybinding
+								keybinds.map_event("norg", "i", ",o", "core.itero.next-iteration")
+							end
+						}
+					}
+				},
+			}
+
+			vim.wo.foldlevel = 99
+			vim.wo.conceallevel = 2
+			require('config.colors') -- loads neorg colors
+		end,
+	},
 	{
 		"NeogitOrg/neogit",
 		dependencies = {
@@ -39,7 +96,6 @@ require("lazy").setup({
 		},
 		config = true
 	},
-
 	{
 		'nvim-orgmode/orgmode',
 		event = 'VeryLazy',
@@ -237,8 +293,33 @@ end
 
 
 -- autocmds
+-- Ensure LuaSnip recognizes the filetype
+vim.api.nvim_create_autocmd("FileType", {
+  pattern = "supercollider",
+  callback = function()
+    require("luasnip").filetype_extend("supercollider", {"supercollider"})
+  end,
+})
 
-
+-- Make sure you have ripgrep installed.
+-- Add the following function to your `~/.config/nvim/init.lua`:
+do
+    local _, neorg = pcall(require, "neorg.core")
+    local dirman = neorg.modules.get_module("core.dirman")
+    local function get_todos(fallback_dir, states)
+        local current_workspace = dirman.get_current_workspace()
+        -- Extract the path string from the workspace info
+        local workspace_path = current_workspace and current_workspace[2] or fallback_dir
+        
+        -- Ensure we have a string path, not a table
+        local dir_path = type(workspace_path) == "string" and workspace_path or fallback_dir
+        
+        require('telescope.builtin').live_grep{ cwd = dir_path }
+        vim.fn.feedkeys('^ *([*]+|[-]+) +[(]' .. states .. '[)]')
+    end
+    -- This can be bound to a key
+    vim.keymap.set('n', '<leader>at', function() get_todos('~/notes', '[^x_]') end)
+end
 local api=vim.api
 -- api.nvim_create_autocmd(
 --   "FileType", {
@@ -313,7 +394,11 @@ bufferline.setup{
             end,
         }
 }
+-- In your init.lua or a file sourced by it, after loading kanagawa
+--- Get Kanagawa colors and apply to Neorg headings
 
+-- If you need to be more specific, you can try:
+-- vim.api.nvim_set_hl(0, 'NeorgHeadings.3.title', { fg = '#A7C08F', bold = true })
 
 	-- vim.cmd([[
 	-- imap <silent><expr> <Tab> luasnip#expand_or_jumpable() ? '<Plug>luasnip-expand-or-jump' : '<Tab>' 

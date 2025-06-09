@@ -4,7 +4,20 @@ tb = require("telescope.builtin")
 utils = require("telescope.utils")
 -- tk = require("telekasten")
 sc = require("scnvim")
+wk.add({
+  { "<space>fnb", "<Plug>(neorg.telescope.backlinks.file_backlinks)", desc = "backlinks (File)" },
 
+  { "<space>fnB", "<Plug>(neorg.telescope.backlinks.header_backlinks)", desc = "backlinks (header)"},
+  { "<space>fnh", "<Plug>(neorg.telescope.find_linkable)", desc = "find heading" },
+ 
+  { "<space>fnn", "<Plug>(neorg.telescope.find_norg_files)", desc = "find note" },
+  { "<space>fnl", "<Plug>(neorg.telescope.insert_file_link)", desc = "insert link (file)" },
+
+  { "<space>fnL", "<Plug>(neorg.telescope.insert_link)" , desc = "insert link (block)" },
+
+  { "<space>fnH", "<Plug>(neorg.telescope.search_headings)", desc = "headings (local)" },
+  { "<localleader>nd", "<Plug>(neorg.looking-glass.magnify-code-block)", desc = "send code block to new buf"}
+  })
 wk.setup {
     -- your configuration comes here
     -- or leave it empty to use the default settings
@@ -26,7 +39,7 @@ wk.register({
 	[ "<leader>" ] = {
 		j = {
 			name = jump,
-			l = {
+			l = {   
 				"/GaddLine<enter>z.","nextline" 
 			}
 		},
@@ -74,6 +87,12 @@ wk.register({
 			c = { function() tb.find_files({ cwd='~/tank/super/Trek/MW-Classes/' }) end, "My Classes" },
 			h = { function() tb.find_files({ cwd=utils.buffer_dir() }) end,                    "Here" },
 			b = { function() tb.buffers() end,                                                 "Buffers" },
+		},
+		j = {
+			name = "neorg journal",
+			j = { ":Neorg journal today <cr>", "today"},
+			t = { ":Neorg journal toc <cr>", "toc"},
+			i = { ":Neorg index <cr>", "index"},
 		},
 		w = {
 			name = "Window",
@@ -212,8 +231,8 @@ wk.register( {
 		}
 	}
 })
-
 vim.cmd( [[
+" imap <C-return> lua require'neorg'.itero.next-iteration()
 
 nnoremap <leader>zC :CalendarT<CR>
 nnoremap <leader>zI :lua require('telekasten').insert_img_link({ i=true })<CR>

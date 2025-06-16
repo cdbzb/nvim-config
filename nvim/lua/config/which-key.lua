@@ -16,7 +16,10 @@ wk.add({
   { "<space>fnL", "<Plug>(neorg.telescope.insert_link)" , desc = "insert link (block)" },
 
   { "<space>fnH", "<Plug>(neorg.telescope.search_headings)", desc = "headings (local)" },
-  { "<localleader>nd", "<Plug>(neorg.looking-glass.magnify-code-block)", desc = "send code block to new buf"}
+  { "<localleader>nd", "<Plug>(neorg.looking-glass.magnify-code-block)", desc = "send code block to new buf"},
+  { 
+	  "<space>nD","i* <C-R>=strftime('%b %d, %Y')<CR>", desc = "journal date entry"
+  }
   })
 wk.setup {
     -- your configuration comes here

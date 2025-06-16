@@ -379,30 +379,6 @@ return {
 		})
 		
 	),
-	s("synthvdouble",
-	fmt([[
-		P.synthV({}, take:\lead, params: {{|p b| [
-			lyrics: "{}",
-			pitchTake: 1
-		] }}, music:{{|p b e|
-			{{
-				e.playbuf
-				=> p.synthVTracks.at(e.key).()
-			}}.play
-		}});
-		P.double({}, params: {{|p b| [
-				{}
-			] }}, music:{{|p b e|
-				{{
-					e.playbuf
-					=> p.synthVTracks.at(e.key).()
-				}}.play
-			}});
-]],{
-		i(1,"voice - start"),i(2),f(function(args, snip) return args[1] end, {1}),i(3)
-	})
-	
-	),
 	s("filter", fmt([[ filter: ({}{}), ]],
 		{ i(1, "midinote:"), i(2, " _ - 12") }
 	)),

@@ -52,9 +52,17 @@ cmp.setup ({
 			winhighlight = 'Normal:Normal,FloatBorder:BorderBG'
 		})
 	},
-	mapping = cmp.mapping.preset.insert({
-	}),
-
+	mapping = 
+	-- cmp.mapping.preset.insert(
+	{
+		-- added by Claude
+		['<CR>'] = cmp.mapping.confirm {
+			behavior = cmp.ConfirmBehavior.Insert,
+			select = false,
+		}
+	}
+	-- )
+	,
 	snippet = {
 		expand = function(args)
 			luasnip.lsp_expand(args.body)

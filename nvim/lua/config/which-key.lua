@@ -1,238 +1,182 @@
-
 wk = require("which-key")
 tb = require("telescope.builtin")
 utils = require("telescope.utils")
 -- tk = require("telekasten")
 sc = require("scnvim")
-wk.add({
-  { "<space>fnb", "<Plug>(neorg.telescope.backlinks.file_backlinks)", desc = "backlinks (File)" },
 
-  { "<space>fnB", "<Plug>(neorg.telescope.backlinks.header_backlinks)", desc = "backlinks (header)"},
-  { "<space>fnh", "<Plug>(neorg.telescope.find_linkable)", desc = "find heading" },
- 
-  { "<space>fnn", "<Plug>(neorg.telescope.find_norg_files)", desc = "find note" },
-  { "<space>fnl", "<Plug>(neorg.telescope.insert_file_link)", desc = "insert link (file)" },
-
-  { "<space>fnL", "<Plug>(neorg.telescope.insert_link)" , desc = "insert link (block)" },
-
-  { "<space>fnH", "<Plug>(neorg.telescope.search_headings)", desc = "headings (local)" },
-  { "<localleader>nd", "<Plug>(neorg.looking-glass.magnify-code-block)", desc = "send code block to new buf"},
-  { 
-	  "<space>nD","i* <C-R>=strftime('%b %d, %Y')<CR>", desc = "journal date entry"
-  }
-  })
 wk.setup {
     -- your configuration comes here
     -- or leave it empty to use the default settings
     -- refer to the configuration section below
+    triggers = {
+        { " ", mode = { "n", "v" } },
+        { ",", mode = { "n", "v" } },
+        { "<auto>", mode = "nxsotc" },
+        { "a", mode = { "n", "v" } },
+    }
+}
 
-    -- triggers = {"<leader>","<localleader>",} -- or specify a list manually
-       triggers = {
-		   {" "},
-		   {","},
-         -- { "<auto>", mode = "nixsotc" },
-         { "<auto>", mode = "nxsotc" },
-         { "a", mode = { "n", "v" } },
-       }
-  }
+wk.add({
+  { "<space>fnb", "<Plug>(neorg.telescope.backlinks.file_backlinks)", desc = "backlinks (File)" },
+  { "<space>fnB", "<Plug>(neorg.telescope.backlinks.header_backlinks)", desc = "backlinks (header)"},
+  { "<space>fnh", "<Plug>(neorg.telescope.find_linkable)", desc = "find heading" },
+  { "<space>fnn", "<Plug>(neorg.telescope.find_norg_files)", desc = "find note" },
+  { "<space>fnl", "<Plug>(neorg.telescope.insert_file_link)", desc = "insert link (file)" },
+  { "<space>fnL", "<Plug>(neorg.telescope.insert_link)" , desc = "insert link (block)" },
+  { "<space>fnH", "<Plug>(neorg.telescope.search_headings)", desc = "headings (local)" },
+  { "<localleader>nd", "<Plug>(neorg.looking-glass.magnify-code-block)", desc = "send code block to new buf"},
+  { "<space>nD","i* <C-R>=strftime('%b %d, %Y')<CR>", desc = "journal date entry" },
 
-wk.register({
+  -- Leader mappings
+  { "<leader>j", group = "jump" },
+  { "<leader>jl", "/GaddLine<enter>z.", desc = "nextline" },
 
-	-- s = { "<Plug>Lightspeed_s", "lightspeed" };
-	[ "<leader>" ] = {
-		j = {
-			name = jump,
-			l = {   
-				"/GaddLine<enter>z.","nextline" 
-			}
-		},
-		b = { 
-			name = "buffers",
-			e = { ":call DeleteEmptyBuffers()<CR>", "delete empty" },
-			b = { ":source /Users/michael/.config/nvim/lua/config/bufferline.lua","source bufferline.lua"},
-			w = { ":lua MiniBufremove.wipeout()<CR>", "miniBuf Wipeout" },
-			d = { ":lua MiniBufremove.wipeout()<CR>", "miniBuf Delete" },
-			U = { ":lua MiniBufremove.unshow()<CR>", "miniBuf Unshow All" },
-			u = { ":lua MiniBufremove.unshow_in_window()<CR>", "miniBuf Unshow in Win" },
+  { "<leader>b", group = "buffers" },
+  { "<leader>be", ":call DeleteEmptyBuffers()<CR>", desc = "delete empty" },
+  { "<leader>bb", ":source /Users/michael/.config/nvim/lua/config/bufferline.lua", desc = "source bufferline.lua"},
+  { "<leader>bw", ":lua MiniBufremove.wipeout()<CR>", desc = "miniBuf Wipeout" },
+  { "<leader>bd", ":lua MiniBufremove.wipeout()<CR>", desc = "miniBuf Delete" },
+  { "<leader>bU", ":lua MiniBufremove.unshow()<CR>", desc = "miniBuf Unshow All" },
+  { "<leader>bu", ":lua MiniBufremove.unshow_in_window()<CR>", desc = "miniBuf Unshow in Win" },
 
-		},
-		e = {
-			name = "edit",
-			c = { ":e ~/.config/nvim/lua <CR>", "nvim lua config" },
-			w = { ":e ~/.config/nvim/lua/config/which-key.lua <CR>", "which-key config" }
-		},
-		f = {
-			name = "Find Files",
-			d = {function() require'telescope'.extensions.supercollider.sc_definitions() end, "sc defs"},
-			D = {function() require'telescope'.extensions.scdoc.scdoc() end, "sc docs" },
-			s = { function() tb.find_files({ cwd='/Users/michael/tank/super/Trek/Songs/' }) end, "Songs" },
-			m = { function() tb.find_files({ cwd='/Users/michael/tank/super/scd/Mandarin/' }) end, "Mandarin" },
-			-- l = { function() tb.find_files({ cwd='/Users/michael/tank/super/Trek/SynthDefLibrary/' }) end, "SynthDefs" },
-			c = { function() tb.find_files({ cwd='/Users/michael.config' }) end, "config" },
-			g = {
-				name = "grep",
-				-- n = { function() tb.live_grep({cwd='/Users/michael/telekasten/'}) end,                      "notes" },
-				l = { function() tb.live_grep({cwd='/Users/michael/Documents/Logseq'}) end, "LogSeq" },
-				o = { function() require'telescope'.extensions.orgmode.search_headings() end, "org" },
-				d = { function() tb.live_grep({cwd='/Users/michael/tank/super/Trek/SynthDefLibrary/'}) end, "SynthDefs" },
-				s = { function() tb.live_grep({cwd='/Users/michael/tank/super/Trek/Songs'}) end, "Songs" },
-				k = { function() tb.live_grep({cwd='/Users/michael/tank/super/Trek'}) end, "Trek" },
-				c = { function() tb.live_grep({cwd='/Users/michael/tank/super/Trek/MW-Classes'}) end, "my classes" },
-				h = { function() tb.live_grep() end, "here" },
+  { "<leader>e", group = "edit" },
+  { "<leader>ec", ":e ~/.config/nvim/lua <CR>", desc = "nvim lua config" },
+  { "<leader>ew", ":e ~/.config/nvim/lua/config/which-key.lua <CR>", desc = "which-key config" },
 
-			},
-			b = "buffer dir",
-			o = { function() tb.oldfiles() end,                                                "Recent" },
-			t = { function() tb.tags({
-				path_display = { "smart" }
-			}) end,                                                    "Tags" },
+  { "<leader>f", group = "Find Files" },
+  { "<leader>fd", function() require'telescope'.extensions.supercollider.sc_definitions() end, desc = "sc defs"},
+  { "<leader>fD", function() require'telescope'.extensions.scdoc.scdoc() end, desc = "sc docs" },
+  { "<leader>fs", function() tb.find_files({ cwd='/Users/michael/tank/super/Trek/Songs/' }) end, desc = "Songs" },
+  { "<leader>fm", function() tb.find_files({ cwd='/Users/michael/tank/super/scd/Mandarin/' }) end, desc = "Mandarin" },
+  { "<leader>fc", function() tb.find_files({ cwd='/Users/michael.config' }) end, desc = "config" },
+  { "<leader>fo", function() tb.oldfiles() end, desc = "Recent" },
+  { "<leader>ft", function() tb.tags({ path_display = { "smart" } }) end, desc = "Tags" },
+  { "<leader>fc", function() tb.find_files({ cwd='~/tank/super/Trek/MW-Classes/' }) end, desc = "My Classes" },
+  { "<leader>fh", function() tb.find_files({ cwd=utils.buffer_dir() }) end, desc = "Here" },
+  { "<leader>fb", function() tb.buffers() end, desc = "Buffers" },
 
-			c = { function() tb.find_files({ cwd='~/tank/super/Trek/MW-Classes/' }) end, "My Classes" },
-			h = { function() tb.find_files({ cwd=utils.buffer_dir() }) end,                    "Here" },
-			b = { function() tb.buffers() end,                                                 "Buffers" },
-		},
-		j = {
-			name = "neorg journal",
-			j = { ":Neorg journal today <cr>", "today"},
-			t = { ":Neorg journal toc <cr>", "toc"},
-			i = { ":Neorg index <cr>", "index"},
-		},
-		w = {
-			name = "Window",
-			o = { ":only<cr>","only" },
-			j = { "<C-w>j","next" },
-			k = { "<C-w>k","previous" },
-			h = { "<C-w>h","left" },
-			l = { "<C-w>l","right" },
-			c = { "<C-w>c","close" },
-		},
-		a = {function() sc.send("Date.insertStamp") end, "Insert Timestamp"},
-		t = {
-			name = "terminal",
-			t = { ":ToggleTerm<CR>","ToggleTerm"  }
-		},
-		l = {
-			name = "launch",
-			g = { ":Neogit<CR>","NeoGit"},
-		},
-		n = {
-			P = { ":!~/.config/nvim/scripts/push-org.sh<CR>", "push org-roam"},
-			p = { ":!~/.config/nvim/scripts/pull-org.sh<CR>", "pull org-roam"}
-		}
+  { "<leader>fg", group = "grep" },
+  { "<leader>fgl", function() tb.live_grep({cwd='/Users/michael/Documents/Logseq'}) end, desc = "LogSeq" },
+  { "<leader>fgo", function() require'telescope'.extensions.orgmode.search_headings() end, desc = "org" },
+  { "<leader>fgd", function() tb.live_grep({cwd='/Users/michael/tank/super/Trek/SynthDefLibrary/'}) end, desc = "SynthDefs" },
+  { "<leader>fgs", function() tb.live_grep({cwd='/Users/michael/tank/super/Trek/Songs'}) end, desc = "Songs" },
+  { "<leader>fgk", function() tb.live_grep({cwd='/Users/michael/tank/super/Trek'}) end, desc = "Trek" },
+  { "<leader>fgc", function() tb.live_grep({cwd='/Users/michael/tank/super/Trek/MW-Classes'}) end, desc = "my classes" },
+  { "<leader>fgh", function() tb.live_grep() end, desc = "here" },
 
-	}
-})
+  { "<leader>j", group = "neorg journal" },
+  { "<leader>jj", ":Neorg journal today <cr>", desc = "today"},
+  { "<leader>jt", ":Neorg journal toc <cr>", desc = "toc"},
+  { "<leader>ji", ":Neorg index <cr>", desc = "index"},
 
-wk.register( {
-	["<localleader>"] = {
-		name = "SC commands",
+  { "<leader>w", group = "Window" },
+  { "<leader>wo", ":only<cr>", desc = "only" },
+  { "<leader>wj", "<C-w>j", desc = "next" },
+  { "<leader>wk", "<C-w>k", desc = "previous" },
+  { "<leader>wh", "<C-w>h", desc = "left" },
+  { "<leader>wl", "<C-w>l", desc = "right" },
+  { "<leader>wc", "<C-w>c", desc = "close" },
 
-		P       = { ":call NowPlayAgain()<CR>","reload and play" },
-		p       = {function() require'scnvim'.send("Song.play") end, "play Song" },
-		o		= {function() require'scnvim'.send("Song.makeScroll") end, "makeScroll"},
-		[ "<" ] = "reload part and play",
-		[ "," ] = "play Part",
-		--o       = "open RPP",
-		f       = { ":set ft=supercollider<CR>","set filetype" },
-		k       = "recompile",
-		l       = "send line/selection",
-		m = {
-			name = "monitors",
-			f = {function() sc.send("Monitors.gui") end, "volume fader"},
-			m = {function() sc.send("s.volume_(-90); Monitors.gui") end, "volume fader"},
-			a = {function() require'scnvim'.send("Monitors.airpods") end, "airpods"},
-			b = {function() require'scnvim'.send("Monitors.bose") end, "airpods"},
-			h = {function() require'scnvim'.send("Monitors.headphones") end, "headphones"},
-			z = {function() require'scnvim'.send("Monitors.zoom") end, "zoom"},
-			t = {function() require'scnvim'.send("().play") end, "test"}
-		},
-		u       = "play this tune",
-		n       = {function() require'scnvim'.send("Song.playOnly()") end, "play Only Again"},
-		N       = { [[:call v:lua.require'scnvim'.send("Song.playOnly(\\)")<LEFT><LEFT><LEFT>]],"play only"  },
-		["."]   = "send block",
-		d = {
-			name = "synthDefs",
-			c = "controls",
-			t = "tree",
-			f = "find",
-			p = "play"
-		},
-		c = {
-			name = "cursor",
-			u = "input",
-			h = "Here",
-			H = "set Here and Play Song",
-			d = {function() require'scnvim'.send("Song.cursor_(Song.cursor - 1)") end, "decrement"}
-		},
-		s = {
-			name = "sclang",
-			t = "start",
-			p = "stop",
-			c = {function() require'scnvim.postwin'.clear() end, "clear Post" },
-			d = "send to sclang",
-			b = {function() sc.send("s.newBusAllocators") end, "new BusAllocators"},
-			m = {function() sc.send("Song.makeScroll") end, "Make Song Scroll"},
-			f = {function() sc.send("PF()") end, "make a piano!"},
-			s = {function() sc.send("s.boot") end, "boot server"},
-		},
-		[ "/" ] = {
-				function()
-				vim.api.nvim_call_function("SelectPart",{})
-				-- vim.api.nvim_call_function("sleep",{0.1})
-				require'scnvim.editor'.send_selection()
-			end, "reload part without playing"
-			},
-		i = {
-			name = "ii for part name under cursor",
-			i = "play part under cursor"
-		},
-		r = {
-			name = "record section - RPP",
-			e = { ":call RecordSection()<CR>", "record section" },
-			o = { function() sc.send("Part.current.rpp.open") end, "open RPP" },
-			b = { function() sc.send("Part.current.rpp.build") end, "build RPP" }
-		},
-		v = {
-			name = "synthVs",
-			o = { function() sc.send("Part.current.synthV.open") end, "open synthV" },
-			r = {
-				function() 
-					vim.api.nvim_call_function("SelectPart",{})
-					-- vim.api.nvim_call_function("sleep",{0.1})
-					require'scnvim.editor'.send_selection()
-					sc.send("Part.current.synthV.render")
-				end, "render synthV" 
-			},
-			e = {
-				function()
-					-- require'scnvim.editor'.send_selection()
-					sc.send("SynthV.current.render")
-				end, "synthV.current.render"
-			},
-			R = { function() 
-				vim.api.nvim_call_function("SelectPart",{})
-				-- vim.api.nvim_call_function("sleep",{0.1})
-				require'scnvim.editor'.send_selection()
-				sc.send("SynthV.renderMultiple")
-			end, "render synthVs" },
-			s = { function ()
-				vim.api.nvim_call_function("PlayFromHere",{})
-				sc.send("SynthV.renderSection")
-			end, "render SynthVs in section"
-			}
-		},
-		a = { 
-			name = "arm",
-			o = {function() sc.send("RecOnsets.record") end, "RecOnsets"},
-			k = {function() sc.send("RecKey.record") end, "RecKey"},
-			e = {function() sc.send("RecEnv.record") end, "RecEnv"},
-			r = {function() sc.send("Rec.record") end, "Rec"}
-		},
-		w = {
-			name = "Window",
-			c = {function() sc.send("Window.closeAll") end, "closeAll"}
-		}
-	}
+  { "<leader>a", function() sc.send("Date.insertStamp") end, desc = "Insert Timestamp"},
+
+  { "<leader>t", group = "terminal" },
+  { "<leader>tt", ":ToggleTerm<CR>", desc = "ToggleTerm" },
+
+  { "<leader>l", group = "launch" },
+  { "<leader>lg", ":Neogit<CR>", desc = "NeoGit"},
+
+  { "<leader>n", group = "notes" },
+  { "<leader>nP", ":!~/.config/nvim/scripts/push-org.sh<CR>", desc = "push org-roam"},
+  { "<leader>np", ":!~/.config/nvim/scripts/pull-org.sh<CR>", desc = "pull org-roam"},
+
+  -- LocalLeader mappings
+  { "<localleader>", group = "SC commands" },
+  { "<localleader>P", ":call NowPlayAgain()<CR>", desc = "reload and play" },
+  { "<localleader>p", function() require'scnvim'.send("Song.play") end, desc = "play Song" },
+  { "<localleader>o", function() require'scnvim'.send("Song.makeScroll") end, desc = "makeScroll"},
+  { "<localleader><", desc = "reload part and play" },
+  { "<localleader>,", desc = "play Part" },
+  { "<localleader>f", ":set ft=supercollider<CR>", desc = "set filetype" },
+  { "<localleader>k", desc = "recompile" },
+  { "<localleader>l", desc = "send line/selection" },
+
+  { "<localleader>m", group = "monitors" },
+  { "<localleader>mf", function() sc.send("Monitors.gui") end, desc = "volume fader"},
+  { "<localleader>mm", function() sc.send("s.volume_(-90); Monitors.gui") end, desc = "volume fader"},
+  { "<localleader>ma", function() require'scnvim'.send("Monitors.airpods") end, desc = "airpods"},
+  { "<localleader>mb", function() require'scnvim'.send("Monitors.bose") end, desc = "bose"},
+  { "<localleader>mh", function() require'scnvim'.send("Monitors.headphones") end, desc = "headphones"},
+  { "<localleader>mz", function() require'scnvim'.send("Monitors.zoom") end, desc = "zoom"},
+  { "<localleader>mt", function() require'scnvim'.send("().play") end, desc = "test"},
+
+  { "<localleader>u", desc = "play this tune" },
+  { "<localleader>n", function() require'scnvim'.send("Song.playOnly()") end, desc = "play Only Again"},
+  { "<localleader>N", [[:call v:lua.require'scnvim'.send("Song.playOnly(\\)")<LEFT><LEFT><LEFT>]], desc = "play only" },
+  { "<localleader>.", desc = "send block" },
+
+  { "<localleader>d", group = "synthDefs" },
+  { "<localleader>dc", desc = "controls" },
+  { "<localleader>dt", desc = "tree" },
+  { "<localleader>df", desc = "find" },
+  { "<localleader>dp", desc = "play" },
+
+  { "<localleader>c", group = "cursor" },
+  { "<localleader>cu", desc = "input" },
+  { "<localleader>ch", desc = "Here" },
+  { "<localleader>cH", desc = "set Here and Play Song" },
+  { "<localleader>cd", function() require'scnvim'.send("Song.cursor_(Song.cursor - 1)") end, desc = "decrement"},
+
+  { "<localleader>s", group = "sclang" },
+  { "<localleader>st", desc = "start" },
+  { "<localleader>sp", desc = "stop" },
+  { "<localleader>sc", function() require'scnvim.postwin'.clear() end, desc = "clear Post" },
+  { "<localleader>sd", desc = "send to sclang" },
+  { "<localleader>sb", function() sc.send("s.newBusAllocators") end, desc = "new BusAllocators"},
+  { "<localleader>sm", function() sc.send("Song.makeScroll") end, desc = "Make Song Scroll"},
+  { "<localleader>sf", function() sc.send("PF()") end, desc = "make a piano!"},
+  { "<localleader>ss", function() sc.send("s.boot") end, desc = "boot server"},
+
+  { "<localleader>/", function()
+      vim.api.nvim_call_function("SelectPart",{})
+      require'scnvim.editor'.send_selection()
+    end, desc = "reload part without playing" },
+
+  { "<localleader>i", group = "ii for part name under cursor" },
+  { "<localleader>ii", desc = "play part under cursor" },
+
+  { "<localleader>r", group = "record section - RPP" },
+  { "<localleader>re", ":call RecordSection()<CR>", desc = "record section" },
+  { "<localleader>ro", function() sc.send("Part.current.rpp.open") end, desc = "open RPP" },
+  { "<localleader>rb", function() sc.send("Part.current.rpp.build") end, desc = "build RPP" },
+
+  { "<localleader>v", group = "synthVs" },
+  { "<localleader>vo", function() sc.send("Part.current.synthV.open") end, desc = "open synthV" },
+  { "<localleader>vr", function() 
+      vim.api.nvim_call_function("SelectPart",{})
+      require'scnvim.editor'.send_selection()
+      sc.send("Part.current.synthV.render")
+    end, desc = "render synthV" },
+  { "<localleader>ve", function()
+      sc.send("SynthV.current.render")
+    end, desc = "synthV.current.render" },
+  { "<localleader>vR", function() 
+      vim.api.nvim_call_function("SelectPart",{})
+      require'scnvim.editor'.send_selection()
+      sc.send("SynthV.renderMultiple")
+    end, desc = "render synthVs" },
+  { "<localleader>vs", function ()
+      vim.api.nvim_call_function("PlayFromHere",{})
+      sc.send("SynthV.renderSection")
+    end, desc = "render SynthVs in section" },
+
+  { "<localleader>a", group = "arm" },
+  { "<localleader>ao", function() sc.send("RecOnsets.record") end, desc = "RecOnsets"},
+  { "<localleader>ak", function() sc.send("RecKey.record") end, desc = "RecKey"},
+  { "<localleader>ae", function() sc.send("RecEnv.record") end, desc = "RecEnv"},
+  { "<localleader>ar", function() sc.send("Rec.record") end, desc = "Rec"},
+
+  { "<localleader>w", group = "Window" },
+  { "<localleader>wc", function() sc.send("Window.closeAll") end, desc = "closeAll"},
 })
 vim.cmd( [[
 " imap <C-return> lua require'neorg'.itero.next-iteration()

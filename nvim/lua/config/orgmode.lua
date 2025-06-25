@@ -1,5 +1,10 @@
 require('orgmode').setup({
+	--from Gemini
+  org_src_preserve_indentation = true,
+  org_edit_src_content_indentation = 0, -- or your desired indent
+
 	org_agenda_files = { '~/tank/org/*', '~/tank/org_roam_files/*', '~/tank/org_roam_files/daily/*' },
+	org_refile_targets = { '~/tank/org/*', '~/tank/org_roam_files/*', '~/tank/org_roam_files/daily/*' },
 	org_default_notes_file = '~/tank/org_roam_files/refile.org',
 	-- org_hide_leading_stars = true,
 	org_hide_emphasis_markers = true,
@@ -15,6 +20,7 @@ require('orgmode').setup({
 	org_blank_before_new_entry = { heading = false, plain_list_item = false },
 	mappings = {
 		org = {
+			org_open_at_point = ',g',
 			org_return = nil, -- Disable <CR> mapping
 		},
 	},
@@ -137,7 +143,7 @@ local function jump_or_create_journal()
 end
 
 -- Set up keybindings
-vim.keymap.set('n', '<leader>jj', jump_or_create_journal, { desc = 'Jump to or create today\'s journal' })
+vim.keymap.set('n', '<leader>oj', jump_or_create_journal, { desc = 'Jump to or create today\'s journal' })
 vim.keymap.set('n', '<leader>jt', jump_to_today_journal, { desc = 'Jump to today\'s journal' })
 vim.keymap.set('n', '<leader>jc', create_journal_entry, { desc = 'Create new journal entry' })
 
@@ -153,6 +159,7 @@ vim.api.nvim_create_user_command('Journal', jump_or_create_journal, { desc = 'Ju
 --     autocmd FileType org hi link OrgInlineCode OrgInlineCode
 --   augroup END
 -- ]])
+
 function create_org_link()
   local file_path = vim.fn.expand('%:p')  -- full path to current file
   local line_num = vim.fn.line('.')       -- current line number
@@ -160,3 +167,4 @@ function create_org_link()
   vim.fn.setreg('+', link)  -- copy to system clipboard
   print("Org link copied: " .. link)
 end
+

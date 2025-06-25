@@ -127,6 +127,17 @@ require("lazy").setup({
 			vim.keymap.set("n", "<leader>n#", require("telescope").extensions.orgmode.insert_link)
 		end,
 	},
+-- Lua
+{
+  "folke/twilight.nvim",
+  opts = {
+    -- your configuration comes here
+    -- or leave it empty to use the default settings
+    -- refer to the configuration section below
+  }
+},
+"junegunn/limelight.vim",
+"junegunn/goyo.vim",
 	{
 		"chipsenkbeil/org-roam.nvim",
 		tag = "0.1.1",

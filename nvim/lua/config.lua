@@ -386,6 +386,9 @@ api.nvim_create_autocmd(
 api.nvim_create_autocmd(
 "Filetype", { pattern = { "markdown" },command = [[lua require('cmp').setup.buffer { enabled = false }]] }
 )
+api.nvim_create_autocmd(
+"Filetype", { pattern = { "org" },command = [[let b:surround_45 = "#+BEGIN_SRC supercollider \n \r \n #+END_SRC"]] }
+)
 
 
 

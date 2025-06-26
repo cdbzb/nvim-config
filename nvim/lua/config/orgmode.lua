@@ -160,11 +160,16 @@ vim.api.nvim_create_user_command('Journal', jump_or_create_journal, { desc = 'Ju
 --   augroup END
 -- ]])
 
-function create_org_link()
-  local file_path = vim.fn.expand('%:p')  -- full path to current file
-  local line_num = vim.fn.line('.')       -- current line number
-  local link = string.format("[[file:%s::%d]]", file_path, line_num)
-  vim.fn.setreg('+', link)  -- copy to system clipboard
-  print("Org link copied: " .. link)
+local function copy_org_link_to_clipboard()
+  local line = vim.api.nvim_get_current_line()
+  local heading = line:match("^%*+ (.+)$")
+  if heading then
+    local filepath = vim.fn.expand("%:p")
+    local link = string.format("[[file:%s::*%s][%s]]", filepath, heading, heading)
+    vim.fn.setreg("\"", link)
+    print("Copied: " .. link)
+  end
 end
+
+vim.keymap.set('n', '<leader>oy', copy_org_link_to_clipboard, { desc = "Copy org link to clipboard" })
 

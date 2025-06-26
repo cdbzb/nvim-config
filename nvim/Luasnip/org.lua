@@ -23,5 +23,13 @@ return {
 	]], 
 	 i(1) 
 	)
+	),
+	s({ trig="vsrc", snippetType= "snippet"}, fmt([[
+	#+BEGIN_SRC supercollider
+	{}
+	#+END_SRC
+	]], 
+	 f(function(args, snip) return snip.env.SELECT_DEDENT or {} end, {})
+	)
 	)
 }

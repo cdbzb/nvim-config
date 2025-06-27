@@ -3,8 +3,8 @@ require('orgmode').setup({
   org_src_preserve_indentation = true,
   org_edit_src_content_indentation = 0, -- or your desired indent
 
-	org_agenda_files = { '~/tank/org/*', '~/tank/org_roam_files/*', '~/tank/org_roam_files/daily/*' },
-	org_refile_targets = { '~/tank/org/*', '~/tank/org_roam_files/*', '~/tank/org_roam_files/daily/*' },
+	org_agenda_files = {  '~/tank/org_roam_files/*', '~/tank/org_roam_files/daily/*' },
+	org_refile_targets = {  '~/tank/org_roam_files/*', '~/tank/org_roam_files/daily/*' },
 	org_default_notes_file = '~/tank/org_roam_files/refile.org',
 	-- org_hide_leading_stars = true,
 	org_hide_emphasis_markers = true,
@@ -22,6 +22,8 @@ require('orgmode').setup({
 		org = {
 			org_open_at_point = ',g',
 			org_return = nil, -- Disable <CR> mapping
+      org_next_visible_heading = ']h',
+      org_previous_visible_heading = '[h',
 		},
 	},
 	org_capture_templates = { 
@@ -172,4 +174,14 @@ local function copy_org_link_to_clipboard()
 end
 
 vim.keymap.set('n', '<leader>oy', copy_org_link_to_clipboard, { desc = "Copy org link to clipboard" })
+-- Simpler approach: just override C-i after orgmode loads
+---- Restore C-i behavior while keeping Tab cycling in org files
+vim.api.nvim_create_autocmd("FileType", {
+    pattern = "org",
+    callback = function()
+        vim.keymap.set('n', '<C-i>', function()
+            pcall(vim.cmd, 'normal! 1\x0f')  -- Direct jumplist forward
+        end, { buffer = true, desc = "Jump forward" })
+    end,
+})
 

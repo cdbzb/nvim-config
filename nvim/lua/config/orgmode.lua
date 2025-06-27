@@ -275,7 +275,7 @@ local function edit_subtree_in_buffer()
   print("Editing subtree in separate buffer. Use <leader>q to save and close.")
 end
 
-vim.keymap.set('n', '<leader>oe', edit_subtree_in_buffer, { desc = "Edit subtree in separate buffer" })
+vim.keymap.set('n', '<leader>o"', edit_subtree_in_buffer, { desc = "Edit subtree in separate buffer" })
 -- Simpler approach: just override C-i after orgmode loads
 ---- Restore C-i behavior while keeping Tab cycling in org files
 vim.api.nvim_create_autocmd("FileType", {

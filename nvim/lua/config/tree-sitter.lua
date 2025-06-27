@@ -52,7 +52,7 @@ require("nvim-treesitter.configs").setup {
     -- highlight_current_scope = {enable = true}
   },
   textobjects = {
-	  disable = { "scnvim"},
+	  disable = { "scnvim" },
 	  lsp_interop = {
 		  enable = true,
 		  border = "none",

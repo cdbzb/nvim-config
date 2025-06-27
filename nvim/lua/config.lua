@@ -131,13 +131,20 @@ require("lazy").setup({
 {
   "folke/twilight.nvim",
   opts = {
-    -- your configuration comes here
-    -- or leave it empty to use the default settings
-    -- refer to the configuration section below
+	  context = 5,
+	  expand = { -- for treesitter, we we always try to expand to the top-most ancestor with these types
+	      "constant", --level2 in org
+	      "statement", --level3
+	      "function",
+	      "method",
+	      "table",
+	      "if_statement",
+  },
   }
 },
 "junegunn/limelight.vim",
 "junegunn/goyo.vim",
+"folke/zen-mode.nvim",
 	{
 		"chipsenkbeil/org-roam.nvim",
 		tag = "0.1.1",
@@ -362,6 +369,15 @@ api.nvim_create_autocmd(
 		command = ":set shiftwidth=4"
 	}
 )
+--from claude
+api.nvim_create_autocmd("FileType", {
+  pattern = "supercollider",
+  callback = function()
+      vim.opt_local.expandtab = true
+      vim.opt_local.shiftwidth = 4
+      vim.opt_local.tabstop = 4
+  end,
+})
 api.nvim_create_autocmd(
 	{ "BufEnter", "BufNewFile" }, {
 		pattern = { "*.sc", "*.scd" },
@@ -408,6 +424,12 @@ bufferline.setup{
             end,
         }
 }
+-- from Claude to handle indentation with spaces in code blocks:
+-- vim.api.nvim_create_autocmd("FileType", {
+
+
+
+
 -- In your init.lua or a file sourced by it, after loading kanagawa
 --- Get Kanagawa colors and apply to Neorg headings
 

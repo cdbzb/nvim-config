@@ -272,6 +272,12 @@ local function edit_subtree_in_buffer()
     vim.cmd('quit')
   end, { buffer = edit_buf, desc = "Save subtree and close" })
   
+  -- Map ZZ to save and quit (like native code block editing)
+  vim.keymap.set('n', 'ZZ', function()
+    vim.cmd('write')
+    vim.cmd('quit')
+  end, { buffer = edit_buf, desc = "Save subtree and close (ZZ)" })
+  
   print("Editing subtree in separate buffer. Use <leader>q to save and close.")
 end
 

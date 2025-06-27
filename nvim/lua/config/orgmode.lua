@@ -227,10 +227,11 @@ local function edit_subtree_in_buffer()
   vim.api.nvim_buf_set_option(edit_buf, 'filetype', 'org')
   vim.api.nvim_buf_set_option(edit_buf, 'buftype', 'acwrite')
   
-  -- Set buffer name
+  -- Set buffer name with timestamp to ensure uniqueness
   local heading_text = lines[heading_line]:match("^%*+%s*(.+)") or "subtree"
   local clean_heading = heading_text:gsub("[^%w%s%-_]", ""):gsub("%s+", "_")
-  vim.api.nvim_buf_set_name(edit_buf, string.format("[SUBTREE] %s", clean_heading))
+  local timestamp = os.time()
+  vim.api.nvim_buf_set_name(edit_buf, string.format("[SUBTREE] %s_%d", clean_heading, timestamp))
   
   -- Open in new window
   vim.cmd('split')

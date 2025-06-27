@@ -174,6 +174,108 @@ local function copy_org_link_to_clipboard()
 end
 
 vim.keymap.set('n', '<leader>oy', copy_org_link_to_clipboard, { desc = "Copy org link to clipboard" })
+
+-- Subtree editing functionality
+local function edit_subtree_in_buffer()
+  local current_line = vim.api.nvim_win_get_cursor(0)[1]
+  local lines = vim.api.nvim_buf_get_lines(0, 0, -1, false)
+  
+  -- Find the current heading
+  local heading_line = nil
+  local heading_level = nil
+  
+  -- Search backwards from current line to find the heading
+  for i = current_line, 1, -1 do
+    local line = lines[i]
+    local level = line:match("^(%*+)%s")
+    if level then
+      heading_line = i
+      heading_level = #level
+      break
+    end
+  end
+  
+  if not heading_line then
+    print("No heading found")
+    return
+  end
+  
+  -- Find the end of this subtree
+  local end_line = #lines
+  for i = heading_line + 1, #lines do
+    local line = lines[i]
+    local level = line:match("^(%*+)%s")
+    if level and #level <= heading_level then
+      end_line = i - 1
+      break
+    end
+  end
+  
+  -- Extract subtree content
+  local subtree_lines = {}
+  for i = heading_line, end_line do
+    table.insert(subtree_lines, lines[i])
+  end
+  
+  -- Store original buffer info
+  local original_buf = vim.api.nvim_get_current_buf()
+  local original_file = vim.api.nvim_buf_get_name(original_buf)
+  
+  -- Create new buffer for editing
+  local edit_buf = vim.api.nvim_create_buf(false, true)
+  vim.api.nvim_buf_set_lines(edit_buf, 0, -1, false, subtree_lines)
+  vim.api.nvim_buf_set_option(edit_buf, 'filetype', 'org')
+  vim.api.nvim_buf_set_option(edit_buf, 'buftype', 'acwrite')
+  
+  -- Set buffer name
+  local heading_text = lines[heading_line]:match("^%*+%s*(.+)") or "subtree"
+  local clean_heading = heading_text:gsub("[^%w%s%-_]", ""):gsub("%s+", "_")
+  vim.api.nvim_buf_set_name(edit_buf, string.format("[SUBTREE] %s", clean_heading))
+  
+  -- Open in new window
+  vim.cmd('split')
+  vim.api.nvim_win_set_buf(0, edit_buf)
+  
+  -- Store metadata for saving back
+  vim.api.nvim_buf_set_var(edit_buf, 'org_subtree_original_buf', original_buf)
+  vim.api.nvim_buf_set_var(edit_buf, 'org_subtree_start_line', heading_line)
+  vim.api.nvim_buf_set_var(edit_buf, 'org_subtree_end_line', end_line)
+  
+  -- Set up autocmd to save back to original buffer
+  vim.api.nvim_create_autocmd("BufWriteCmd", {
+    buffer = edit_buf,
+    callback = function()
+      local ok, orig_buf = pcall(vim.api.nvim_buf_get_var, edit_buf, 'org_subtree_original_buf')
+      local ok2, start_line = pcall(vim.api.nvim_buf_get_var, edit_buf, 'org_subtree_start_line')
+      local ok3, end_line = pcall(vim.api.nvim_buf_get_var, edit_buf, 'org_subtree_end_line')
+      
+      if ok and ok2 and ok3 and vim.api.nvim_buf_is_valid(orig_buf) then
+        local new_content = vim.api.nvim_buf_get_lines(edit_buf, 0, -1, false)
+        
+        -- Replace content in original buffer
+        vim.api.nvim_buf_set_lines(orig_buf, start_line - 1, end_line, false, new_content)
+        
+        -- Mark original buffer as modified
+        vim.api.nvim_buf_set_option(orig_buf, 'modified', true)
+        
+        print("Subtree updated in original buffer")
+        vim.api.nvim_buf_set_option(edit_buf, 'modified', false)
+      else
+        print("Error: Could not save back to original buffer")
+      end
+    end
+  })
+  
+  -- Add keybinding to close and save
+  vim.keymap.set('n', '<leader>q', function()
+    vim.cmd('write')
+    vim.cmd('quit')
+  end, { buffer = edit_buf, desc = "Save subtree and close" })
+  
+  print("Editing subtree in separate buffer. Use <leader>q to save and close.")
+end
+
+vim.keymap.set('n', '<leader>oe', edit_subtree_in_buffer, { desc = "Edit subtree in separate buffer" })
 -- Simpler approach: just override C-i after orgmode loads
 ---- Restore C-i behavior while keeping Tab cycling in org files
 vim.api.nvim_create_autocmd("FileType", {

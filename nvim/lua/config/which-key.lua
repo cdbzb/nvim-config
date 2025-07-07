@@ -54,6 +54,7 @@ wk.add({
   { "<leader>fc", function() tb.find_files({ cwd='~/tank/super/Trek/MW-Classes/' }) end, desc = "My Classes" },
   { "<leader>fh", function() tb.find_files({ cwd=utils.buffer_dir() }) end, desc = "Here" },
   { "<leader>fb", function() tb.buffers() end, desc = "Buffers" },
+  { "<leader>fk", function() tb.keymaps() end, desc = "Keymaps" },
 
   { "<leader>fg", group = "grep" },
   { "<leader>fgl", function() tb.live_grep({cwd='/Users/michael/Documents/Logseq'}) end, desc = "LogSeq" },
@@ -63,6 +64,9 @@ wk.add({
   { "<leader>fgk", function() tb.live_grep({cwd='/Users/michael/tank/super/Trek'}) end, desc = "Trek" },
   { "<leader>fgc", function() tb.live_grep({cwd='/Users/michael/tank/super/Trek/MW-Classes'}) end, desc = "my classes" },
   { "<leader>fgh", function() tb.live_grep() end, desc = "here" },
+
+  { "<leader>fGb", function() tb.git_bcommits() end, desc = "git buffer commits"},
+  { "<leader>f?", function() tb.commands() end, desc = "commands"},
 
   { "<leader>j", group = "neorg journal" },
   { "<leader>jj", ":Neorg journal today <cr>", desc = "today"},
@@ -136,6 +140,7 @@ wk.add({
   { "<localleader>sf", function() sc.send("PF()") end, desc = "make a piano!"},
   { "<localleader>ss", function() sc.send("s.boot") end, desc = "boot server"},
 
+  { "<localleader>sg", function() send_midi_item_gui_under_cursor() end, desc = "send MIDIItem.gui" } ,
   { "<localleader>/", function()
       vim.api.nvim_call_function("SelectPart",{})
       require'scnvim.editor'.send_selection()

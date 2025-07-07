@@ -70,9 +70,23 @@ require('orgmode').setup({
 		n = {
 			description = "Note with line number and filename",
 			template = '**** %?\non ln: %a \n %u',
-			target = "~/tank/org_roam_files/org.org",
-			headline = 'Refile', -- Prompt for a heading
-			datetree = true
+			target = '~/tank/org_roam_files/org.org', -- adjust path as needed
+			datetree = {
+				tree_type = 'custom',
+				reversed = true,
+				tree = {
+					{
+						format = '%Y',
+						pattern = '^(%d%d%d%d)$',
+						order = { 1 }
+					},
+					{
+						format = '%b %d, %Y',  -- This creates "Mar 12, 2025" format
+						pattern = '^(%a%a%a) (%d+), (%d%d%d%d)$',
+						order = { 3, 1, 2 }  -- Year first, then month, then day for comparison
+					}
+				}
+			}
 		},  },
 	})
 -- Add this to your Neovim config (e.g., init.lua)

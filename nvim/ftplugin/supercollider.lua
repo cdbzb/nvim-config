@@ -7,3 +7,21 @@ function songSections()
   return count
 end
 
+function send_midi_item_gui_under_cursor()
+    -- Get the current line
+    local line = vim.api.nvim_get_current_line()
+    
+    -- Pattern to match the entire MIDIItem("...") expression
+    local midi_item_expr = line:match('MIDIItem%("([^"]*)"%)') 
+    
+    if midi_item_expr then
+        -- Send the complete MIDIItem expression with .gui
+        local command = 'MIDIItem("' .. midi_item_expr .. '").gui'
+        require'scnvim'.send(command)
+        print("Sent: " .. command)
+        return true -- Success
+    else
+        print("No MIDIItem found on current line")
+        return false -- No MIDIItem found
+    end
+end

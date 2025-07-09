@@ -55,10 +55,10 @@ wk.add({
   { "<leader>fh", function() tb.find_files({ cwd=utils.buffer_dir() }) end, desc = "Here" },
   { "<leader>fb", function() tb.buffers() end, desc = "Buffers" },
   { "<leader>fk", function() tb.keymaps() end, desc = "Keymaps" },
+  { "<leader>fr", function() require'telescope'.extensions.orgmode.search_headings() end, desc = "org" },
 
   { "<leader>fg", group = "grep" },
   { "<leader>fgl", function() tb.live_grep({cwd='/Users/michael/Documents/Logseq'}) end, desc = "LogSeq" },
-  { "<leader>fgo", function() require'telescope'.extensions.orgmode.search_headings() end, desc = "org" },
   { "<leader>fgd", function() tb.live_grep({cwd='/Users/michael/tank/super/Trek/SynthDefLibrary/'}) end, desc = "SynthDefs" },
   { "<leader>fgs", function() tb.live_grep({cwd='/Users/michael/tank/super/Trek/Songs'}) end, desc = "Songs" },
   { "<leader>fgk", function() tb.live_grep({cwd='/Users/michael/tank/super/Trek'}) end, desc = "Trek" },
@@ -141,6 +141,7 @@ wk.add({
   { "<localleader>ss", function() sc.send("s.boot") end, desc = "boot server"},
 
   { "<localleader>sg", function() send_midi_item_gui_under_cursor() end, desc = "send MIDIItem.gui" } ,
+  { "<localleader>sG", function() send_register_d_gui() end, desc = "send register D.gui" } ,
   { "<localleader>/", function()
       vim.api.nvim_call_function("SelectPart",{})
       require'scnvim.editor'.send_selection()

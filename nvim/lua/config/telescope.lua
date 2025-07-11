@@ -6,15 +6,15 @@ require('telescope').setup{
     -- config_key = value,
     mappings = {
       n = {
-    	  ['<c-d>'] = require('telescope.actions').delete_buffer
+    	  ['<C-d>'] = require('telescope.actions').delete_buffer
       }, 
       i = {
         -- map actions.which_key to <C-h> (default: <C-/>)
         -- actions.which_key shows the mappings for your picker,
         -- e.g. git_{create, delete, ...}_branch for the git_branches picker
-        ["<C-h>"] = "which_key",
+        ["<C-h>"] = require('telescope.actions').which_key,
         ['<C-d>'] = require('telescope.actions').delete_buffer,
-		["<CR>"] = "select_default"
+		["<CR>"] = require('telescope.actions').select_default
       }
     },
   },

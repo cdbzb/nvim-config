@@ -3,8 +3,8 @@ require('orgmode').setup({
   org_src_preserve_indentation = true,
   org_edit_src_content_indentation = 0, -- or your desired indent
 
-	org_agenda_files = {  '~/tank/org_roam_files/*', '~/tank/org_roam_files/daily/*' },
-	org_refile_targets = {  '~/tank/org_roam_files/*', '~/tank/org_roam_files/daily/*' },
+	org_agenda_files = {  '~/tank/org_roam_files/*', '~/tank/super/Mandarin.org' },
+	org_refile_targets = {  '~/tank/org_roam_files/*', '~/tank/super/Mandarin.org' },
 	org_default_notes_file = '~/tank/org_roam_files/refile.org',
 	-- org_hide_leading_stars = true,
 	org_hide_emphasis_markers = true,
@@ -27,11 +27,6 @@ require('orgmode').setup({
 		},
 	},
 	org_capture_templates = { 
-		d = {
-			description = "Todo (Daily Note)",
-			template = "* TODO %?\n  %u", -- %u = inactive timestamp
-			target = "~/tank/org_roam_files/daily/%<%Y-%m-%d>.org", -- Auto-filename by date
-		},
 		j = {
 			description = 'Journal (LogSeq style)',
 			-- template = '** $?%U\n\n%?',
@@ -55,18 +50,6 @@ require('orgmode').setup({
 			}
 		},
 
-		D = {
-			description = "Todo (Daily Note) with linenum",
-			template = '**** TODO %?\non ln: %a \n %u',
-			-- template = "* TODO %?\n  %u", -- %u = inactive timestamp
-			target = "~/tank/org_roam_files/daily/%<%Y-%m-%d>.org", -- Auto-filename by date
-		},
-		m = {
-			description = 'Mandarin',
-			template = '**** on ln: %a %?\n %u',
-			target = '~/tank/super/scd/Mandarin/INDEX.org'
-
-		},
 		n = {
 			description = "Note with line number and filename",
 			template = '**** %?\non ln: %a \n %u',

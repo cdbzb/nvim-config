@@ -17,17 +17,22 @@ wk.setup {
 }
 
 wk.add({
-  { "<space>fnb", "<Plug>(neorg.telescope.backlinks.file_backlinks)", desc = "backlinks (File)" },
-  { "<space>fnB", "<Plug>(neorg.telescope.backlinks.header_backlinks)", desc = "backlinks (header)"},
-  { "<space>fnh", "<Plug>(neorg.telescope.find_linkable)", desc = "find heading" },
-  { "<space>fnn", "<Plug>(neorg.telescope.find_norg_files)", desc = "find note" },
-  { "<space>fnl", "<Plug>(neorg.telescope.insert_file_link)", desc = "insert link (file)" },
-  { "<space>fnL", "<Plug>(neorg.telescope.insert_link)" , desc = "insert link (block)" },
-  { "<space>fnH", "<Plug>(neorg.telescope.search_headings)", desc = "headings (local)" },
-  { "<localleader>nd", "<Plug>(neorg.looking-glass.magnify-code-block)", desc = "send code block to new buf"},
-  { "<space>nD","i* <C-R>=strftime('%b %d, %Y')<CR>", desc = "journal date entry" },
+  -- { "<space>fnb", "<Plug>(neorg.telescope.backlinks.file_backlinks)", desc = "backlinks (File)" },
+  -- { "<space>fnB", "<Plug>(neorg.telescope.backlinks.header_backlinks)", desc = "backlinks (header)"},
+  -- { "<space>fnh", "<Plug>(neorg.telescope.find_linkable)", desc = "find heading" },
+  -- { "<space>fnn", "<Plug>(neorg.telescope.find_norg_files)", desc = "find note" },
+  -- { "<space>fnl", "<Plug>(neorg.telescope.insert_file_link)", desc = "insert link (file)" },
+  -- { "<space>fnL", "<Plug>(neorg.telescope.insert_link)" , desc = "insert link (block)" },
+  -- { "<space>fnH", "<Plug>(neorg.telescope.search_headings)", desc = "headings (local)" },
+  -- { "<localleader>nd", "<Plug>(neorg.looking-glass.magnify-code-block)", desc = "send code block to new buf"},
+  -- { "<space>nD","i* <C-R>=strftime('%b %d, %Y')<CR>", desc = "journal date entry" },
 
   -- Leader mappings
+  { "<leader>o", group = "org"},
+  { "<leader>oh", function() require'telescope'.extensions.orgmode.search_headings() end, desc = "org" },
+  { "<leader>of", function() require'telescope'.extensions.orgmode.refile_heading() end, desc = "org-refile" },
+  { "<leader>oil", function() require'telescope'.extensions.orgmode.insert_link() end, desc = "org-insert-link" },
+
   { "<leader>j", group = "jump" },
   { "<leader>jl", "/GaddLine<enter>z.", desc = "nextline" },
 
@@ -55,7 +60,6 @@ wk.add({
   { "<leader>fh", function() tb.find_files({ cwd=utils.buffer_dir() }) end, desc = "Here" },
   { "<leader>fb", function() tb.buffers() end, desc = "Buffers" },
   { "<leader>fk", function() tb.keymaps() end, desc = "Keymaps" },
-  { "<leader>fr", function() require'telescope'.extensions.orgmode.search_headings() end, desc = "org" },
 
   { "<leader>fg", group = "grep" },
   { "<leader>fgl", function() tb.live_grep({cwd='/Users/michael/Documents/Logseq'}) end, desc = "LogSeq" },
@@ -68,10 +72,10 @@ wk.add({
   { "<leader>fGb", function() tb.git_bcommits() end, desc = "git buffer commits"},
   { "<leader>f?", function() tb.commands() end, desc = "commands"},
 
-  { "<leader>j", group = "neorg journal" },
-  { "<leader>jj", ":Neorg journal today <cr>", desc = "today"},
-  { "<leader>jt", ":Neorg journal toc <cr>", desc = "toc"},
-  { "<leader>ji", ":Neorg index <cr>", desc = "index"},
+  -- { "<leader>j", group = "neorg journal" },
+  -- { "<leader>jj", ":Neorg journal today <cr>", desc = "today"},
+  -- { "<leader>jt", ":Neorg journal toc <cr>", desc = "toc"},
+  -- { "<leader>ji", ":Neorg index <cr>", desc = "index"},
 
   { "<leader>w", group = "Window" },
   { "<leader>wo", ":only<cr>", desc = "only" },

@@ -25,3 +25,18 @@ function send_midi_item_gui_under_cursor()
         return false -- No MIDIItem found
     end
 end
+
+function send_register_d_gui()
+    -- Get the content of register 'd'
+    local content = vim.fn.getreg('d')
+    
+    if content and content ~= '' then
+        require'scnvim'.send(content .. ".gui")
+        print("Sent from register d: " .. content)
+        return true
+    else
+        print("Register d is empty")
+        return false
+    end
+end
+

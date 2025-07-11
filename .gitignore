@@ -1,3 +1,5 @@
 nvim/plugged/**
 **sync-conflict**
 .aider*
+# Ignore nvim cache files
+.cache/nvim/

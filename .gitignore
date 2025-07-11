@@ -3,3 +3,8 @@ nvim/plugged/**
 .aider*
 # Ignore nvim cache files
 .cache/nvim/
+**/scnvim_snippets.lua
+# Ignore all cache directories
+**/.cache/
+# Ignore nvim data directories that might be symlinked
+**/.local/share/nvim/

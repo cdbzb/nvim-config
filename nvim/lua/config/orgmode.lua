@@ -20,7 +20,7 @@ require('orgmode').setup({
 	org_blank_before_new_entry = { heading = false, plain_list_item = false },
 	mappings = {
 		org = {
-			org_open_at_point = ',g',
+			-- org_open_at_point = ',o',
 			org_return = nil, -- Disable <CR> mapping
       org_next_visible_heading = ']h',
       org_previous_visible_heading = '[h',
@@ -28,7 +28,7 @@ require('orgmode').setup({
 	},
 	org_capture_templates = { 
 		j = {
-			description = 'Journal (LogSeq style)',
+			description = 'to today`s journal',
 			-- template = '** $?%U\n\n%?',
 			template = '**** %?',
 			target = '~/tank/org_roam_files/org.org', -- adjust path as needed
@@ -50,8 +50,8 @@ require('orgmode').setup({
 			}
 		},
 
-		n = {
-			description = "Note with line number and filename",
+		J = {
+			description = "To todays journal with line number and filename",
 			template = '**** %?\non ln: %a \n %u',
 			target = '~/tank/org_roam_files/org.org', -- adjust path as needed
 			datetree = {

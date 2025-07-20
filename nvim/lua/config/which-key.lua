@@ -32,6 +32,7 @@ wk.add({
   { "<leader>oh", function() require'telescope'.extensions.orgmode.search_headings() end, desc = "org" },
   { "<leader>of", function() require'telescope'.extensions.orgmode.refile_heading() end, desc = "org-refile" },
   { "<leader>oil", function() require'telescope'.extensions.orgmode.insert_link() end, desc = "org-insert-link" },
+  { "<leader>oo", function() require'orgmode'.open_at_point() end, desc = "org-open-at-point" },
 
   { "<leader>j", group = "jump" },
   { "<leader>jl", "/GaddLine<enter>z.", desc = "nextline" },

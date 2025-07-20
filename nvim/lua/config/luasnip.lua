@@ -19,10 +19,10 @@ end, { silent = true })
 -- require("luasnip").add_snippets("supercollider", require("scnvim/utils").get_snippets())
 -- require("luasnip").add_snippets("org")
 
-require'luasnip'.add_snippets(
-	'supercollider',
-	 -- require'scnvim.utils'.get_snippets()
-)
+-- require'luasnip'.add_snippets(
+-- 	'supercollider',
+-- 	 require'scnvim.utils'.get_snippets()
+-- )
 require("luasnip.loaders.from_lua").lazy_load({paths = "/Users/michael/.config/nvim/Luasnip"})
 require("luasnip.loaders.from_lua").lazy_load({paths = "/Users/michael/.config/nvim/scnvim/SCNvim_snippets.lua"})
 

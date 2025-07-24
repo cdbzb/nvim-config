@@ -140,6 +140,7 @@ wk.add({
   { "<localleader>sp", desc = "stop" },
   { "<localleader>sc", function() require'scnvim.postwin'.clear() end, desc = "clear Post" },
   { "<localleader>sd", desc = "send to sclang" },
+  { "<localleader>se", function() sc.send("Nvim.e(Song.currentSong.loadedFrom)") end,desc = "edit current Song" },
   { "<localleader>sb", function() sc.send("s.newBusAllocators") end, desc = "new BusAllocators"},
   { "<localleader>sm", function() sc.send("Song.makeScroll") end, desc = "Make Song Scroll"},
   { "<localleader>sf", function() sc.send("PF()") end, desc = "make a piano!"},

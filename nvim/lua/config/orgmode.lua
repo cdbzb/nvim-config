@@ -1,7 +1,14 @@
+-- vim.api.nvim_set_hl(0, '@org.headline.level1.org', { bg = '#0d0708', fg = '#e2e8f0', bold = true })
+-- vim.api.nvim_set_hl(0, '@org.headline.level2.org', { bg = '#0a0305', fg = '#bee3f8', bold = true })
+-- vim.api.nvim_set_hl(0, '@org.headline.level3.org', { bg = '#050c0a', fg = '#d6bcfa', bold = true })
+
 require('orgmode').setup({
+	-- colors
+	-- Example highlight customization for org headings
 	--from Gemini
   org_src_preserve_indentation = true,
   org_edit_src_content_indentation = 0, -- or your desired indent
+  org_log_done = false,
 
 	org_agenda_files = {  '~/tank/org_roam_files/*', '~/tank/super/Mandarin.org' },
 	org_refile_targets = {  '~/tank/org_roam_files/*', '~/tank/super/Mandarin.org' },

@@ -25,9 +25,78 @@ vim.opt.rtp:prepend(lazypath)
 -- Example using a list of specs with the default options
 
 require("lazy").setup({
-	{ "rebelot/kanagawa.nvim", lazy =false},
+	{ "rebelot/kanagawa.nvim", lazy = 'VeryLazy'},
+{
+  'saghen/blink.cmp',
+  -- optional: provides snippets for the snippet source
+  dependencies = { 'rafamadriz/friendly-snippets' },
+
+  -- use a release tag to download pre-built binaries
+  version = '1.*',
+  -- AND/OR build from source, requires nightly: https://rust-lang.github.io/rustup/concepts/channels.html#working-with-nightly-rust
+  -- build = 'cargo build --release',
+  -- If you use nix, you can build from source using latest nightly rust with:
+  -- build = 'nix run .#build-plugin',
+
+  ---@module 'blink.cmp'
+  ---@type blink.cmp.Config
+  opts = {
+    -- 'default' (recommended) for mappings similar to built-in completions (C-y to accept)
+    -- 'super-tab' for mappings similar to vscode (tab to accept)
+    -- 'enter' for enter to accept
+    -- 'none' for no mappings
+    --
+    -- All presets have the following mappings:
+    -- C-space: Open menu or open docs if already open
+    -- C-n/C-p or Up/Down: Select next/previous item
+    -- C-e: Hide menu
+    -- C-k: Toggle signature help (if signature.enabled = true)
+    --
+    -- See :h blink-cmp-config-keymap for defining your own keymap
+    keymap = { preset = 
+	-- 'default'
+	-- 'super-tab'
+	'enter'
+},
+
+    appearance = {
+      -- 'mono' (default) for 'Nerd Font Mono' or 'normal' for 'Nerd Font'
+      -- Adjusts spacing to ensure icons are aligned
+      nerd_font_variant = 'mono'
+    },
+
+    -- (Default) Only show the documentation popup when manually triggered
+    completion = { documentation = { auto_show = false } },
+
+    -- Default list of enabled providers defined so that you can extend it
+    -- elsewhere in your config, without redefining it, due to `opts_extend`
+    sources = {
+      default = { 'lsp', 'path','snippets', 'buffer' },
+    },
+      snippets = { preset = 'luasnip' },
+    -- (Default) Rust fuzzy matcher for typo resistance and significantly better performance
+    -- You may use a lua implementation instead by using `implementation = "lua"` or fallback to the lua implementation,
+    -- when the Rust fuzzy matcher is not available, by using `implementation = "prefer_rust"`
+    --
+    -- See the fuzzy documentation for more information
+  },
+    fuzzy = { implementation = "prefer_rust_with_warning" },
+  opts_extend = { "sources.default" }
+},
+{
+    'MeanderingProgrammer/render-markdown.nvim',
+	enbaled = false,
+    dependencies = { 'nvim-treesitter/nvim-treesitter', 'echasnovski/mini.nvim' }, -- if you use the mini.nvim suite
+    -- dependencies = { 'nvim-treesitter/nvim-treesitter', 'echasnovski/mini.icons' }, -- if you use standalone mini plugins
+    -- dependencies = { 'nvim-treesitter/nvim-treesitter', 'nvim-tree/nvim-web-devicons' }, -- if you prefer nvim-web-devicons
+    ---@module 'render-markdown'
+    ---@type render.md.UserConfig
+    opts = {},
+}
+    ,
 	{
 		"nvim-neorg/neorg-telescope",
+		enabled=false,
 		dependencies = {
 			"nvim-telescope/telescope.nvim",
 			"nvim-neorg/neorg",
@@ -35,6 +104,7 @@ require("lazy").setup({
 	},
 	{
 		"nvim-neorg/neorg",
+		enabled=false,
 		lazy = false, -- Disable lazy loading as some `lazy.nvim` distributions set `lazy = true` by default
 		dependencies = {"vhyrro/luarocks.nvim", priority=1000, config=true},
 		version = "*", -- Pin Neorg to the latest stable release
@@ -80,7 +150,7 @@ require("lazy").setup({
 
 			vim.wo.foldlevel = 99
 			vim.wo.conceallevel = 2
-			require('config.colors') -- loads neorg colors
+			-- require('config.colors') -- loads neorg colors
 		end,
 	},
 	{
@@ -144,11 +214,12 @@ require("lazy").setup({
 "folke/zen-mode.nvim",
 	{
 		"chipsenkbeil/org-roam.nvim",
+		enabled=false,
 		tag = "0.1.1",
 		dependencies = {
 			{
 				"nvim-orgmode/orgmode",
-				tag = "0.3.7",
+				-- tag = "0.3.7",
 			},
 		},
 		config = function()
@@ -184,7 +255,9 @@ require("lazy").setup({
 	}
 	,
 	{ 
-		"hrsh7th/nvim-cmp", lazy = false, dependencies = {
+		"hrsh7th/nvim-cmp", lazy = false,
+		enabled = false,
+		dependencies = {
 			"hrsh7th/cmp-nvim-lsp",
 			"hrsh7th/cmp-buffer",
 			"hrsh7th/cmp-path",
@@ -318,23 +391,23 @@ vim.api.nvim_create_autocmd("FileType", {
 
 -- Make sure you have ripgrep installed.
 -- Add the following function to your `~/.config/nvim/init.lua`:
-do
-    local _, neorg = pcall(require, "neorg.core")
-    local dirman = neorg.modules.get_module("core.dirman")
-    local function get_todos(fallback_dir, states)
-        local current_workspace = dirman.get_current_workspace()
-        -- Extract the path string from the workspace info
-        local workspace_path = current_workspace and current_workspace[2] or fallback_dir
-        
-        -- Ensure we have a string path, not a table
-        local dir_path = type(workspace_path) == "string" and workspace_path or fallback_dir
-        
-        require('telescope.builtin').live_grep{ cwd = dir_path }
-        vim.fn.feedkeys('^ *([*]+|[-]+) +[(]' .. states .. '[)]')
-    end
-    -- This can be bound to a key
-    vim.keymap.set('n', '<leader>at', function() get_todos('~/notes', '[^x_]') end)
-end
+-- do
+--     local _, neorg = pcall(require, "neorg.core")
+--     local dirman = neorg.modules.get_module("core.dirman")
+--     local function get_todos(fallback_dir, states)
+--         local current_workspace = dirman.get_current_workspace()
+--         -- Extract the path string from the workspace info
+--         local workspace_path = current_workspace and current_workspace[2] or fallback_dir
+--         
+--         -- Ensure we have a string path, not a table
+--         local dir_path = type(workspace_path) == "string" and workspace_path or fallback_dir
+--         
+--         require('telescope.builtin').live_grep{ cwd = dir_path }
+--         vim.fn.feedkeys('^ *([*]+|[-]+) +[(]' .. states .. '[)]')
+--     end
+--     -- This can be bound to a key
+--     vim.keymap.set('n', '<leader>at', function() get_todos('~/notes', '[^x_]') end)
+-- end
 local api=vim.api
 -- api.nvim_create_autocmd(
 --   "FileType", {

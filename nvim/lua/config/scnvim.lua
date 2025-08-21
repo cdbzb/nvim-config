@@ -19,6 +19,9 @@ scnvim.setup {
 			path = '/tmp/post'
 		},
 	},
+	sclang= {
+		cmd = '/Users/michael/tank/supercollider/build/Install/SuperCollider/SuperCollider.app/Contents/MacOS/sclang'
+	},
 	keymaps = {
 		[',l'] = map('editor.send_line', {'i', 'n'}),
 		[',.'] = {

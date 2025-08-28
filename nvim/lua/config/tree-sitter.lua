@@ -25,6 +25,9 @@ fold = {
   highlight = {
     enable = true, 
   additional_vim_regex_highlighting = { "supercollider" },
+
+  -- additional_vim_regex_highlighting = { "org" },
+
     -- additional_vim_regex_highlighting =true,
    disable = { "scnvim"},
    enable = { "supercollider"},

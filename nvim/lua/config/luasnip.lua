@@ -17,6 +17,7 @@ vim.keymap.set({"i", "s"}, "<Tab>", function()
 end, { silent = true })
 
 require("luasnip").add_snippets("supercollider", require("scnvim/utils").get_snippets())
+
 -- require("luasnip").add_snippets("org")
 
 -- require'luasnip'.add_snippets(
@@ -24,7 +25,9 @@ require("luasnip").add_snippets("supercollider", require("scnvim/utils").get_sni
 -- 	 require'scnvim.utils'.get_snippets()
 -- )
 require("luasnip.loaders.from_lua").lazy_load({paths = "/Users/michael/.config/nvim/Luasnip"})
-require("luasnip.loaders.from_lua").lazy_load({paths = "/Users/michael/.config/nvim/scnvim/SCNvim_snippets.lua"})
+-- require("luasnip.loaders.from_lua").lazy_load({paths = "/Users/michael/.config/nvim/scnvim/SCNvim_snippets.lua"})
+
+require("luasnip").filetype_extend("org", { "supercollider" })
 
 ls.config.set_config {
   -- Remember last snippet
@@ -32,6 +35,8 @@ ls.config.set_config {
   -- Dynamic update
   -- updateevents = 'TextChanged,TextChangedI',
   enable_autosnippets = true,
+    region_check_events = "CursorMoved, InsertLeave",
+    update_events = "TextChanged, TextChangedI",
   ext_opts = {
     [ls_types.choiceNode] = {
       active = {

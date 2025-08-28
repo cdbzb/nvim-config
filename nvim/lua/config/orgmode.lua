@@ -28,7 +28,7 @@ require('orgmode').setup({
 	mappings = {
 		org = {
 			-- org_open_at_point = ',o',
-			org_return = nil, -- Disable <CR> mapping
+			org_return = false, -- Disable <CR> mapping
       org_next_visible_heading = ']h',
       org_previous_visible_heading = '[h',
 		},

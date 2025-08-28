@@ -328,7 +328,7 @@ require("lazy").setup({
 		-- use opts = {} for passing setup options
 		-- this is equivalent to setup({}) function
 	},
-	 {"neovim/nvim-lspconfig", enable = false},
+	 {"neovim/nvim-lspconfig", enable = true},
 	-- "Furkanzmc/zettelkasten.nvim",
 	"nvim-lua/popup.nvim",
 	"vijaymarupudi/nvim-fzf",
@@ -351,7 +351,7 @@ require("lazy").setup({
 }, 
 })
 
-
+require'config.lspconfig'
 -- require'config.luasnip'
 -- require'lspconfig'.marksman.setup{}
 vim.cmd([[colorscheme peaksea

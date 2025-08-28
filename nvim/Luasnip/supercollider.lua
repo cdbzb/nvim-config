@@ -351,6 +351,15 @@ return {
 	s({trig='bp'},{
 		t'b.parse([',i(1), t'])'
 	}),
+	s({trig = 'part', name='part',snippetType="snippet" },
+		fmt([[
+			P(\{}, music: {{ |p b e|
+				{}
+			}});
+		]],{
+			i(1,""), i(2, "")
+		})
+	),
 	s({trig = '(%a*)(.part)', regTrig=true, hidden=true, name='part regex',snippetType="snippet" },
 		fmt([[
 			P(\{}, music: {{ |p b e|

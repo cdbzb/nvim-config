@@ -40,3 +40,9 @@ function send_register_d_gui()
     end
 end
 
+vim.api.nvim_create_autocmd('FileType', {
+  pattern = 'supercollider',
+  callback = function()
+    vim.opt_local.tags = vim.fn.expand('~/.cache/nvim/scnvim/tags')
+  end
+})

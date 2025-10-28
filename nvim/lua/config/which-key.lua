@@ -29,7 +29,14 @@ wk.add({
 
   -- Leader mappings
   { "<leader>o", group = "org"},
+  { "<leader>of", function() require'telescope'.extensions.orgmode.search_headings() end, desc = "find headings" },
+  { "<leader>ol", function() require'telescope'.extensions.orgmode.insert_link() end, desc = "org-insert-link" },
+  { "<leader>or", function() require'telescope'.extensions.orgmode.refile_heading() end, desc = "org-refile" },
   { "<leader>oo", function() require'orgmode'.open_at_point() end, desc = "org-open-at-point" },
+
+  { "<leader>ot",
+	  function() require('orgmode').action('org_babel.tangle') end, desc = "org tangle"
+  },
 
   { "<leader>j", group = "jump" },
   { "<leader>jl", "/GaddLine<enter>z.", desc = "nextline" },
@@ -68,10 +75,6 @@ wk.add({
   { "<leader>fk", function() tb.keymaps() end, desc = "Keymaps" },
   { "<leader>fm", function() tb.find_files({ cwd='/Users/michael/tank/super/scd/Mandarin/' }) end, desc = "Mandarin" },
   { "<leader>fo", function() tb.oldfiles() end, desc = "Recent" },
-  { "<leader>fr", group = "org" },
-  { "<leader>frh", function() require'telescope'.extensions.orgmode.search_headings() end, desc = "org" },
-  { "<leader>frl", function() require'telescope'.extensions.orgmode.insert_link() end, desc = "org-insert-link" },
-  { "<leader>frr", function() require'telescope'.extensions.orgmode.refile_heading() end, desc = "org-refile" },
   { "<leader>fs", function() tb.find_files({ cwd='/Users/michael/tank/super/Trek/Songs/' }) end, desc = "Songs" },
   { "<leader>ft", function() tb.tags({ path_display = { "smart" } }) end, desc = "Tags" },
 

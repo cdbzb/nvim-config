@@ -17,23 +17,12 @@ wk.setup {
 }
 
 wk.add({
-  -- { "<space>fnb", "<Plug>(neorg.telescope.backlinks.file_backlinks)", desc = "backlinks (File)" },
-  -- { "<space>fnB", "<Plug>(neorg.telescope.backlinks.header_backlinks)", desc = "backlinks (header)"},
-  -- { "<space>fnh", "<Plug>(neorg.telescope.find_linkable)", desc = "find heading" },
-  -- { "<space>fnn", "<Plug>(neorg.telescope.find_norg_files)", desc = "find note" },
-  -- { "<space>fnl", "<Plug>(neorg.telescope.insert_file_link)", desc = "insert link (file)" },
-  -- { "<space>fnL", "<Plug>(neorg.telescope.insert_link)" , desc = "insert link (block)" },
-  -- { "<space>fnH", "<Plug>(neorg.telescope.search_headings)", desc = "headings (local)" },
-  -- { "<localleader>nd", "<Plug>(neorg.looking-glass.magnify-code-block)", desc = "send code block to new buf"},
-  -- { "<space>nD","i* <C-R>=strftime('%b %d, %Y')<CR>", desc = "journal date entry" },
-
   -- Leader mappings
   { "<leader>o", group = "org"},
-  { "<leader>of", function() require'telescope'.extensions.orgmode.search_headings() end, desc = "find headings" },
   { "<leader>ol", function() require'telescope'.extensions.orgmode.insert_link() end, desc = "org-insert-link" },
   { "<leader>or", function() require'telescope'.extensions.orgmode.refile_heading() end, desc = "org-refile" },
   { "<leader>oo", function() require'orgmode'.open_at_point() end, desc = "org-open-at-point" },
-
+  { "<leader>ox", function() require('orgmode').action('org_mappings.toggle_checkbox') end, desc = "Toggle checkbox" },
   { "<leader>ot",
 	  function() require('orgmode').action('org_babel.tangle') end, desc = "org tangle"
   },
@@ -74,7 +63,9 @@ wk.add({
   { "<leader>fh", function() tb.find_files({ cwd=utils.buffer_dir() }) end, desc = "Here" },
   { "<leader>fk", function() tb.keymaps() end, desc = "Keymaps" },
   { "<leader>fm", function() tb.find_files({ cwd='/Users/michael/tank/super/scd/Mandarin/' }) end, desc = "Mandarin" },
-  { "<leader>fo", function() tb.oldfiles() end, desc = "Recent" },
+  { "<leader>fo", function() require'telescope'.extensions.orgmode.search_headings() end, desc = "find headings" },
+  -- { "<leader>fo", function() tb.oldfiles() end, desc = "Recent" },
+  { "<leader>fr", function() tb.oldfiles() end, desc = "Recent" },
   { "<leader>fs", function() tb.find_files({ cwd='/Users/michael/tank/super/Trek/Songs/' }) end, desc = "Songs" },
   { "<leader>ft", function() tb.tags({ path_display = { "smart" } }) end, desc = "Tags" },
 
@@ -119,6 +110,7 @@ wk.add({
   { "<localleader>mm", function() sc.send("s.volume_(-90); Monitors.gui") end, desc = "volume fader"},
   { "<localleader>ma", function() require'scnvim'.send("Monitors.airpods") end, desc = "airpods"},
   { "<localleader>mb", function() require'scnvim'.send("Monitors.bose") end, desc = "bose"},
+  { "<localleader>me", function() require'scnvim'.send("Monitors.teams") end, desc = "bose"},
   { "<localleader>mh", function() require'scnvim'.send("Monitors.headphones") end, desc = "headphones"},
   { "<localleader>mz", function() require'scnvim'.send("Monitors.zoom") end, desc = "zoom"},
   { "<localleader>mt", function() require'scnvim'.send("().play") end, desc = "test"},

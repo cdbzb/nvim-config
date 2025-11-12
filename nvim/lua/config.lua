@@ -8,6 +8,8 @@ vim.opt.concealcursor = 'n'  -- conceals in normal and command mode
 vim.o.shell = '/bin/bash'
 
 require('config.songFunctions')
+require('org-sorter')
+vim.keymap.set('v', '<leader>oS', ':OrgSortByDate<CR>', { desc = 'Sort org by date' })
 --  lazy-nvim
 local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
 if not vim.loop.fs_stat(lazypath) then
@@ -103,7 +105,7 @@ require("lazy").setup({
 		-- Default list of enabled providers defined so that you can extend it
 		-- elsewhere in your config, without redefining it, due to `opts_extend`
 		sources = {
-			default = {'tags',  'path','snippets', 'buffer',    },
+			default = {'lsp','tags',  'path','snippets', 'buffer',    },
  providers = {
         tags = {
           -- This name MUST match the original nvim-cmp source name
@@ -391,7 +393,7 @@ require("lazy").setup({
 }, 
 })
 
--- require'config.lspconfig'
+require'config.lspconfig'
 
 -- require'config.luasnip'
 -- require'lspconfig'.marksman.setup{}

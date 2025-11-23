@@ -38,7 +38,7 @@ require('orgmode').setup({
 			description = 'to today`s journal',
 			-- template = '** $?%U\n\n%?',
 			template = '**** %?',
-			target = '~/tank/org_roam_files/org.org', -- adjust path as needed
+			target = '~/home/org_roam_files/org.org', -- adjust path as needed
 			datetree = {
 				tree_type = 'custom',
 				reversed = true,
@@ -60,7 +60,7 @@ require('orgmode').setup({
 		J = {
 			description = "To todays journal with line number and filename",
 			template = '**** %?\non ln: %a \n %u',
-			target = '~/tank/org_roam_files/org.org', -- adjust path as needed
+			target = '~/home/org_roam_files/org.org', -- adjust path as needed
 			datetree = {
 				tree_type = 'custom',
 				reversed = true,
@@ -93,7 +93,7 @@ vim.api.nvim_set_hl(0, 'OrgInlineCode', { bg = '#3a3a3a', fg = '#f8f8f2', italic
 
 -- Journal jump functions
 local function jump_to_today_journal()
-  local org_file = vim.fn.expand("~/tank/org_roam_files/org.org")
+  local org_file = vim.fn.expand("~/home/org_roam_files/org.org")
   
   -- Get current date components
   local year = os.date("%Y")

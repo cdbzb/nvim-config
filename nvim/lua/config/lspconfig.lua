@@ -10,8 +10,8 @@ if not configs.supercollider then
                 "/tmp/sc_lsp_output.log",
                 "--verbose",
                 "--",
-                "-u", "57300",
-                "-l", "/Users/me/sclang_conf_lsp.yaml",
+                -- "-u", "57305",
+                "-l", "/Users/michael/sclang_lsp_conf.yaml",
             },
             filetypes = {'supercollider'},
             root_dir = function(fname)
@@ -22,7 +22,9 @@ if not configs.supercollider then
     }
 end
 
-lspconfig.supercollider.setup({})
+-- uncomment to use
+-- lspconfig.supercollider.setup({})
+
 -- local configs = require('lspconfig.configs')
 --
 -- configs.supercollider = {

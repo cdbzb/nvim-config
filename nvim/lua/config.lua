@@ -126,6 +126,30 @@ require("lazy").setup({
 	opts_extend = { "sources.default" }
 },
 {
+  "coder/claudecode.nvim",
+  dependencies = { "folke/snacks.nvim" },
+  config = true,
+  keys = {
+    { "<leader>a", nil, desc = "AI/Claude Code" },
+    { "<leader>ac", "<cmd>ClaudeCode<cr>", desc = "Toggle Claude" },
+    { "<leader>af", "<cmd>ClaudeCodeFocus<cr>", desc = "Focus Claude" },
+    { "<leader>ar", "<cmd>ClaudeCode --resume<cr>", desc = "Resume Claude" },
+    { "<leader>aC", "<cmd>ClaudeCode --continue<cr>", desc = "Continue Claude" },
+    { "<leader>am", "<cmd>ClaudeCodeSelectModel<cr>", desc = "Select Claude model" },
+    { "<leader>ab", "<cmd>ClaudeCodeAdd %<cr>", desc = "Add current buffer" },
+    { "<leader>as", "<cmd>ClaudeCodeSend<cr>", mode = "v", desc = "Send to Claude" },
+    {
+      "<leader>as",
+      "<cmd>ClaudeCodeTreeAdd<cr>",
+      desc = "Add file",
+      ft = { "NvimTree", "neo-tree", "oil", "minifiles", "netrw" },
+    },
+    -- Diff management
+    { "<leader>aa", "<cmd>ClaudeCodeDiffAccept<cr>", desc = "Accept diff" },
+    { "<leader>ad", "<cmd>ClaudeCodeDiffDeny<cr>", desc = "Deny diff" },
+  },
+},
+{
     'MeanderingProgrammer/render-markdown.nvim',
 	enbaled = false,
     dependencies = { 'nvim-treesitter/nvim-treesitter', 'echasnovski/mini.nvim' }, -- if you use the mini.nvim suite
@@ -519,7 +543,14 @@ api.nvim_create_autocmd(
 "Filetype", { pattern = { "org" },command = [[let b:surround_45 = "#+BEGIN_SRC supercollider \n \r \n #+END_SRC"]] }
 )
 
-
+vim.g.easy_align_delimiters = {
+  u = {
+    pattern       = ', ', -- Look for comma followed by space
+    left_margin   = 0,    -- No extra space added before the comma
+    right_margin  = 0,    -- No extra space added after the existing space
+    stick_to_left = 1     -- <--- CRITICAL: Forces comma to touch the word on the left
+  }
+}
 
 local status, bufferline = pcall(require, "bufferline")
 if not status then

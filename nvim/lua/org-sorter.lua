@@ -1,22 +1,26 @@
--- Org-mode heading sorter by date
--- Place this in your Neovim config or a plugin file
-
 local M = {}
 
--- Extract date from heading text like "** Oct 30, 2025"
+-- Helper: Parse month names to numbers
+local month_names = {
+  Jan = "01", Feb = "02", Mar = "03", Apr = "04",
+  May = "05", Jun = "06", Jul = "07", Aug = "08",
+  Sep = "09", Oct = "10", Nov = "11", Dec = "12"
+}
+
+-- Extract date from text.
 local function extract_date(text)
-  -- Match pattern: ** Month Day, Year
-  local month_names = {
-    Jan = "01", Feb = "02", Mar = "03", Apr = "04",
-    May = "05", Jun = "06", Jul = "07", Aug = "08",
-    Sep = "09", Oct = "10", Nov = "11", Dec = "12"
-  }
-  
-  -- Remove stars and TODO keywords
-  local cleaned = text:gsub("^%*+%s+", ""):gsub("^TODO%s+", ""):gsub("^DONE%s+", "")
-  
-  -- Match "Month Day, Year" format
-  local month_str, day, year = cleaned:match("^(%a+)%s+(%d+),%s+(%d%d%d%d)")
+  -- 🌟 CRITICAL FIX: Ensure the input is a string before using string functions.
+  if type(text) ~= 'string' then return nil end 
+
+  -- 1. Try ISO Format (Standard Org) -> YYYY-MM-DD
+  -- Supports <2025-10-30> or [2025-10-30]
+  local iso_year, iso_month, iso_day = text:match("[%[<](%d%d%d%d)%-(%d%d)%-(%d%d)[%]>]")
+  if iso_year then
+    return string.format("%s-%s-%s", iso_year, iso_month, iso_day)
+  end
+
+  -- 2. Try Verbose Format -> Month Day, Year (anywhere in the line)
+  local month_str, day, year = text:match("(%a+)%s+(%d+),%s+(%d%d%d%d)")
   
   if month_str and day and year then
     local month = month_names[month_str]
@@ -28,13 +32,13 @@ local function extract_date(text)
   return nil
 end
 
--- Parse org buffer into heading groups
-local function parse_headings(lines, start_line, end_line)
+-- Parse org buffer into heading groups, collecting non-heading lines into preamble
+local function parse_headings(lines)
   local headings = {}
+  local preamble = {} 
   local current = nil
   
-  for i = start_line, end_line do
-    local line = lines[i]
+  for _, line in ipairs(lines) do
     local stars = line:match("^(%*+)%s")
     
     if stars then
@@ -43,12 +47,14 @@ local function parse_headings(lines, start_line, end_line)
       end
       current = {
         level = #stars,
-        start_line = i,
         lines = {line},
-        date = extract_date(line)  -- Extract date from heading itself
+        date = extract_date(line) -- Extract date from heading itself
       }
     elseif current then
       table.insert(current.lines, line)
+    else
+      -- Lines before the first heading are stored in preamble
+      table.insert(preamble, line)
     end
   end
   
@@ -56,35 +62,30 @@ local function parse_headings(lines, start_line, end_line)
     table.insert(headings, current)
   end
   
-  return headings
+  return headings, preamble
 end
 
--- Sort headings by date
-function M.sort_by_date()
+-- Sort headings by date (Newest First)
+function M.sort_by_date(opts)
+  -- Use 1-based line numbers from the command
+  local start_line = opts.line1
+  local end_line = opts.line2
+  
   local buf = vim.api.nvim_get_current_buf()
-  local lines = vim.api.nvim_buf_get_lines(buf, 0, -1, false)
+  -- Get only the selected lines (0-indexed API)
+  local lines = vim.api.nvim_buf_get_lines(buf, start_line - 1, end_line, false)
   
-  -- Get visual selection or use whole buffer
-  local start_line, end_line
-  local mode = vim.fn.mode()
-  
-  if mode == 'V' or mode == 'v' or mode == '\22' then -- visual mode
-    start_line = vim.fn.line("'<")
-    end_line = vim.fn.line("'>")
-  else
-    start_line = 1
-    end_line = #lines
-  end
-  
-  -- Parse headings
-  local headings = parse_headings(lines, start_line, end_line)
+  if #lines == 0 then return end
+
+  -- Parse
+  local headings, preamble = parse_headings(lines)
   
   if #headings == 0 then
-    print("No headings found to sort")
+    print("No headings found in selection")
     return
   end
   
-  -- Find the minimum level to determine what to sort
+  -- Find the minimum level to determine the main groups for sorting
   local min_level = math.huge
   for _, h in ipairs(headings) do
     min_level = math.min(min_level, h.level)
@@ -101,6 +102,7 @@ function M.sort_by_date()
       end
       current_group = {heading}
     else
+      -- Sub-headings are bundled with the previous main heading
       table.insert(current_group, heading)
     end
   end
@@ -108,25 +110,28 @@ function M.sort_by_date()
     table.insert(groups, current_group)
   end
   
-  -- Sort each group by date
+  -- Sort each group by date (Newest First)
   table.sort(groups, function(a, b)
     local date_a = a[1].date
     local date_b = b[1].date
     
-    -- Headings without dates go to the end
+    -- Headings without dates go to the bottom (false = a does not come before b)
     if not date_a and not date_b then return false end
-    if not date_a then return false end
+    if not date_a then return false end 
     if not date_b then return true end
     
-    return date_a < date_b
+    -- Return true if date_a (the first item) is MORE recent (greater) than date_b
+    return date_a > date_b
   end)
   
   -- Reconstruct the sorted lines
   local new_lines = {}
-  for i = 1, start_line - 1 do
-    table.insert(new_lines, lines[i])
-  end
   
+  -- Add preamble back first (preserve text before first header)
+  for _, line in ipairs(preamble) do
+    table.insert(new_lines, line)
+  end
+
   for _, group in ipairs(groups) do
     for _, heading in ipairs(group) do
       for _, line in ipairs(heading.lines) do
@@ -135,13 +140,9 @@ function M.sort_by_date()
     end
   end
   
-  for i = end_line + 1, #lines do
-    table.insert(new_lines, lines[i])
-  end
-  
-  -- Replace buffer contents
-  vim.api.nvim_buf_set_lines(buf, 0, -1, false, new_lines)
-  print(string.format("Sorted %d headings by date", #groups))
+  -- Replace only the selected range
+  vim.api.nvim_buf_set_lines(buf, start_line - 1, end_line, false, new_lines)
+  print(string.format("Sorted %d items by date (Newest First)", #groups))
 end
 
 -- Set up command

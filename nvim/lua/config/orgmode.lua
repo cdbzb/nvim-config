@@ -13,6 +13,7 @@ require('orgmode').setup({
 	org_agenda_files = {  '~/tank/org_roam_files/*', '~/tank/super/Mandarin.org' },
 	org_refile_targets = {  '~/tank/org_roam_files/*', '~/tank/super/Mandarin.org' },
 	org_default_notes_file = '~/tank/org_roam_files/refile.org',
+
 	-- org_hide_leading_stars = true,
 	org_hide_emphasis_markers = true,
 	org_adapt_indentation = true,
@@ -28,9 +29,9 @@ require('orgmode').setup({
 	mappings = {
 		org = {
 			-- org_open_at_point = ',o',
-			org_return = false, -- Disable <CR> mapping
-      org_next_visible_heading = ']h',
-      org_previous_visible_heading = '[h',
+			org_return = { lhs = false }, -- Disable <CR> mapping
+			org_next_visible_heading = { lhs = ']h' },
+			org_previous_visible_heading = { lhs = '[h' },
 		},
 	},
 	org_capture_templates = { 

@@ -1,4 +1,13 @@
 local parser_config = require "nvim-treesitter.parsers".get_parser_configs()
+parser_config.lilypond = {
+  install_info = {
+    url = 'https://github.com/nwhetsell/tree-sitter-lilypond',
+    location = 'lilypond',
+    files = { 'src/parser.c' },
+    branch = 'main',
+  },
+  filetype = 'lilypond',
+}
 -- parser_config.org = {
 --   install_info = {
 --     url = 'https://github.com/milisims/tree-sitter-org',
@@ -24,13 +33,13 @@ fold = {
   ignore_install = { 'org' },
   highlight = {
     enable = true, 
-  additional_vim_regex_highlighting = { "supercollider" },
+  additional_vim_regex_highlighting = { "supercollider", "lilypond" },
 
   -- additional_vim_regex_highlighting = { "org" },
 
     -- additional_vim_regex_highlighting =true,
    disable = { "scnvim"},
-   enable = { "supercollider"},
+   enable = { "supercollider", "lilypond"},
   },
   incremental_selection = {
     enable = true,

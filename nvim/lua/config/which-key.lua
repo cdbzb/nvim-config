@@ -89,6 +89,74 @@ wk.add({
   { "<leader>l", group = "launch" },
   { "<leader>lg", ":Neogit<CR>", desc = "NeoGit"},
 
+  { "<leader>y", group = "yoeminrak" },
+  { "<leader>yc", function()
+    local buf = vim.api.nvim_get_current_buf()
+    local row = vim.api.nvim_win_get_cursor(0)[1]
+    -- search upward from current line for beat:
+    local search_row = row
+    while search_row >= 1 do
+      local line = vim.api.nvim_buf_get_lines(buf, search_row - 1, search_row, false)[1]
+      local beat_val = line:match("beat:%s*([%d%./%-]+)")
+      if beat_val then
+        require'scnvim'.send("~cursor = " .. beat_val)
+        vim.notify("~cursor = " .. beat_val)
+        return
+      end
+      -- stop if we hit the opening paren of an event (don't search past it)
+      if line:match("^%s*%(") then break end
+      search_row = search_row - 1
+    end
+    vim.notify("No beat: found in this event", vim.log.levels.WARN)
+  end, desc = "set cursor here" },
+  { "<leader>yC", function()
+    vim.ui.input({ prompt = "~cursor = " }, function(input)
+      if input and input ~= "" then
+        require'scnvim'.send("~cursor = " .. input)
+        vim.notify("~cursor = " .. input)
+      end
+    end)
+  end, desc = "set cursor (input)" },
+  { "<leader>y$", function()
+    require'scnvim'.send("~cursor = 0")
+    require'scnvim.editor'.send_block()
+  end, desc = "reset cursor & send block" },
+  { "<leader>ye", function()
+    local cur = vim.api.nvim_win_get_cursor(0)
+    local row = cur[1]
+    local buf = vim.api.nvim_get_current_buf()
+    local total = vim.api.nvim_buf_line_count(buf)
+    -- search downward for line containing '.play'
+    local end_row = row
+    while end_row <= total do
+      local line = vim.api.nvim_buf_get_lines(buf, end_row - 1, end_row, false)[1]
+      if line:match("%.play") then break end
+      end_row = end_row + 1
+    end
+    -- search upward for '(' preceded only by whitespace
+    local start_row = end_row
+    while start_row >= 1 do
+      local line = vim.api.nvim_buf_get_lines(buf, start_row - 1, start_row, false)[1]
+      if line:match("^%s*%(") then break end
+      start_row = start_row - 1
+    end
+    if start_row < 1 or end_row > total then
+      vim.notify("No event found around cursor", vim.log.levels.WARN)
+      return
+    end
+    -- find column of '(' on start line
+    local start_line = vim.api.nvim_buf_get_lines(buf, start_row - 1, start_row, false)[1]
+    local start_col = start_line:find("%(") - 1
+    -- find end of '.play' (or '.play;') on end line
+    local end_line = vim.api.nvim_buf_get_lines(buf, end_row - 1, end_row, false)[1]
+    local _, end_col = end_line:find("%.play;?")
+    -- visually select the range and send
+    vim.api.nvim_win_set_cursor(0, { start_row, start_col })
+    vim.cmd("normal! v")
+    vim.api.nvim_win_set_cursor(0, { end_row, end_col - 1 })
+    require'scnvim.editor'.send_selection()
+  end, desc = "select & send event" },
+
   { "<leader>n", group = "notes" },
   { "<leader>nP", ":!~/.config/nvim/scripts/push-org.sh<CR>", desc = "push org-roam"},
   { "<leader>np", ":!~/.config/nvim/scripts/pull-org.sh<CR>", desc = "pull org-roam"},

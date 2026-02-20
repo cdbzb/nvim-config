@@ -8,6 +8,13 @@ vim.opt.concealcursor = 'n'  -- conceals in normal and command mode
 vim.o.shell = '/bin/bash'
 
 require('config.songFunctions')
+require("org_toc").setup({
+  toc_filename = "index.org",      -- change if you want a different name
+  toc_title = "Table of Contents",
+  include_subdirs = false,         -- set true to recurse
+  sort_alphabetically = true,
+  exclude_patterns = { "^%.", "^index%.org$", "^archive" },
+})
 require('org-sorter')
 vim.keymap.set('v', '<leader>oS', ':OrgSortByDate<CR>', { desc = 'Sort org by date' })
 --  lazy-nvim
@@ -352,12 +359,13 @@ require("lazy").setup({
 
 	"junegunn/vim-easy-align",
 	-- "ggandor/lightspeed.nvim",
-	{"ggandor/leap.nvim", config = 
+	{"ggandor/leap.nvim", config =
 		function()
-		require('leap').add_default_mappings() --s S
-		require('leap').init_highlight(true)
+		vim.keymap.set({'n', 'x', 'o'}, 's',  '<Plug>(leap-forward)')
+		vim.keymap.set({'n', 'x', 'o'}, 'S',  '<Plug>(leap-backward)')
+		vim.keymap.set({'n', 'x', 'o'}, 'gs', '<Plug>(leap-from-window)')
 	end
-	}, 
+	},
 	{
 		"folke/which-key.nvim", lazy = false,
 		config = function()
@@ -414,7 +422,26 @@ require("lazy").setup({
 			vim.api.nvim_create_user_command("PeekOpen", require("peek").open, {})
 			vim.api.nvim_create_user_command("PeekClose", require("peek").close, {})
 		end,
-}, 
+},
+{
+	"martineausimon/nvim-lilypond-suite",
+	ft = { "lilypond" },
+	dependencies = { "MunifTanjim/nui.nvim" },
+	config = function()
+		require("nvls").setup({})
+	end,
+},
+})
+
+-- Patch: Fix nvim-lilypond-suite invalid buffer error
+-- Cleans up diagnostics_store when buffer is wiped to prevent stale buffer IDs
+vim.api.nvim_create_autocmd("BufWipeout", {
+  callback = function(args)
+    local ok, nvls_errors = pcall(require, "nvls.errors")
+    if ok and nvls_errors.diagnostics_store then
+      nvls_errors.diagnostics_store[args.buf] = nil
+    end
+  end
 })
 
 require'config.lspconfig'

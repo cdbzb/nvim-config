@@ -4,6 +4,7 @@
 	st = status
 [user]
 	name = michael webster
+	email = semiquaver@mac.com
 [pull]
 	rebase = true
 [core]

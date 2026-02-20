@@ -2,10 +2,18 @@
 -- vim.api.nvim_set_hl(0, '@org.headline.level2.org', { bg = '#0a0305', fg = '#bee3f8', bold = true })
 -- vim.api.nvim_set_hl(0, '@org.headline.level3.org', { bg = '#050c0a', fg = '#d6bcfa', bold = true })
 
+-- Use dosini syntax for aerc config files
+vim.filetype.add({
+  pattern = {
+    ['.*/aerc/.*%.conf'] = 'dosini',
+  },
+})
+
 require('orgmode').setup({
 	-- colors
 	-- Example highlight customization for org headings
 	--from Gemini
+  org_custom_src_languages = { lilypond = 'lilypond' },
   org_src_preserve_indentation = true,
   org_edit_src_content_indentation = 0, -- or your desired indent
   org_log_done = false,

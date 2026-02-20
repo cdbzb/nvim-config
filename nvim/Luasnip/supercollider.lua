@@ -339,6 +339,11 @@ return {
 	),
 	s({trig='tpm'},{t"Song.setTempoMap(\\",i(1),t',"', i(2),t'");'}),
 	s({trig='=.'},{ t'=> _.' }),
+	s({ trig = "addme", name = "addMe Event" },
+		fmt([[(beat: {}, chord: {}, type: \addMe).play;]], {
+			i(1), i(2)
+		})
+	),
 	s({trig='sqt'},
 		fmt([[
 			.sequenceText2(

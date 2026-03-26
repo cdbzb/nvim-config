@@ -89,6 +89,22 @@ wk.add({
   { "<leader>l", group = "launch" },
   { "<leader>lg", ":Neogit<CR>", desc = "NeoGit"},
 
+  { "<leader>g", group = "git/gitsigns" },
+  { "<leader>gn", function() require('gitsigns').nav_hunk('next') end, desc = "next hunk" },
+  { "<leader>gp", function() require('gitsigns').nav_hunk('prev') end, desc = "prev hunk" },
+  { "<leader>gP", function() require('gitsigns').preview_hunk() end, desc = "preview hunk" },
+  { "<leader>gr", function() require('gitsigns').reset_hunk() end, desc = "reset hunk" },
+  { "<leader>gR", function() require('gitsigns').reset_buffer() end, desc = "reset buffer" },
+  { "<leader>gs", function() require('gitsigns').stage_hunk() end, desc = "stage hunk" },
+  { "<leader>gS", function() require('gitsigns').stage_buffer() end, desc = "stage buffer" },
+  { "<leader>gu", function() require('gitsigns').undo_stage_hunk() end, desc = "undo stage hunk" },
+  { "<leader>gd", function() require('gitsigns').diffthis() end, desc = "diff against index" },
+  { "<leader>gD", function() require('gitsigns').diffthis('HEAD~1') end, desc = "diff against HEAD~1" },
+  { "<leader>gb", function() require('gitsigns').change_base('HEAD~1', true) end, desc = "base: HEAD~1" },
+  { "<leader>gB", function() require('gitsigns').reset_base(true) end, desc = "base: reset to index" },
+  { "<leader>gt", function() require('gitsigns').toggle_deleted() end, desc = "toggle deleted lines" },
+  { "<leader>gl", function() require('gitsigns').blame_line({ full = true }) end, desc = "blame line" },
+
   { "<leader>y", group = "yoeminrak" },
   { "<leader>yc", function()
     local buf = vim.api.nvim_get_current_buf()
@@ -117,6 +133,8 @@ wk.add({
       end
     end)
   end, desc = "set cursor (input)" },
+  { "<leader>yv", function() require'scnvim'.send("Yoeminrak.env[\\vid] = true") end, desc = "vid on" },
+  { "<leader>yV", function() require'scnvim'.send("Yoeminrak.env[\\vid] = false") end, desc = "vid off" },
   { "<leader>y$", function()
     require'scnvim'.send("~cursor = 0")
     require'scnvim.editor'.send_block()
@@ -192,6 +210,7 @@ wk.add({
   { "<localleader>dt", desc = "tree" },
   { "<localleader>df", desc = "find" },
   { "<localleader>dp", desc = "play" },
+  { "<localleader>dm", desc = "vocal modes" },
 
   { "<localleader>c", group = "cursor" },
   { "<localleader>cu", desc = "input" },
@@ -298,6 +317,7 @@ vmap <localleader>l <Plug>(scnvim-send-selection)
 map <localleader>rpp m`ggl"zy$:!tmux new -d "open -a REAPER64.app <C-r>z"<CR>``
 nnoremap <localleader>df :silent execute "grep! SynthDef.*" . shellescape(expand("<cword>")) . " ~/tank/super/Trek/SynthDefLibrary/*"<cr>:copen<cr>
 nnoremap <localleader>dc yaw :call v:lua.require'scnvim'.send("")<left><Left>SynthDescLib.at(  \\<C-r>"  ).dump<cr>
+nnoremap <localleader>dm yaw :call v:lua.require'scnvim'.send("")<left><Left>SynthV.modes(  \\<C-r>"  )<cr>
 nnoremap <localleader>dt     :call v:lua.require'scnvim'.send("")<left><Left>SynthDefLibrary.tree<cr>
 map <localleader>u $F"vF"c
 nmap <localleader>< m`:call SelectPart()<CR>,.<ESC>,,``
